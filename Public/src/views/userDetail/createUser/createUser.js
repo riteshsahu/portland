@@ -8,6 +8,7 @@ class CreateUser extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            isUpdated: false,
             userDetails: {
                 userName: '',
                 password: '',
@@ -19,13 +20,13 @@ class CreateUser extends Component {
         }
     }
 
-    componentWillReceiveProps=()=>{
-        if(this.props.updatedDetails){
-                this.setState({
-                    userDetails: this.props.updatedDetails
-                })
-        }
-    }
+    // componentWillReceiveProps=()=>{
+    //     if(this.props.updatedDetails){
+    //             this.setState({
+    //                 userDetails: this.props.updatedDetails
+    //             })
+    //     }
+    // }
 
     handleUserChange = (e) => {
         let id = e.target.id;
@@ -43,6 +44,15 @@ class CreateUser extends Component {
         this.props.CreateNewUser(this.state.userDetails);
     }
     render() {
+        console.log("state" ,this.props.updatedDetails)
+        
+        if(this.props.updatedDetails && !this.state.isUpdated){
+            this.setState({
+                userDetails: this.props.updatedDetails,
+                isUpdated: true
+            })
+    }
+
         return (
             <div>
 
@@ -54,7 +64,7 @@ class CreateUser extends Component {
                         <Label> Name:-  </Label>
                     </Col>
                     <Col xs="5" md="4" lg="4">
-                        <Input type="text" id="userName"value={this.state.userDetail.userName} onChange={this.handleUserChange} placeholder="Name" />
+                        <Input type="text" id="userName"value={this.state.userDetails.userName} onChange={this.handleUserChange} placeholder="Name" />
                     </Col>
                     <Col xs="12" md="3" lg="3">
                     </Col>
