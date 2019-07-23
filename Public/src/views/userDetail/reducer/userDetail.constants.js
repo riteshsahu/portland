@@ -1,0 +1,6 @@
+export const UserDetail = {
+    CREATE_USER: 'CREATE_USER',
+    CREATE_NEW_USER:'CREATE_NEW_USER',
+    DELETE_USER: 'DELETE_USER',
+    UPDATE_USER:"UPDATE_USER"
+}

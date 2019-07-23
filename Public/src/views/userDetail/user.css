@@ -1,0 +1,17 @@
+.header{
+    /* display: flex; */
+}
+
+.header input{
+    width: 25%;
+margin-left: 5px;
+}
+
+
+.header i{
+margin-top: 0px !important;
+}
+.header button{
+    margin-left: 5px;
+    padding: 0px 5px;
+}
