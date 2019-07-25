@@ -31,7 +31,8 @@ class UserList extends Component {
         let result = [];
         this.props.userDetails.map((data, i) => {
             result.push(<tr>
-                <td>{data.userName}</td>
+                <td>{data.firstName}</td>
+                <td>{data.lastName}</td>
                 <td>{data.date}</td>
                 <td>{data.role}</td>
                 <td>
@@ -53,8 +54,9 @@ class UserList extends Component {
                         <Table hover bordered striped responsive size="sm">
                             <thead>
                                 <tr>
-                                    <th>Username</th>
-                                    <th>Date registered</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Date Registered</th>
                                     <th>Role</th>
                                     <th>Status</th>
                                     <th>Action</th>

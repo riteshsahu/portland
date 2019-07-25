@@ -21,7 +21,8 @@ class UserSearch extends Component {
                     {!this.props.createUser &&
                         <>
                             <Input type="text" placeholder="Role" />
-                            <Input type="text" placeholder=" Name" />
+                            <Input type="text" placeholder=" First Name" />
+                            <Input type="text" placeholder=" Last Name" />
                             <Input type="text" placeholder="Email Address " />
                             <Button className="btn btn-info " > <i className="fa fa-search "></i></Button>
                         </>

@@ -51,10 +51,22 @@ class CreateUser extends Component {
                     <Col xs="12" md="3" lg="3">
                     </Col>
                     <Col xs="5" md="2" lg="2">
-                        <Label> Name:-  </Label>
+                        <Label> First Name:-  </Label>
                     </Col>
                     <Col xs="5" md="4" lg="4">
-                        <Input type="text" id="userName" value={this.state.userDetails.userName} onChange={this.handleUserChange} placeholder="Name" />
+                        <Input type="text" id="Last Name" value={this.state.userDetails.firstName} onChange={this.handleUserChange} placeholder="First Name" />
+                    </Col>
+                    <Col xs="12" md="3" lg="3">
+                    </Col>
+                </Row>
+                <Row style={{ marginTop: 5 }}>
+                    <Col xs="12" md="3" lg="3">
+                    </Col>
+                    <Col xs="5" md="2" lg="2">
+                        <Label> Last Name:-  </Label>
+                    </Col>
+                    <Col xs="5" md="4" lg="4">
+                        <Input type="text" id="Last Name" value={this.state.userDetails.lastName} onChange={this.handleUserChange} placeholder="Last Name" />
                     </Col>
                     <Col xs="12" md="3" lg="3">
                     </Col>

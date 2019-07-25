@@ -6,27 +6,32 @@ const initialState = {
     updatedDetails:{},
     userDetails: [
         {
-        userName: "Lorem Ipsam",
+        firstName: "Lorem ",
+        lastName: "Ipsum",
         date: "2012/01/01",
         role: "Member",
     },
     {
-        userName: "Jane Doe",
+        firstName: "Jane",
+        lastName: "Doe",
         date: "2012/01/01",
         role: "Internal Employee",
     },
     {
-        userName: "Mike Tyson",
+        firstName: "Mike",
+        lastName:"Tyson",
         date: "	2012/01/01",
         role: "External Employee",
     },
     {
-        userName: "Chris Gayle",
+        firstName: "Chris",
+        lastName: "Gayle",
         date: "2012/01/01",
         role: "End User",
     },
     {
-        userName: "Bruce Wayne",
+        firstName: "Bruce",
+        lastName: " Wayne",
         date: "2012/01/01",
         role: "Management",
     },
