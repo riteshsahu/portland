@@ -57,6 +57,7 @@
     "redux-thunk": "^2.3.0",
     "save": "^2.3.3",
     "simple-line-icons": "^2.4.1",
+    "webpack": "^4.28.3",
     "yup": "^0.27.0"
   },
   "devDependencies": {

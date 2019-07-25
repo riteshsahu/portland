@@ -10,9 +10,6 @@ import React from 'react';
 // const UserTab = React.lazy(() => import('./views/User/User'));
 
 
-const GoogleReview = React.lazy(() => import('./views/Reviews/Google/googleReviews'));
-const TripAdvisorReviews = React.lazy(() => import('./views/Reviews/TripAdvisor/tripadvisorReviews'));
-const FbReview =  React.lazy(() => import('./views/Reviews/Facebook/facebookReviews'));
 const Rating =  React.lazy(() => import('./views/Rating/rating'));
 const DashboardNew= React.lazy(() => import('./views/Rating Dashboard/ratingDashboard'));
 const NewBussiness =  React.lazy(() => import('./views/New Business/newBusiness'));
@@ -64,9 +61,6 @@ const routes = [
 
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
-  { path: '/reviews/google',  name: 'Reviews/Google', component: GoogleReview },
-  { path: '/reviews/facebook',  name: 'Reviews/Facebook', component: FbReview },
-  { path: '/reviews/tripadviser',  name: 'Reviews/TripAdviser', component: TripAdvisorReviews },
   { path: '/rating', name: 'Rating', component: Rating },
   { path: '/ratingdashboard', name: 'Rating DashBoard', component: DashboardNew},
   { path: '/newbusiness', name: 'New Business', component: NewBussiness },
