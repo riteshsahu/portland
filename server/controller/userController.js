@@ -15,6 +15,21 @@ class UserController{
                 })            
         }
 
+        
+        static getUsers(req,res){
+                // let data = req.body;
+                     UserService.getUsers().then( result =>{
+                        res.json(result);
+                        console.log(result)
+                     }).catch(err =>{
+                             res.status(500)
+                             res.json(err)
+                             console.log(err)
+     
+                     })            
+             }
+
+             
         static authUser(req,res){
                 console.log("Called");
                 let data = req.body;

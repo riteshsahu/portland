@@ -3,8 +3,16 @@ node -e "require('./server/script').sync();"
 node -e "require('./server/script').seedData();"
 
 
-Role --- 1 - Agent, 2 - Admin, 3 - User
+Role --- 
+1. Admin
+2. Management
+3. Internal Employee
+4. External Employee
+5. Client
 
+Status---
+1. Active
+2.Inactive
 
 
 

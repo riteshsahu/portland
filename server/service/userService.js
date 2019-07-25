@@ -2,17 +2,18 @@ const db = require('../util/db');
 const User = require('../model/User');
 class UserService {
 
-    static getUserById(id) {
+    static getUsers(id) {
         var connection;
         return new Promise((resolve, reject) => {
             db.getConnection().
                 then(conn => {
                     connection = conn;
-                    connection.query('select * from User where userId = ? ', [id] , (err,results) => {
+                    connection.query('select * from User ', (err,results) => {
                         if(err) { 
                             reject(err) 
                         }else{
-                            resolve( new User(results[0]))
+                            // resolve( new User(results[0]))
+                            resolve(results);
                         }
                     })
                 })
@@ -39,10 +40,12 @@ class UserService {
                             }
                             reject(err)
                         } else {
-                            //resolve(result.insertId)
-                            UserService.getUserById(result.insertId).then( user => {
-                                resolve(user);
-                            })                        }
+                            console.log("--user Created----");
+                            resolve(result);
+                            // UserService.getUserById(result.insertId).then( user => {
+                            //     resolve(user);
+                            // })                       
+                         }
                     })
                 })
                 .catch(err => {
