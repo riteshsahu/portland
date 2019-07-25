@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, CardHeader, CardBody, Button, Col, Label, Input, Row, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Button, Col, Label, Input, Row } from 'reactstrap';
 import '../user.css'
 import { connect } from "react-redux";
 import { CreateUserHandler } from '../reducer/userDetail.action';
@@ -15,9 +15,9 @@ class UserSearch extends Component {
             <Row className="header">
 
                 <Col style={{ display: "flex" }} xs="12" md="10" lg="10">
-                {this.props.createUser&&
-                 <Label>Create New User</Label>
-                }
+                    {this.props.createUser &&
+                        <Label>Create New User</Label>
+                    }
                     {!this.props.createUser &&
                         <>
                             <Input type="text" placeholder="Role" />
@@ -26,20 +26,17 @@ class UserSearch extends Component {
                             <Button className="btn btn-info " > <i className="fa fa-search "></i></Button>
                         </>
                     }
-
                 </Col>
                 <Col xs="12" md="2" lg="2">
-
                     {!this.props.createUser &&
                         <Button onClick={this.props.CreateUserHandler} className="btn btn-success " style={{ float: "right", fontSize: "medium" }}>
                             <i style={{ marginRight: 5 }} className="fa fa-plus "></i>
                             Create User
-             </Button>}
+                        </Button>}
                     {this.props.createUser &&
                         <Button onClick={this.props.CreateUserHandler} className="btn btn-info " style={{ float: "right", fontSize: "medium" }}>
                             User List
-             </Button>}
-
+                        </Button>}
                 </Col>
             </Row>
 

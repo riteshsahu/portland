@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, CardHeader, CardBody, Button, Col,Alert, Label, Input, Row, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Button, Col, Alert, Label, Input, Row } from 'reactstrap';
 import { connect } from "react-redux";
 import { CreateNewUser } from '../reducer/userDetail.action';
 
@@ -20,14 +20,6 @@ class CreateUser extends Component {
         }
     }
 
-    // componentWillReceiveProps=()=>{
-    //     if(this.props.updatedDetails){
-    //             this.setState({
-    //                 userDetails: this.props.updatedDetails
-    //             })
-    //     }
-    // }
-
     handleUserChange = (e) => {
         let id = e.target.id;
         let value = e.target.value;
@@ -37,26 +29,24 @@ class CreateUser extends Component {
             userDetails: temp
         })
     }
+
     handleSumbit = () => {
         this.setState({
             isSubmitted: !this.state.isSubmitted
         })
         this.props.CreateNewUser(this.state.userDetails);
     }
+
     render() {
-        console.log("state" ,this.props.updatedDetails)
-        
-        if(this.props.updatedDetails && !this.state.isUpdated){
+        console.log("state", this.props.updatedDetails)
+        if (this.props.updatedDetails && !this.state.isUpdated) {
             this.setState({
                 userDetails: this.props.updatedDetails,
                 isUpdated: true
             })
-    }
-
+        }
         return (
             <div>
-
-
                 <Row style={{ marginTop: 5 }}>
                     <Col xs="12" md="3" lg="3">
                     </Col>
@@ -64,7 +54,7 @@ class CreateUser extends Component {
                         <Label> Name:-  </Label>
                     </Col>
                     <Col xs="5" md="4" lg="4">
-                        <Input type="text" id="userName"value={this.state.userDetails.userName} onChange={this.handleUserChange} placeholder="Name" />
+                        <Input type="text" id="userName" value={this.state.userDetails.userName} onChange={this.handleUserChange} placeholder="Name" />
                     </Col>
                     <Col xs="12" md="3" lg="3">
                     </Col>
@@ -126,8 +116,8 @@ class CreateUser extends Component {
                         </Col>
                         <Col xs="12" md="6" lg="6">
                             <Alert color="success" style={{ width: "90%" }}>
-                                Information Submited SuccessFully. Thanks !
-                     </Alert>
+                                You Have Created New User SuccessFully. Thanks !
+                            </Alert>
                         </Col>
                         <Col xs="12" md="3" lg="3">
                         </Col>
@@ -140,7 +130,7 @@ class CreateUser extends Component {
 
 const mapStateToProps = state => {
     return {
-        updatedDetails:state.userDetail.updatedDetails
+        updatedDetails: state.userDetail.updatedDetails
     };
 }
 

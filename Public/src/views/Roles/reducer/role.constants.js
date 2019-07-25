@@ -1,0 +1,6 @@
+export const RoleDetail = {
+    ASSIGN_ROLE: 'ASSIGN_ROLE',
+    ASSIGN_NEW_ROLE:'ASSIGN_NEW_ROLE',
+    DELETE_ROLE: 'DELETE_ROLE',
+    UPDATE_ROLE:"UPDATE_ROLE"
+}

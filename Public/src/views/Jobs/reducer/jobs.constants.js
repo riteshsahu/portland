@@ -1,0 +1,6 @@
+export const JobDetail = {
+    CREATE_JOB: 'CREATE_JOB',
+    CREATE_NEW_JOB:'CREATE_NEW_JOB',
+    DELETE_JOB: 'DELETE_JOB',
+    UPDATE_JOB:"UPDATE_JOB"
+}

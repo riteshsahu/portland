@@ -5,6 +5,8 @@ import LoginReducer from './views/Pages/Login/reducer.login';
 import CardToggleReducer from './views/New Business/reducer/reducer.newBusiness';
 import FbReviewsReducer from './views/Reviews/Reviews/reducer/reducer.fbReview';
 import userDetailReducer from './views/userDetail/reducer/userDetail.reducer';
+import jobDetailReducer from './views/Jobs/reducer/jobs.reducer';
+import roleDetailReducer from './views/Roles/reducer/role.reducer';
 
 const rootReducer = combineReducers({
     UserGroup: userGroupReducer,
@@ -12,7 +14,9 @@ const rootReducer = combineReducers({
     login: LoginReducer,
     ToggleCard:CardToggleReducer,
     FbReviews: FbReviewsReducer,
-    userDetail: userDetailReducer
+    userDetail: userDetailReducer,
+    jobDetail: jobDetailReducer,
+    roleDetail: roleDetailReducer
 })
 
 

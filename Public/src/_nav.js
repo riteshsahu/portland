@@ -1,49 +1,25 @@
 export default {
   items: [
 
-    // {
-    //   name: 'User',
-    //   url: '/user',
-    //   icon: 'icon-user',
-    // },
-
-    // {
-    //   name: 'User Management',
-    //   url: '/userManagement',
-    //   icon: 'fa fa-tasks',
-    //   children: [
-    //     {
-    //       name: 'Request',
-    //       url: '/userManagement/request',
-    //       icon: 'cui-task',
-    //     },
-    //     {
-    //       name: 'User Group',
-    //       url: '/userManagement/userGroup',
-    //       icon: 'fa fa-users',
-    //     },
-    //     {
-    //       name: 'User Mapping',
-    //       url: '/userManagement/userMapping',
-    //       icon: 'icon-user',
-    //     },
-    
-    //   ],
-    // },
-
-
-    // {
-    //   name: 'Intake Form',
-    //   url: '/intakeform',
-    //   icon: 'fa fa-tasks',
-     
-    // },
+  
     {
          name: 'User',
         url: '/userDetail',
         icon: 'icon-user',
      
     },
+    {
+        name: 'Jobs',
+        url: '/jobs',
+        icon: 'fa fa-tasks',
+       
+      },
+      {
+        name: 'Roles',
+        url: '/roles',
+        icon: 'fa fa-tasks',
+       
+      },
     // {
     //   name: 'Reviews',
     //   url: '/reviews',
@@ -79,31 +55,7 @@ export default {
     //   icon: 'fa fa-tasks',
      
     // },
-    // {
-    //   name: 'New Business',
-    //   url: '/newbusiness',
-    //   icon: 'fa fa-tasks',
-     
-    // },
-    // {
-    //   name: 'GIC',
-    //   url: '/gic',
-    //   icon: 'fa fa-tasks',
-     
-    //   children: [
-    //     {
-    //       name: 'Persons',
-    //       url: '/gic/persons',
-    //       icon: 'fa fa-users',
-    //     },
-    //     {
-    //       name: 'GICS',
-    //       url: '/gic/gics',
-    //       icon: 'fa fa-users',
-    //     }
-    //   ]
-    // },
-
+   
 
     // {
     //   name: 'Dashboard',
