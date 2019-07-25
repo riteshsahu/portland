@@ -6,29 +6,34 @@ const initialState = {
     updatedDetails:{},
     userDetails: [
         {
-        userName: "Vishnu Serghei",
-        date: "	2012/01/01",
-        role: "	Member	",
+        firstName: "Lorem ",
+        lastName: "Ipsum",
+        date: "2012/01/01",
+        role: "Member",
     },
     {
-        userName: "Jitendra Patidar",
-        date: "	2012/01/01",
-        role: "	Internal Employee",
+        firstName: "Jane",
+        lastName: "Doe",
+        date: "2012/01/01",
+        role: "Internal Employee",
     },
     {
-        userName: "Shashikant Shrivastava",
+        firstName: "Mike",
+        lastName:"Tyson",
         date: "	2012/01/01",
-        role: "External Employee	",
+        role: "External Employee",
     },
     {
-        userName: "Sadanand Mandal",
-        date: "	2012/01/01",
-        role: "End User	",
+        firstName: "Chris",
+        lastName: "Gayle",
+        date: "2012/01/01",
+        role: "End User",
     },
     {
-        userName: "Zuber Khan",
-        date: "	2012/01/01",
-        role: "	Management",
+        firstName: "Bruce",
+        lastName: " Wayne",
+        date: "2012/01/01",
+        role: "Management",
     },
 ]
 } 
