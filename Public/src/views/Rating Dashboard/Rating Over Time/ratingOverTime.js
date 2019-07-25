@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, CardHeader, Col, Label, Input, Row } from 'reactstrap';
+import { Card, CardHeader, Col, Label, Input, Row } from 'reactstrap'; 
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, } from 'recharts';
 
 class RatingOvertime extends Component {
