@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Col, Alert, Label, Input, Row } from 'reactstrap';
 import { connect } from "react-redux";
-import { CreateNewUser } from '../reducer/userDetail.action';
+import { CreateNewUser,updateUser } from '../reducer/userDetail.action';
 
 
 class CreateUser extends Component {
@@ -10,7 +10,8 @@ class CreateUser extends Component {
         this.state = {
             isUpdated: false,
             userDetails: {
-                userName: '',
+                firstName: '',
+                lastName: '',
                 password: '',
                 role: '',
                 email: '',
@@ -34,10 +35,34 @@ class CreateUser extends Component {
         this.setState({
             isSubmitted: !this.state.isSubmitted
         })
-        this.props.CreateNewUser(this.state.userDetails);
+       let data={
+            firstName: this.state.userDetails.firstName,
+            lastName: this.state.userDetails.lastName,
+            email: this.state.userDetails.email,
+            password: this.state.userDetails.password,
+            role: 2,
+            isActive: 1, 
+            status: 1, 
+            createdAt: new Date().toJSON().slice(0, 10).replace(/-/g, '/'),
+            updatedAt: "null", 
+            createdBy: "john",
+            updatedBy: "null" 
+        }
+        this.props.CreateNewUser(data);
     }
 
+    // handleUpdate =() => {
+    //     this.setState({
+    //         isUpdated: !this.state.isUpdated
+    //     })
+    //     let data={
+
+    //     }
+    //     this.props.updateUser();
+    // }
+
     render() {
+        console.log("updated or not", this.state.isUpdated);
         console.log("state", this.props.updatedDetails)
         if (this.props.updatedDetails && !this.state.isUpdated) {
             this.setState({
@@ -54,7 +79,7 @@ class CreateUser extends Component {
                         <Label> First Name:-  </Label>
                     </Col>
                     <Col xs="5" md="4" lg="4">
-                        <Input type="text" id="Last Name" value={this.state.userDetails.firstName} onChange={this.handleUserChange} placeholder="First Name" />
+                        <Input type="text" id="firstName" value={this.state.userDetails.firstName} onChange={this.handleUserChange} placeholder="First Name" />
                     </Col>
                     <Col xs="12" md="3" lg="3">
                     </Col>
@@ -66,7 +91,7 @@ class CreateUser extends Component {
                         <Label> Last Name:-  </Label>
                     </Col>
                     <Col xs="5" md="4" lg="4">
-                        <Input type="text" id="Last Name" value={this.state.userDetails.lastName} onChange={this.handleUserChange} placeholder="Last Name" />
+                        <Input type="text" id="lastName" value={this.state.userDetails.lastName} onChange={this.handleUserChange} placeholder="Last Name" />
                     </Col>
                     <Col xs="12" md="3" lg="3">
                     </Col>
@@ -79,11 +104,11 @@ class CreateUser extends Component {
                     </Col>
                     <Col xs="5" md="4" lg="4">
                         <Input id="role" type="select" onChange={this.handleUserChange}>
-                            <option value="Management">Management</option>
-                            <option value="Internal Employee">Internal Employee</option>
-                            <option value="External Employee">External Employee</option>
-                            <option value="Designer">Designer</option>
-                            <option value="Client">Client</option>
+                            <option value="2">Management</option>
+                            <option value="3">Internal Employee</option>
+                            <option value="4">External Employee</option>
+                            <option value="5">Designer</option>
+                            <option value="6">Client</option>
                         </Input>
                     </Col>
                     <Col xs="12" md="3" lg="3">
@@ -96,12 +121,12 @@ class CreateUser extends Component {
                         <Label> Email:- </Label>
                     </Col>
                     <Col xs="5" md="4" lg="4">
-                        <Input id="email" type="email" onChange={this.handleUserChange} placeholder="Email" />
+                        <Input disabled id="email" type="email" value={this.state.userDetails.email} onChange={this.handleUserChange} placeholder="Email" />
                     </Col>
                     <Col xs="12" md="3" lg="3">
                     </Col>
                 </Row>
-                <Row style={{ marginTop: 5 }}>
+                {this.state.isUpdated && <Row style={{ marginTop: 5 }}>
                     <Col xs="12" md="3" lg="3">
                     </Col>
                     <Col xs="5" md="2" lg="2">
@@ -112,17 +137,26 @@ class CreateUser extends Component {
                     </Col>
                     <Col xs="12" md="3" lg="3">
                     </Col>
-                </Row>
-                <Row style={{ marginTop: 5 }}>
+                </Row> }
+                {this.state.isUpdated ? null : <Row style={{ marginTop: 5 }}>
                     <Col xs="12" md="3" lg="3">
                     </Col>
                     <Col xs="12" md="6" lg="6">
-                        <Button disabled={this.state.isSubmitted} color="success" style={{ float: "right" }} onClick={this.handleSumbit}>Create</Button>
+                        <Button  color="success" style={{ float: "right" }} onClick={this.handleSumbit}>Create</Button>
                     </Col>
                     <Col xs="12" md="3" lg="3">
                     </Col>
-                </Row>
-                {this.state.isSubmitted &&
+                </Row> }
+                {this.state.isUpdated ? <Row style={{ marginTop: 5 }}>
+                    <Col xs="12" md="3" lg="3">
+                    </Col>
+                    <Col xs="12" md="6" lg="6">
+                        <Button disabled={this.state.isUpdated} color="success" style={{ float: "right" }} onClick={this.handleUpdate}>Update</Button>
+                    </Col>
+                    <Col xs="12" md="3" lg="3">
+                    </Col>
+                </Row> : null }
+                {this.props.isUserCreated &&
                     <Row style={{ marginTop: 5 }}>
                         <Col xs="12" md="3" lg="3">
                         </Col>
@@ -142,14 +176,15 @@ class CreateUser extends Component {
 
 const mapStateToProps = state => {
     return {
-        updatedDetails: state.userDetail.updatedDetails
+        updatedDetails: state.userDetail.updatedDetails,
+        isUserCreated: state.userDetail.isUserCreated
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         CreateNewUser: (data) => dispatch(CreateNewUser(data)),
-
+        updateUser : (id) => dispatch(updateUser(id))
     };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(CreateUser);

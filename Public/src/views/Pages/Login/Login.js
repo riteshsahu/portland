@@ -32,11 +32,11 @@ class Login extends Component {
     console.log("--local storage-user--", userDetils);
 
     if (userDetils) {
-      return <Redirect push to='/user' />
+      return <Redirect push to='/userDetail' />
     }
     console.log("value in reducer", this.props.userDetail)
     if (this.state.getAccess) {
-      return <Redirect push to='/userMangement' />
+      return <Redirect push to='/userDetail' />
     }
 
     return (

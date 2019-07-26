@@ -7,12 +7,12 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 // import routes from './routes';
-import { Provider } from  'react-redux';
+import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 // import {Router,Route,Switch } from 'react-router-dom';
-import {createBrowserHistory} from 'history';
+import { createBrowserHistory } from 'history';
 import reducers from './store';
 
 
@@ -25,10 +25,9 @@ const hist = createBrowserHistory();
 
 ReactDOM.render(
     <Provider store={store}  >
-   
-    <App />
-</Provider>
-, document.getElementById('root'));
+        <App />
+    </Provider>
+    , document.getElementById('root'));
 
 
 // ReactDOM.render(<App />, document.getElementById('root'));
