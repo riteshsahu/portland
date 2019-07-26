@@ -17,8 +17,7 @@ class UserController {
 
 
         static getUsers(req, res) {
-                // let data = req.body;
-                UserService.getUsers().then(result => {
+                UserService.getUsers(req.query).then(result => {
                         res.json(result);
                         console.log(result)
                 }).catch(err => {
