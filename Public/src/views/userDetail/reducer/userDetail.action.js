@@ -3,10 +3,8 @@ import { API_ROOT, URI ,StringFormat} from '../../../config/config';
 
 export const CreateUserHandler = () => {
     return (dispatch) => {
-
         dispatch({
             type: UserDetail.CREATE_USER,
-
         })
     }
 }
@@ -32,28 +30,31 @@ export const GetUserList = () => {
     }
 }
 
-
-// export const updateUser = () => {
-//     return (dispatch) => {
-//         fetch(API_ROOT + URI.GET_USERLIST, {
-//             method: 'GET',
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             }
-//         })
-//             .then(res => res.json())
-//             .then(data => {
-//                     dispatch({
-//                         type: UserDetail.UPDATE_USER,
-//                         payload: data
-//                     })
-//             })
-//             .catch(err => {
-//                 console.log(err);
-//             })
-//     }
-// }
-
+export const searchUser = (data) => {
+    console.log('dadaaa--------------',data)
+    let qq = API_ROOT.concat(`${URI.GET_USERLIST}?firstName=${data.firstName}&lastName=${data.lastName}&email=${data.email}`);
+    console.log('query-----',qq)
+    return (dispatch) => {
+        fetch(qq, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                    dispatch({
+                        type: UserDetail.UPDATE_USER,
+                        payload: data
+                    })
+                    console.log(data,"api response search")
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+}
+    
 
 export const CreateNewUser = (values) => {
     return (dispatch) => {
@@ -81,16 +82,6 @@ export const CreateNewUser = (values) => {
     }
 }
 
-// export const CreateNewUser = (data) => {
-//     return (dispatch) => {
-
-//         dispatch({
-//             type: UserDetail.CREATE_NEW_USER,
-//             payload:data
-//         })
-//     }
-// }
-
 
 export const deleteUserData = (id) => {
     return (dispatch) => {
@@ -112,6 +103,38 @@ export const deleteUserData = (id) => {
             })
     }
 }
+
+// export const updateUser = () => {
+//     return (dispatch) => {
+//         fetch(API_ROOT + URI.UPDATE_USER, {
+//             method: 'PUT',
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             }
+//         })
+//             .then(res => res.json())
+//             .then(data => {
+//                     dispatch({
+//                         type: UserDetail.UPDATE_USER,
+//                         payload: data
+//                     })
+//             })
+//             .catch(err => {
+//                 console.log(err);
+//             })
+//     }
+// }
+
+// export const CreateNewUser = (data) => {
+//     return (dispatch) => {
+
+//         dispatch({
+//             type: UserDetail.CREATE_NEW_USER,
+//             payload:data
+//         })
+//     }
+// }
+
 // export const deleteUserData = (index) => {
 //     return (dispatch) => {
 
@@ -132,3 +155,4 @@ export const updateUser = (data) => {
         })
     }
 }
+

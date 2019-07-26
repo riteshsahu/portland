@@ -6,7 +6,7 @@ export const URI = {
     GET_USERLIST: 'user/userList',
     DELETE_USER: 'user/{0}',
     LOGIN_USER: 'user/auth',
-    UPDATE_USER: 'user/{0}',
+    UPDATE_USER: 'user/',
     GET_COUNTRY: 'country',
     GET_STATES: 'state',
     ADD_NEWBUSINESS: 'businessForm',
