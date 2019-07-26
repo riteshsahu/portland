@@ -11,9 +11,8 @@ class RoleService {
                 then(conn => {
                     connection = conn;
                     return db.beginTransaction(conn);
-                }).then(()=>{
-                    connection.query('INSERT INTO Role SET ?  ',[data], (err, results) => {
-                        
+                }).then(() => {
+                    connection.query('INSERT INTO Role SET ?  ', [data], (err, results) => {
                         if (err) {
                             db.rollbackTransaction(connection);
                             db.releaseConnection(connection);

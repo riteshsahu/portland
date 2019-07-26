@@ -65,6 +65,14 @@ class UserController {
                 })
         }
 
+        static getUserList(req, res) {
+                UserService.getUserList().then(result => {
+                        res.json(result);
+                }).catch(err => {
+                        res.status(500)
+                        res.json(err)
+                })
+        }
 
 }
 
