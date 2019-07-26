@@ -15,9 +15,60 @@ Status---
 2.Inactive
 
 
+-------------------------------
+GET USER WITH QUERY PARAMS
 
+GET-> http://localhost:5000/api/user?firstName=john&lastName=john&email=john@john.com&role=Management
 
+--------------------------------
+CREATE USER 
+POST-> http://localhost:5000/api/user
+body:{
 
+"firstName": "john",
+"lastName": "john",
+"email": "john@john.com",
+"password": "123456",
+"role": 2,
+"isActive": 1,
+"status": 1,
+"createdAt": "2019/25/07",
+"updatedAt": "null",
+"createdBy": "john",
+"updatedBy": "null"
+}
+
+-------------------------------------------
+
+UPDATE USEER DETAILS
+PUT -> http://localhost:5000/api/user/:id
+body:{
+"firstName": "john",
+"lastName": "john",
+"email": "john@john.com",
+"password": "123456",
+"role": 2,
+"isActive": 1,
+"status": 1,
+"createdAt": "2019/25/07",
+"updatedAt": "null",
+"createdBy": "john",
+"updatedBy": "null"
+}
+
+--------------
+DELETE USER
+DELETE-> http://localhost:5000/api/user/:id
+
+--------------
+User Login
+POST-> http://localhost:5000/api/user/auth
+body:{
+    email:"",
+    password:""
+}
+
+----------------------
 
 
 
