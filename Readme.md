@@ -14,6 +14,20 @@ Status---
 1. Active
 2.Inactive
 
+--------------------
+{
+	"firstName":"john",
+		"lastName":"john",
+		"email":"john@john.com",
+			"password":"123456",
+				"role":2,
+					"isActive":1,
+						"status":1,
+						"createdAt" :"2019/07/25",
+						"updatedAt": null,
+						"createdBy": "john",
+						"updatedBy": null
+}
 
 
 

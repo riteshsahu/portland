@@ -33,6 +33,7 @@ class UserList extends Component {
             result.push(<tr>
                 <td>{data.firstName}</td>
                 <td>{data.lastName}</td>
+                <td>{data.email}</td>
                 <td>{data.date}</td>
                 <td>{data.role}</td>
                 <td>
@@ -56,6 +57,7 @@ class UserList extends Component {
                                 <tr>
                                     <th>First Name</th>
                                     <th>Last Name</th>
+                                    <th>Email</th>
                                     <th>Date Registered</th>
                                     <th>Role</th>
                                     <th>Status</th>

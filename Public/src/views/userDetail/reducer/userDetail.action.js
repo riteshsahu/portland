@@ -1,5 +1,5 @@
 import { UserDetail } from './userDetail.constants'
-// import { API_ROOT, URI } from '../../../../../src/config/config';
+// import { API_ROOT, URI } from '../../../../../server/config';
 
 export const CreateUserHandler = () => {
     return (dispatch) => {
@@ -11,6 +11,34 @@ export const CreateUserHandler = () => {
     }
 }
 
+
+// export const CreateNewUser = (values) => {
+//     return (dispatch) => {
+//         fetch(API_ROOT + URI., {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             },
+//             body: JSON.stringify(values)
+//         })
+//             .then(res => res.json())
+//             .then(data => {
+//                 if (data == "USER_ALREADY_REGISTERED") {
+//                     dispatch({
+//                         type: Register.DUPLICATE_ERROR,
+//                         payload: data
+//                     })
+//                 } else {
+//                     dispatch({ type: Register.USER_REGISTERED })
+//                 }
+
+//                 console.log(data, "data in api");
+//             })
+//             .catch(err => {
+//                 console.log(err);
+//             })
+//     }
+// }
 
 export const CreateNewUser = (data) => {
     return (dispatch) => {
