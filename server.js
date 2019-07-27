@@ -10,20 +10,20 @@ app.use(cors());
 app.use(bodyParser.json({limit: '100mb'}));
 app.use('/api',apiRoutes);
 
-app.use(express.static(path.join(__dirname, 'public/build')));
+app.use(express.static(path.join(__dirname, 'Public/build')));
 
 
 //production mode
 if(process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, 'public/build')));
+    app.use(express.static(path.join(__dirname, 'Public/build')));
     //
     app.get('*', (req, res) => {
-      res.sendfile(path.join(__dirname = 'public/build/index.html'));
+      res.sendfile(path.join(__dirname = 'Public/build/index.html'));
     })
   }
   //build mode
   app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname+'/public/public/index.html'));
+    res.sendFile(path.join(__dirname+'/Public/public/index.html'));
   })
 
 
