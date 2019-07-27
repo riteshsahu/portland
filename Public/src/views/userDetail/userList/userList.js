@@ -1,18 +1,37 @@
 import React, { Component } from 'react';
 import { Badge, Modal, ModalBody, ModalFooter, Button, Col, Pagination, PaginationItem, PaginationLink, Row, Table } from 'reactstrap';
 import { connect } from "react-redux";
-import { deleteUserData, updateUser } from '../reducer/userDetail.action';
+import { deleteUserData, updateUser,GetUserList } from '../reducer/userDetail.action';
 
 class UserList extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            roleKey:{
+                1 : "Admin",
+                2 : "Management",
+                3 : "Internal Employee",
+                4 : "External Employee",
+                5 : "Designer",
+                6 : "Client"
+            },
             small: false,
             deleteIndex: ''
         }
         this.toggleSmall = this.toggleSmall.bind(this);
     }
 
+
+    componentDidMount= () => {
+        this.props.GetUserList();
+    }
+
+    componentWillReceiveProps =() => {
+      if(  this.props.userDeleted) {
+        this.props.GetUserList();
+
+      }
+    }
     toggleSmall(i) {
         this.setState({
             deleteIndex: i,
@@ -34,14 +53,14 @@ class UserList extends Component {
                 <td>{data.firstName}</td>
                 <td>{data.lastName}</td>
                 <td>{data.email}</td>
-                <td>{data.date}</td>
-                <td>{data.role}</td>
+                <td>{data.createdAt}</td>
+                <td>{this.state.roleKey[data.role]}</td>
                 <td>
                     <Badge color="success">Active</Badge>
                 </td>
                 <td>
                     <i style={{ color: "green", padding: "0px 5px" }} onClick={e => { this.props.updateUser(data) }} className="cui-pencil icons font-xl"></i>
-                    <i style={{ color: "red", padding: "0px 5px" }} onClick={e => { this.toggleSmall(i) }} className="cui-trash icons font-xl"></i>
+                    <i style={{ color: "red", padding: "0px 5px" }} onClick={e => { this.toggleSmall(data.userId) }} className="cui-trash icons font-xl"></i>
                 </td>
             </tr>)
         })
@@ -102,13 +121,15 @@ class UserList extends Component {
 const mapStateToProps = state => {
     return {
         userDetails: state.userDetail.userDetails,
+        userDeleted: state.userDetail.userDeleted
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         deleteUserData: (value) => dispatch(deleteUserData(value)),
-        updateUser: (value) => dispatch(updateUser(value))
+        updateUser: (value) => dispatch(updateUser(value)),
+        GetUserList: () => dispatch(GetUserList())
     };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(UserList);

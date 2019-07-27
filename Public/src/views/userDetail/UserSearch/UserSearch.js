@@ -2,29 +2,55 @@ import React, { Component } from 'react';
 import { Button, Col, Label, Input, Row } from 'reactstrap';
 import '../user.css'
 import { connect } from "react-redux";
-import { CreateUserHandler } from '../reducer/userDetail.action';
+import { CreateUserHandler,searchUser} from '../reducer/userDetail.action';
 class UserSearch extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            searchDetails: {
+                role: '',
+                firstName: '',
+                lastName: '',
+                email: ''
+            }
         }
+    }
+    
+    handleSearchChange = (e) => {
+        let id = e.target.id;
+        let value = e.target.value;
+        let temp = this.state.searchDetails;
+        temp[id] = value;
+        this.setState({
+            searchDetails: temp
+        })
+    }
+    
+    searchUser =() => {
+        console.log(this.state.searchDetails)
+        this.props.searchUser(this.state.searchDetails);
     }
 
     render() {
         return (
             <Row className="header">
-
                 <Col style={{ display: "flex" }} xs="12" md="10" lg="10">
                     {this.props.createUser &&
                         <Label>Create New User</Label>
                     }
                     {!this.props.createUser &&
                         <>
-                            <Input type="text" placeholder="Role" />
-                            <Input type="text" placeholder=" First Name" />
-                            <Input type="text" placeholder=" Last Name" />
-                            <Input type="text" placeholder="Email Address " />
-                            <Button className="btn btn-info " > <i className="fa fa-search "></i></Button>
+                        <Input  style= {{width: "25%"}}id="role" type="select" onChange={this.handleSearchChange}>
+                            <option value="2">Management</option>
+                            <option value="3">Internal Employee</option>
+                            <option value="4">External Employee</option>
+                            <option value="5">Designer</option>
+                            <option value="6">Client</option>
+                        </Input>
+                            <Input  id="firstName"onChange={this.handleSearchChange} type="text" placeholder=" First Name" />
+                            <Input  id="lastName" onChange={this.handleSearchChange} type="text" placeholder=" Last Name" />
+                            <Input  id="email" onChange={this.handleSearchChange} type="text" placeholder="Email Address " />
+                            <Button onClick={this.searchUser}className="btn btn-info " > <i className="fa fa-search "></i></Button>
                         </>
                     }
                 </Col>
@@ -54,6 +80,7 @@ const mapStateToProps = state => {
 function mapDispatchToProps(dispatch) {
     return {
         CreateUserHandler: () => dispatch(CreateUserHandler()),
+        searchUser: (data) => dispatch(searchUser(data))
     };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(UserSearch);

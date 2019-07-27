@@ -9,6 +9,8 @@ import React from 'react';
 // const UserMapping = React.lazy(() => import('./views/UserManagement/User/User'));
 // const UserTab = React.lazy(() => import('./views/User/User'));
 
+// const Login =  React.lazy(() => import('./views/Pages/Login/Login'));
+
 
 const Rating =  React.lazy(() => import('./views/Rating/rating'));
 const DashboardNew= React.lazy(() => import('./views/Rating Dashboard/ratingDashboard'));
@@ -58,8 +60,10 @@ const User = React.lazy(() => import('./views/Users/User'));
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
 
+  // { path: '/login', exact: true, name: 'Login',component: Login },
 
-  { path: '/', exact: true, name: 'Home' },
+
+  { path: '/', exact: true, name: 'Home'  },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
   { path: '/rating', name: 'Rating', component: Rating },
   { path: '/ratingdashboard', name: 'Rating DashBoard', component: DashboardNew},

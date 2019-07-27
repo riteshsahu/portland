@@ -14,12 +14,12 @@ export default {
         icon: 'fa fa-tasks',
        
       },
-      {
-        name: 'Roles',
-        url: '/roles',
-        icon: 'fa fa-tasks',
+      // {
+      //   name: 'Roles',
+      //   url: '/roles',
+      //   icon: 'fa fa-tasks',
        
-      },
+      // },
     // {
     //   name: 'Reviews',
     //   url: '/reviews',
