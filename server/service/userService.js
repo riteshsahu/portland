@@ -11,7 +11,7 @@ class UserService {
             db.getConnection().
                 then(conn => {
                     connection = conn;
-                    connection.query('Select * from User WHERE role != 1', (err, results) => {
+                    connection.query('Select * from User WHERE isActive = 1 AND role != 1', (err, results) => {
                         db.releaseConnection(connection);
                         if (err) {
                             reject(err)
@@ -34,27 +34,28 @@ class UserService {
         let email = query.email;
         let role = query.role;
 
-        let roleKey = "";
-        if (role == "Management") {
-            roleKey = 2;
-        }
-        if (role == "Internal Employee") {
-            roleKey = 3;
-        }
-        if (role == "External Employee") {
-            roleKey = 4;
-        }
-        if (role == "Client") {
-            roleKey = 5;
-        }
+        console.log('---query----',query);
+        // let roleKey = "";
+        // if (role == "Management") {
+        //     roleKey = 2;
+        // }
+        // if (role == "Internal Employee") {
+        //     roleKey = 3;
+        // }
+        // if (role == "External Employee") {
+        //     roleKey = 4;
+        // }
+        // if (role == "Client") {
+        //     roleKey = 5;
+        // }
 
         var connection;
         return new Promise((resolve, reject) => {
             db.getConnection().
                 then(conn => {
                     connection = conn;
-                    connection.query('select * from User WHERE isActive= 1 AND  (role = ? OR firstName LIKE ? OR lastName LIKE ? OR email LIKE ?) ',
-                        [roleKey, "%" + firstName + "%", "%" + lastName + "%", "%" + email + "%"], (err, results) => {
+                    connection.query('select * from User WHERE isActive= 1 AND role != 1 AND (role LIKE  ? AND firstName LIKE ? AND lastName LIKE ? AND email LIKE ?) ',
+                        ["%"+role+ "%", "%" + firstName + "%", "%" + lastName + "%", "%" + email + "%"], (err, results) => {
                             db.releaseConnection(connection);
                             if (err) {
                                 reject(err)

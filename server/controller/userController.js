@@ -19,7 +19,7 @@ class UserController {
         static getUsers(req, res) {
                 UserService.getUsers(req.query).then(result => {
                         res.json(result);
-                        console.log(result)
+                        // console.log(result)
                 }).catch(err => {
                         res.status(500)
                         res.json(err)

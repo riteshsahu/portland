@@ -1,5 +1,5 @@
 import { UserDetail } from './userDetail.constants'
-import { API_ROOT, URI ,StringFormat} from '../../../config/config';
+import { API_ROOT, URI, StringFormat } from '../../../config/config';
 
 export const CreateUserHandler = () => {
     return (dispatch) => {
@@ -19,10 +19,10 @@ export const GetUserList = () => {
         })
             .then(res => res.json())
             .then(data => {
-                    dispatch({
-                        type: UserDetail.GET_USER_LIST,
-                        payload: data
-                    })
+                dispatch({
+                    type: UserDetail.GET_USER_LIST,
+                    payload: data
+                })
             })
             .catch(err => {
                 console.log(err);
@@ -31,9 +31,9 @@ export const GetUserList = () => {
 }
 
 export const searchUser = (data) => {
-    console.log('dadaaa--------------',data)
-    let qq = API_ROOT.concat(`${URI.GET_USERLIST}?firstName=${data.firstName}&lastName=${data.lastName}&email=${data.email}`);
-    console.log('query-----',qq)
+    console.log('dadaaa--------------', data)
+    let qq = API_ROOT.concat(`${URI.GET_USER_BY_SEARCH}?firstName=${data.firstName}&lastName=${data.lastName}&email=${data.email}&role=${data.role}`);
+    console.log('query-----', qq)
     return (dispatch) => {
         fetch(qq, {
             method: 'GET',
@@ -43,18 +43,18 @@ export const searchUser = (data) => {
         })
             .then(res => res.json())
             .then(data => {
-                    dispatch({
-                        type: UserDetail.UPDATE_USER,
-                        payload: data
-                    })
-                    console.log(data,"api response search")
+                console.log("---search list---", data)
+                dispatch({
+                    type: UserDetail.GET_USER_LIST,
+                    payload: data
+                })
             })
             .catch(err => {
                 console.log(err);
             })
     }
 }
-    
+
 
 export const CreateNewUser = (values) => {
     return (dispatch) => {
@@ -93,10 +93,10 @@ export const deleteUserData = (id) => {
         })
             .then(res => res.json())
             .then(data => {
-                    dispatch({
-                        type: UserDetail.DELETE_USER,
-                        payload: true
-                    })
+                dispatch({
+                    type: UserDetail.DELETE_USER,
+                    payload: true
+                })
             })
             .catch(err => {
                 console.log(err);
@@ -104,26 +104,27 @@ export const deleteUserData = (id) => {
     }
 }
 
-// export const updateUser = () => {
-//     return (dispatch) => {
-//         fetch(API_ROOT + URI.UPDATE_USER, {
-//             method: 'PUT',
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             }
-//         })
-//             .then(res => res.json())
-//             .then(data => {
-//                     dispatch({
-//                         type: UserDetail.UPDATE_USER,
-//                         payload: data
-//                     })
-//             })
-//             .catch(err => {
-//                 console.log(err);
-//             })
-//     }
-// }
+export const updateUserDetails = (id, values) => {
+    return (dispatch) => {
+        fetch(StringFormat(API_ROOT + URI.UPDATE_USER, id), {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(values)
+        })
+            .then(res => res.json())
+            .then(data => {
+                dispatch({
+                    type: UserDetail.UPDATE_USER,
+                    payload: data
+                })
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+}
 
 // export const CreateNewUser = (data) => {
 //     return (dispatch) => {

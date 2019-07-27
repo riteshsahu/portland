@@ -48,6 +48,7 @@ class UserList extends Component {
 
     showUserList = () => {
         let result = [];
+        if(this.props.userDetails.length > 0){
         this.props.userDetails.map((data, i) => {
             result.push(<tr>
                 <td>{data.firstName}</td>
@@ -64,6 +65,7 @@ class UserList extends Component {
                 </td>
             </tr>)
         })
+    }
         return result
     }
     render() {

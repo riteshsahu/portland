@@ -23,7 +23,7 @@ Job Status---
 GET USER WITH QUERY PARAMS
 
 
-GET-> http://localhost:5000/api/user?firstName=john&lastName=john&email=john@john.com&role=Management
+GET-> http://localhost:5000/api/user?firstName=john&lastName=john&email=john@john.com&role=1
 
 GET -> http://localhost:5000/api/user/userList
 

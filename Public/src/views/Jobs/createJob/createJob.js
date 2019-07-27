@@ -70,10 +70,11 @@ class CreateJob extends Component {
             isUpdated: false,
             jobDetails: {
                 job: '',
-                created_by: '',
+                jobCreatedBy: '',
                 status: '',
                 create_date: new Date().toJSON().slice(0, 10).replace(/-/g, '/'),
-                create_time: new Date().getHours() + ":" + new Date().getMinutes()
+                create_time: new Date().getHours() + ":" + new Date().getMinutes(),
+
             },
             isSubmitted: false
         }
@@ -100,6 +101,9 @@ class CreateJob extends Component {
         this.props.CreateNewJob(this.state.jobDetails);
     }
     render() {
+
+        console.log("---satte----",this.state);
+
         function autocompleteRenderInput ({addTag, ...props}) {
             const handleOnChange = (e, {newValue, method}) => {
               if (method === 'enter') {
@@ -156,13 +160,14 @@ class CreateJob extends Component {
                         <Label> Created By:- </Label>
                     </Col>
                     <Col xs="5" md="4" lg="4">
-                        <Input id="created_by" type="select" onChange={this.handleUserChange}>
-                            <option value="Admin">Admin</option>
-                            <option value="Management">Management</option>
-                            <option value="Internal Employee">Internal Employee</option>
-                            <option value="External Employee">External Employee</option>
-                            <option value="Designer">Designer</option>
-                            <option value="Client">Client</option>
+                        <Input id="jobCreatedBy" type="select" onChange={this.handleJobChange}>
+                        <option selected disabled >--- Select Role-----</option>
+                            <option value="1">Admin</option>
+                            <option value="2">Management</option>
+                            <option value="3">Internal Employee</option>
+                            <option value="4">External Employee</option>
+                            <option value="5">Designer</option>
+                            <option value="6">Client</option>
                         </Input>
                     </Col>
                     <Col xs="12" md="3" lg="3">
@@ -175,9 +180,10 @@ class CreateJob extends Component {
                         <Label> Status:- </Label>
                     </Col>
                     <Col xs="5" md="4" lg="4">
-                        <Input id="status" type="select" onChange={this.handleUserChange}>
-                            <option value="Pending">Pending</option>
-                            <option value="Completed">Completed</option>
+                        <Input id="status" type="select" onChange={this.handleJobChange}>
+                        <option selected disabled >--- Select Status-----</option>
+                            <option value="1">Pending</option>
+                            <option value="2">Completed</option>
                         </Input>
                     </Col>
                     <Col xs="12" md="3" lg="3">
