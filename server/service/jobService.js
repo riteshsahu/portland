@@ -13,8 +13,8 @@ class JobService {
                     return db.beginTransaction(conn);
                 }).then(() => {
                     return new Promise((res, rej) => {
-                        connection.query('INSERT INTO Job ( jobId, jobTitle, createdBy, jobStatus) VALUES(?, ?, ?, ?) ',
-                            [data.jobId, data.jobTitle, data.createdBy, data.jobStatus],
+                        connection.query('INSERT INTO Job ( jobId, jobTitle,jobDescription , jobCreatedBy, jobStatus,isActive, createdAt, updatedAt, createdBy, updatedBy) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ',
+                            [data.jobId, data.jobTitle, data.jobDescription, data.createdBy, data.jobStatus, data.isActive, data.createdAt, data.updatedAt, data.createdBy, data.updatedBy],
                             (err, results) => {
                                 if (err) {
                                     db.rollbackTransaction(connection);
@@ -27,8 +27,19 @@ class JobService {
                     })
                 })
                 .then(() => {
-                    connection.query('INSERT INTO Participant ( jobId, participants) VALUES(?, ?) ',
-                        [data.jobId, data.participants],
+                    let jobUsers = data.jobUsers.map(dt => {
+                        let arr = [];
+                        arr[0] = data.jobId;
+                        arr[1] = dt;
+                        arr[2] = data.isActive;
+                        arr[3] = data.createdAt;
+                        arr[4] = data.updatedAt;
+                        arr[5] = data.createdBy;
+                        arr[6] = data.updatedBy;
+                        return arr;
+                    })
+                    connection.query('INSERT INTO job_users ( jobId, userId,isActive, createdAt, updatedAt, createdBy, updatedBy) VALUES ? ',
+                        [jobUsers],
                         (err, results) => {
                             if (err) {
                                 db.rollbackTransaction(connection);
@@ -47,7 +58,171 @@ class JobService {
         });
     }
 
+    static updateJob(jobId, data) {
+        var connection;
+        return new Promise((resolve, reject) => {
+            db.getConnection().
+                then(conn => {
+                    connection = conn;
+                    return db.beginTransaction(conn);
+                })
+                .then(() => {
+                    return new Promise((resJob, rejJob) => {
+                        connection.query(' Update Job SET isActive = 0, updatedAt =?, updatedBy= ?  WHERE jobId = ? ',
+                            [data.updatedAt, data.updatedBy, jobId],
+                            (err, results) => {
+                                if (err) {
+                                    db.rollbackTransaction(connection);
+                                    db.releaseConnection(connection);
+                                    reject(err)
+                                } else {
+                                    resJob();
+                                }
+                            })
+                    })
+                })
+                .then(() => {
+                    return new Promise((resS, rejS) => {
+                        connection.query('Select * from job_users  WHERE jobId = ? AND isActive = 1 ',
+                            [jobId],
+                            (err, results) => {
+                                if (err) {
+                                    db.rollbackTransaction(connection);
+                                    db.releaseConnection(connection);
+                                    reject(err)
+                                } else {
+                                    var isDelete = [], isAdded = [];
+                                    results.map(dt => {
+                                        let count = 0;
+                                        var res = data.jobUsers.findIndex(userId => {
+                                            return (userId == dt.userId)
+                                        });
+                                        if (!(res >= 0)) {
+                                            isDelete.push(dt.userId);
+                                        }
+                                    })
 
+                                    data.jobUsers.map(userId => {
+                                        var resUpdated = results.findIndex(resData => {
+                                            return (userId == resData.userId)
+                                        });
+
+                                        if (!(resUpdated >= 0)) {
+                                            isAdded.push(userId);
+                                        }
+                                    })
+                                    var resSResponse = {
+                                        isDelete: isDelete,
+                                        isAdded: isAdded
+                                    }
+                                    resS(resSResponse);
+                                }
+                            })
+                    })
+                })
+                .then((resSResponse) => {
+                    return new Promise((resJob, rejJob) => {
+                        if (resSResponse.isDelete.length > 0) {
+                            connection.query(' Update job_users SET isActive = 0, updatedAt =?, updatedBy= ?  WHERE jobId = ? AND userId in ?  ',
+                                [data.updatedAt, data.updatedBy, jobId, [resSResponse.isDelete]],
+                                // [deleteArr],
+                                (err, results) => {
+                                    if (err) {
+                                        db.rollbackTransaction(connection);
+                                        db.releaseConnection(connection);
+                                        reject(err)
+                                    } else {
+                                        resJob(resSResponse);
+                                    }
+                                })
+                        } else {
+                            resJob(resSResponse);
+                        }
+                    })
+
+                })
+                .then((resSResponse) => {
+                    return new Promise((resUser, rejUser) => {
+                        if (resSResponse.isAdded.length > 0) {
+                            let jobUsers = resSResponse.isAdded.map(dt => {
+                                let arr = [];
+                                arr[0] = jobId;
+                                arr[1] = dt;
+                                arr[2] = 1;
+                                arr[3] = data.createdAt;
+                                arr[4] = "null";
+                                arr[5] = data.createdBy;
+                                arr[6] = "null";
+                                return arr;
+                            })
+                            connection.query('INSERT INTO job_users ( jobId, userId,isActive, createdAt, updatedAt, createdBy, updatedBy) VALUES ?  ',
+                                [jobUsers],
+                                (err, results) => {
+                                    if (err) {
+                                        db.rollbackTransaction(connection);
+                                        db.releaseConnection(connection);
+                                        reject(err)
+                                    } else {
+                                        resUser();
+                                    }
+                                })
+                        } else {
+                            resUser();
+                        }
+                    })
+                })
+                .then(() => {
+                    return new Promise((resUser, rejUser) => {
+                        connection.query('INSERT INTO Job ( jobId, jobTitle,jobDescription , jobCreatedBy, jobStatus,isActive, createdAt, updatedAt, createdBy, updatedBy) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ',
+                            [jobId, data.jobTitle, data.jobDescription, data.jobCreatedBy, data.jobStatus, 1, data.createdAt, data.updatedAt, data.createdBy, data.updatedBy],
+                            (err, results) => {
+                                if (err) {
+                                    db.rollbackTransaction(connection);
+                                    db.releaseConnection(connection);
+                                    reject(err)
+                                } else {
+                                    db.commitTransaction(connection);
+                                    db.releaseConnection(connection);
+                                    resolve("USER_JOB_UPDTAED");
+                                }
+                            })
+                    })
+                })
+                .catch(err => {
+                    reject(err);
+                })
+        });
+    }
+
+    static getJobs(query) {
+        let jobId = query.jobId;
+        let jobStatus = query.jobStatus;
+        let jobCreatedBy = query.jobCreatedBy;
+        // let role = query.role;
+
+        var connection;
+        return new Promise((resolve, reject) => {
+            db.getConnection().
+                then(conn => {
+                    connection = conn;
+                    connection.query(`select J.jobId, J.jobTitle, J.jobDescription, J.jobCreatedBy, J.jobStatus, JU.userId from Job J
+                    LEFT JOIN job_users JU  ON J.jobId = JU.jobId  WHERE J.jobId = ? AND J.isActive = 1`,
+                        [jobId], (err, results) => {
+                            db.releaseConnection(connection);
+                            if (err) {
+                                reject(err)
+                            } else {
+                                // resolve( new User(results[0]))
+                                resolve(results);
+                            }
+                        })
+                })
+                .catch(err => {
+                    reject(err);
+                })
+        });
+
+    }
 
 }
 
