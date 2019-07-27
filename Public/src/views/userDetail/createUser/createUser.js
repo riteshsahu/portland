@@ -180,6 +180,18 @@ class CreateUser extends Component {
                     </Col>
                 </Row> : null}
 
+                {this.props.userUpdated &&
+                    <Row style={{ marginTop: 5 }}>
+                        <Col xs="12" md="3" lg="3">
+                        </Col>
+                        <Col xs="12" md="6" lg="6">
+                            <Alert color="success" style={{ width: "90%" }}>
+                               Details Updated SuccessFully. Thanks !
+                            </Alert>
+                        </Col>
+                        <Col xs="12" md="3" lg="3">
+                        </Col>
+                    </Row>}
                 {this.props.isUserCreated &&
                     <Row style={{ marginTop: 5 }}>
                         <Col xs="12" md="3" lg="3">
@@ -201,7 +213,8 @@ class CreateUser extends Component {
 const mapStateToProps = state => {
     return {
         updatedDetails: state.userDetail.updatedDetails,
-        isUserCreated: state.userDetail.isUserCreated
+        isUserCreated: state.userDetail.isUserCreated,
+        userUpdated: state.userDetail.userUpdated
     };
 }
 

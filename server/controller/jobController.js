@@ -30,7 +30,7 @@ class JobController {
     static getJobs(req, res) {
         JobService.getJobs(req.query).then(result => {
             res.json(result);
-            console.log(result)
+            // console.log(result)
         }).catch(err => {
             res.status(500)
             res.json(err)
@@ -38,6 +38,17 @@ class JobController {
         })
     }
 
+    
+    static deleteJob(req, res) {
+        let id = req.params.id;
+        JobService.deleteJob(id).then(result => {
+            res.json(result);
+        }).catch(err => {
+            res.status(500)
+            res.json(err)
+            console.log(err)
+        })
+    }
 
 }
 

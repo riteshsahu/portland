@@ -3,63 +3,29 @@ import { JobDetail } from './jobs.constants';
 const initialState = {
     createJob: false,
     updatedDetails: {},
-    jobDetails: [
-        {
-            job: "Create New Project",
-            create_date: "	2012/01/01",
-            create_time: "10:00AM",
-            created_by: "Admin",
-            status: "pending"
-        },
-        {
-            job: "Create New Assignment",
-            create_date: "	2015/09/01",
-            create_time: "10:30AM",
-            created_by: "Admin",
-            status: "pending"
-        },
-        {
-            job: "Create New Task",
-            create_date: "	2012/11/01",
-            create_time: "12:00AM",
-            created_by: "Admin",
-            status: "pending"
-        },
-        {
-            job: "Create New Repository",
-            create_date: "	2019/01/01",
-            create_time: "10:00AM",
-            created_by: "Admin",
-            status: "pending"
-        },
-        {
-            job: "Create New Email",
-            create_date: "	2012/05/01",
-            create_time: "01:00AM",
-            created_by: "Admin",
-            status: "pending"
-        },
-        {
-            job: "Create New Memo",
-            create_date: "	2019/05/01",
-            create_time: "01:00AM",
-            created_by: "Admin",
-            status: "pending"
-        },
-        {
-            job: "Create New Note",
-            create_date: "	2019/05/01",
-            create_time: "01:00AM",
-            created_by: "Admin",
-            status: "pending"
-        },
-    ]
+    jobCreated: false,
+    jobDetails: [],
+    jobUpdated: false,
+    saerchPermission: false
 }
 
 
 function JobReducer(state = initialState, action) {
 
     switch (action.type) {
+
+        case JobDetail.GET_SEARCH:
+                return {
+                    ...state,
+                    saerchPermission: action.payload
+                }
+
+        case JobDetail.JOB_UPDATED: 
+            return{
+                ...state,
+                jobUpdated: action.payload
+            }
+
         case JobDetail.UPDATE_JOB:
             return {
                 ...state,
@@ -67,16 +33,24 @@ function JobReducer(state = initialState, action) {
                 createJob: true
             }
 
+            case JobDetail.JOB_LIST:
+                    return{
+                        ...state,
+                        jobDetails: action.payload
+                    }
+
         case JobDetail.CREATE_JOB:
             return {
                 ...state,
-                createJob: !state.createJob
+                createJob: !state.createJob,
+                updatedDetails:{}
             }
 
         case JobDetail.CREATE_NEW_JOB:
             return {
                 ...state,
-                jobDetails: [...state.jobDetails, action.payload]
+                // jobDetails: [...state.jobDetails, action.payload]
+                createJob: action.payload
             }
 
         case JobDetail.DELETE_JOB:

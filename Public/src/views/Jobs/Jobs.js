@@ -13,6 +13,7 @@ class Jobs extends Component {
         }
     }
     render() {
+        console.log('----createJob---0', this.props.createJob);
         return (
             <Card style={{ marginTop: "10px" }}>
                 <CardHeader >

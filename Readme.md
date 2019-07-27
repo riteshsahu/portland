@@ -85,12 +85,12 @@ body={
 "jobDescription":"This is Job Description",
 "jobCreatedBy": 2,
 "jobStatus":1,
-"isActive":1,
+"isActive":1, // pending
 "jobUsers": [11,33],
-"createdAt":"2019/08/08",
-"updatedAt":"null",
-"createdBy":"2",
-"updatedBy":"null"
+"createdAt":"2019/08/08", // pending
+"updatedAt":"null", // pending
+"createdBy":"2", // pending
+"updatedBy":"null" // pending
 }
 
 -----------------------
@@ -101,7 +101,7 @@ pending----------------- GET -> http://localhost:5000/api/job?jobId=3423&jobStat
 -------------------------
 UPDATE JOB
 
-PUT-> http://localhost:5000/api/job/323242342
+PUT-> http://localhost:5000/api/job/323242342 ----> 323242342 is JOB ID
 body:{
 	"jobTitle":"jib Title",
 	"jobDescription":"job desc",
@@ -116,5 +116,6 @@ body:{
 
 -------------------------
 DELETE JOB
+
 
 

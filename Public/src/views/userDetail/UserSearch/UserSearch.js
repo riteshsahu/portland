@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import { Button, Col, Label, Input, Row } from 'reactstrap';
 import '../user.css'
 import { connect } from "react-redux";
-import { CreateUserHandler,searchUser} from '../reducer/userDetail.action';
+import { CreateUserHandler,searchUser } from '../reducer/userDetail.action';
+import {getSearchOFF } from '../../Jobs/reducer/jobs.action';
 class UserSearch extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            searchPermission: false,
             searchDetails: {
                 role: '',
                 firstName: '',
@@ -27,11 +29,23 @@ class UserSearch extends Component {
     }
     
     searchUser =() => {
-        console.log(this.state.searchDetails)
-        this.props.searchUser(this.state.searchDetails);
+        // console.log(this.state.searchDetails)
+        // this.props.searchUser(this.state.searchDetails);
+        this.setState({
+            searchPermission: true
+        })
     }
 
     render() {
+        if(this.state.searchPermission || this.props.saerchPermission){
+             console.log(this.state.searchDetails)
+        this.props.searchUser(this.state.searchDetails);
+            this.setState({
+                searchPermission: false
+            });
+            this.props.getSearchOFF();
+        }
+
         return (
             <Row className="header">
                 <Col style={{ display: "flex" }} xs="12" md="10" lg="10">
@@ -74,13 +88,15 @@ class UserSearch extends Component {
 const mapStateToProps = state => {
     return {
         createUser: state.userDetail.createUser,
+        saerchPermission: state.jobDetail.saerchPermission
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         CreateUserHandler: () => dispatch(CreateUserHandler()),
-        searchUser: (data) => dispatch(searchUser(data))
+        searchUser: (data) => dispatch(searchUser(data)),
+        getSearchOFF:()=> dispatch(getSearchOFF())
     };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(UserSearch);

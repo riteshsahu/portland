@@ -7,7 +7,8 @@ const initialState = {
     isUserCreated: false,
     userDeleted: false,
     updatedDetails: {},
-    userDetails:{}
+    userDetails:{},
+    userUpdated: false,
     // userDetails: [
     //     {
     //         firstName: "Lorem ",
@@ -52,6 +53,11 @@ function UserReducer(state = initialState, action) {
 
     switch (action.type) {
 
+        case UserDetail.USER_UPDTAED:
+                return{
+                    ...state,
+                    userUpdated: action.payload
+                }
 
         case UserDetail.UPDATE_USER:
             return {

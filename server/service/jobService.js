@@ -5,6 +5,7 @@ const db = require('../util/db');
 class JobService {
 
     static createJob(data) {
+        console.log('--datat---',data);
         var connection;
         return new Promise((resolve, reject) => {
             db.getConnection().
@@ -14,8 +15,8 @@ class JobService {
                 }).then(() => {
                     return new Promise((res, rej) => {
                         connection.query('INSERT INTO Job ( jobId, jobTitle,jobDescription , jobCreatedBy, jobStatus,isActive, createdAt, updatedAt, createdBy, updatedBy) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ',
-                            [data.jobId, data.jobTitle, data.jobDescription, data.createdBy, data.jobStatus, data.isActive, data.createdAt, data.updatedAt, data.createdBy, data.updatedBy],
-                            (err, results) => {
+                            [data.jobId, data.jobTitle, data.jobDescription, data.jobCreatedBy, data.jobStatus, data.isActive, data.createdAt, data.updatedAt, data.createdBy, data.updatedBy],
+                            (err, results) => {                    // jobCreatedBy
                                 if (err) {
                                     db.rollbackTransaction(connection);
                                     db.releaseConnection(connection);
@@ -199,23 +200,98 @@ class JobService {
         let jobStatus = query.jobStatus;
         let jobCreatedBy = query.jobCreatedBy;
         // let role = query.role;
-
+        console.log('---query----', query);
         var connection;
         return new Promise((resolve, reject) => {
             db.getConnection().
                 then(conn => {
                     connection = conn;
-                    connection.query(`select J.jobId, J.jobTitle, J.jobDescription, J.jobCreatedBy, J.jobStatus, JU.userId from Job J
-                    LEFT JOIN job_users JU  ON J.jobId = JU.jobId  WHERE J.jobId = ? AND J.isActive = 1`,
-                        [jobId], (err, results) => {
+                    connection.query(`select J.jobId, J.jobTitle,J.createdAt, J.jobDescription, J.jobCreatedBy, J.jobStatus, JU.userId from Job J
+                    LEFT JOIN job_users JU  ON J.jobId = JU.jobId  WHERE (J.jobId LIKE ? AND J.jobStatus LIKE ? AND J.jobCreatedBy LIKE ?)   AND J.isActive = 1 AND JU.isActive = 1`,
+                        ["%" + jobId + "%", "%" + jobStatus + "%", "%" + jobCreatedBy + "%"], (err, results) => {
                             db.releaseConnection(connection);
                             if (err) {
                                 reject(err)
                             } else {
-                                // resolve( new User(results[0]))
-                                resolve(results);
+                                // console.log("---result-----", results);
+                                function isJobExist(oldId, id) {
+                                    let count = 0;
+                                    oldId.map(dt => {
+                                        if (dt == id) {
+                                            count = count + 1;
+                                        }
+                                    });
+                                    return count;
+                                }
+
+                                if (results.length > 0) {
+                                    let finalResult = [];
+                                    let jobID = [];
+
+                                    results.map(dt => {
+
+                                        if (!isJobExist(jobID, dt.jobId)) {
+                                            let ids = [];
+                                            ids.push(dt.userId);
+
+                                            jobID.push(dt.jobId);
+                                            finalResult.push({
+                                                jobId: dt.jobId, jobTitle: dt.jobTitle, createdAt: dt.createdAt,
+                                                jobDescription: dt.jobDescription, jobCreatedBy: dt.jobCreatedBy, jobStatus: dt.jobStatus, userId: ids
+                                            });
+                                        } else {
+                                            finalResult.map(availData => {
+                                                if (dt.jobId == availData.jobId) {
+                                                    availData.userId.push(dt.userId);
+                                                }
+                                            })
+                                        }
+                                    });
+                                    resolve(finalResult);
+                                } else {
+                                    resolve(results);
+                                }
+
+
+
                             }
                         })
+                })
+                .catch(err => {
+                    reject(err);
+                })
+        });
+    }
+
+    static deleteJob(id) {
+        var connection;
+        return new Promise((resolve, reject) => {
+            db.getConnection().
+                then(conn => {
+                    connection = conn;
+                    return new Promise((res, rej) => {
+                        connection.query('update Job SET isActive = 0  WHERE jobId = ? ', [id], (err, results) => {
+                            // db.releaseConnection(connection);
+                            if (err) {
+                                db.releaseConnection(connection);
+                                reject(err)
+                            } else {
+                                res();
+                                // resolve(results);
+                            }
+                        })
+                    })
+                })
+                .then(() => {
+                    // connection = conn;
+                    connection.query('update job_users SET isActive = 0  WHERE jobId = ? ', [id], (err, results) => {
+                        db.releaseConnection(connection);
+                        if (err) {
+                            reject(err)
+                        } else {
+                            resolve(results);
+                        }
+                    })
                 })
                 .catch(err => {
                     reject(err);

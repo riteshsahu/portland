@@ -1,22 +1,36 @@
 import React, { Component } from 'react';
 import { Badge, Modal, ModalBody, ModalFooter, Button, Col, Pagination, PaginationItem, PaginationLink, Row, Table } from 'reactstrap';
 import { connect } from "react-redux";
-import { deleteJob, updateJob } from '../reducer/jobs.action';
+import { deleteJob, updateJob, deleteUserJob } from '../reducer/jobs.action';
 
 class JobList extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            jobId:"",
             small: false,
-            deleteIndex: ''
+            deleteIndex: '',
+            statusKey:{
+                1 : "Pending",
+                2: "Completed"
+            },
+            createByKey:{
+                1 : "Admin",
+                2 : "Management",
+                3 : "Internal Employee",
+                4 : "External Employee",
+                5 : "Designer",
+                6 : "Client"
+            }
         }
         this.toggleSmall = this.toggleSmall.bind(this);
     }
 
-    toggleSmall(i) {
+    toggleSmall(i, jobId) {
         this.setState({
             deleteIndex: i,
             small: !this.state.small,
+            jobId: jobId
         });
     }
 
@@ -24,21 +38,22 @@ class JobList extends Component {
         this.setState({
             small: !this.state.small,
         });
-        this.props.deleteJob(this.state.deleteIndex);
+        console.log("----jobId---",this.state.jobId);
+        // this.props.deleteJob(this.state.deleteIndex);
+        this.props.deleteUserJob(this.state.jobId);
     }
 
     showJobList = () => {
         let result = [];
         this.props.jobDetails.map((data, i) => {
             result.push(<tr>
-                <td>{data.job}</td>
-                <td>{data.create_date}</td>
-                <td>{data.create_time}</td>
-                <td>{data.created_by}</td>
-                <td> <Badge color="warning">{data.status}</Badge></td>
+                <td>{data.jobTitle}</td>
+                <td>{data.createdAt}</td>
+                <td>{this.state.createByKey[data.jobCreatedBy]}</td>
+                <td> <Badge color="warning">{this.state.statusKey[data.jobStatus]}</Badge></td>
                 <td>
                     <i style={{ color: "green", padding: "0px 5px" }} onClick={e => { this.props.updateJob(data) }} className="cui-pencil icons font-xl"></i>
-                    <i style={{ color: "red", padding: "0px 5px" }} onClick={e => { this.toggleSmall(i) }} className="cui-trash icons font-xl"></i>
+                    <i style={{ color: "red", padding: "0px 5px" }} onClick={e => { this.toggleSmall(i, data.jobId) }} className="cui-trash icons font-xl"></i>
                 </td>
             </tr>)
         })
@@ -54,7 +69,6 @@ class JobList extends Component {
                                 <tr>
                                     <th>Job</th>
                                     <th> Created Date</th>
-                                    <th>Created Time</th>
                                     <th>Created By</th>
                                     <th>Status</th>
                                     <th>Action</th>
@@ -104,7 +118,8 @@ const mapStateToProps = state => {
 function mapDispatchToProps(dispatch) {
     return {
         deleteJob: (value) => dispatch(deleteJob(value)),
-        updateJob: (value) => dispatch(updateJob(value))
+        updateJob: (value) => dispatch(updateJob(value)),
+        deleteUserJob:(id) => dispatch(deleteUserJob(id))
     };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(JobList);

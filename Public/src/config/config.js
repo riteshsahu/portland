@@ -1,4 +1,4 @@
-export const API_ROOT = 'http://localhost:5000/api/';
+export const API_ROOT = 'https://portland-web.herokuapp.com/api/';
 
 
 export const URI = {
@@ -12,7 +12,11 @@ export const URI = {
     GET_STATES: 'state',
     ADD_NEWBUSINESS: 'businessForm',
     ADD_BRANCHES: 'businessBranch',
-    GET_REVIEWS: 'fbReviewRoutes'
+    GET_REVIEWS: 'fbReviewRoutes',
+    CREATE_JOB:"job",
+    SEARCH_JOBS:"job",
+    UPDATE_JOB:"job/{0}",
+    DELETE_JOB:"job/{0}"
 }
 
 export const StringFormat = function() {

@@ -1,4 +1,5 @@
-import { UserDetail } from './userDetail.constants'
+import { UserDetail } from './userDetail.constants';
+import { JobDetail } from '../../Jobs/reducer/jobs.constants';
 import { API_ROOT, URI, StringFormat } from '../../../config/config';
 
 export const CreateUserHandler = () => {
@@ -6,6 +7,7 @@ export const CreateUserHandler = () => {
         dispatch({
             type: UserDetail.CREATE_USER,
         })
+        dispatch({ type: UserDetail.CREATE_NEW_USER, payload: false })
     }
 }
 
@@ -97,6 +99,10 @@ export const deleteUserData = (id) => {
                     type: UserDetail.DELETE_USER,
                     payload: true
                 })
+                dispatch({
+                    type: JobDetail.GET_SEARCH,
+                    payload: true
+                })
             })
             .catch(err => {
                 console.log(err);
@@ -118,7 +124,17 @@ export const updateUserDetails = (id, values) => {
                 dispatch({
                     type: UserDetail.UPDATE_USER,
                     payload: data
+                });
+                dispatch({
+                    type: UserDetail.USER_UPDTAED,
+                    payload: true
                 })
+                setTimeout(()=>{
+                    dispatch({
+                        type: UserDetail.USER_UPDTAED,
+                        payload: false
+                    })
+                },1500)
             })
             .catch(err => {
                 console.log(err);
