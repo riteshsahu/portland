@@ -79,16 +79,42 @@ CREATE JOB
 POST -> http://localhost:5000/api/job
 
 body={
-"jobId": 323242342,
+
+"jobId": 97898979,
 "jobTitle": "This is Job Title",
-"createdBy": 2,
+"jobDescription":"This is Job Description",
+"jobCreatedBy": 2,
 "jobStatus":1,
-"participants": "11,22"
+"isActive":1,
+"jobUsers": [11,33],
+"createdAt":"2019/08/08",
+"updatedAt":"null",
+"createdBy":"2",
+"updatedBy":"null"
 }
 
 -----------------------
 SEARCH JOB
 
-pending----------------- GET -> http://localhost:5000/api/job?jobId=3423&jobStatus=1&createdBy=2
+pending----------------- GET -> http://localhost:5000/api/job?jobId=3423&jobStatus=1&jobCreatedBy=2
+
+-------------------------
+UPDATE JOB
+
+PUT-> http://localhost:5000/api/job/323242342
+body:{
+	"jobTitle":"jib Title",
+	"jobDescription":"job desc",
+	"jobStatus": 1,
+	"jobCreatedBy":"99",
+	"createdBy":"99",
+	"createdAt":"2019/22/22",
+	"updatedAt":"2019/22/22",
+	"updatedBy":"99",
+"jobUsers":[11,33, 44]
+}
+
+-------------------------
+DELETE JOB
 
 
