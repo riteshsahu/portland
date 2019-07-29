@@ -54,9 +54,11 @@ class JobList extends Component {
     showJobList = () => {
         let result = [];
         this.props.jobDetails.map((data, i) => {
+            let date= data.createdAt.split("T");
             result.push(<tr>
+                <td>{data.jobId}</td>
                 <td>{data.jobTitle}</td>
-                <td>{data.createdAt}</td>
+                <td>{date[0]}</td>
                 <td>{this.state.createByKey[data.jobCreatedBy]}</td>
                 <td> <Badge color="warning">{this.state.statusKey[data.jobStatus]}</Badge></td>
                 <td>
@@ -75,6 +77,7 @@ class JobList extends Component {
                         <Table hover bordered striped responsive size="sm">
                             <thead>
                                 <tr>
+                                    <th>Job ID</th>
                                     <th>Job</th>
                                     <th> Created Date</th>
                                     <th>Created By</th>

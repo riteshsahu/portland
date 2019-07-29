@@ -18,7 +18,7 @@ class DefaultHeader extends Component {
 constructor(props){
   super(props);
   this.state={
-      loginShow: false
+      loginShow: false,
   }
 }
 
@@ -80,7 +80,7 @@ constructor(props){
                        <img src={user} style={{marginBottom:20}} className="img-avatar" alt="admin@bootstrapmaster.com" />
                      </DropdownToggle>
                      <DropdownMenu right style={{ right: 'auto',marginTop: "-15px" }}>
-                       <DropdownItem><i className="fa fa-user"></i> Profile</DropdownItem>
+                       <DropdownItem onClick={e=> this.props.handleProfile(e)}><i className="fa fa-user"></i> Profile</DropdownItem>
                        <DropdownItem onClick={e => this.props.onLogout(e)}><i className="fa fa-lock"></i> Logout</DropdownItem>
                      </DropdownMenu>
                    </AppHeaderDropdown>

@@ -2,65 +2,66 @@ import React, { Component } from 'react';
 import { Button, Col, Alert, Label, Input, Row } from 'reactstrap';
 import { connect } from "react-redux";
 import { CreateNewJob, updateJobDetails } from '../reducer/jobs.action';
-import { COUNTRIES } from './Country';
+// import { COUNTRIES } from './Country';
 import TagsInput from 'react-tagsinput'
 import '../jobs.css';
-import Autosuggest from 'react-autosuggest'
+import Autosuggest from 'react-autosuggest';
+import {GetUserList} from '../../userDetail/reducer/userDetail.action';
 
-function states() {
-    return [
-        { name: 'Alabama' },
-        { abbr: 'AK', name: 'Alaska', id: "11" },
-        { abbr: 'AZ', name: 'Arizona', id: "12" },
-        { abbr: 'AR', name: 'Arkansas', id: "13" },
-        { abbr: 'CA', name: 'California', id: "14" },
-        { abbr: 'CO', name: 'Colorado', id: "15" },
-        { abbr: 'CT', name: 'Connecticut', id: "16" },
-        { abbr: 'DE', name: 'Delaware', id: "17" },
-        { abbr: 'FL', name: 'Florida', id: "18" },
-        { abbr: 'GA', name: 'Georgia', id: "19" },
-        { abbr: 'HI', name: 'Hawaii', id: "20" },
-        { abbr: 'ID', name: 'Idaho', id: "21" },
-        { abbr: 'IL', name: 'Illinois', id: "22" },
-        { abbr: 'IN', name: 'Indiana', id: "23" },
-        { abbr: 'IA', name: 'Iowa', id: "24" },
-        { abbr: 'KS', name: 'Kansas', id: "25" },
-        { abbr: 'KY', name: 'Kentucky', id: "26" },
-        { abbr: 'LA', name: 'Louisiana', id: "27" },
-        { abbr: 'ME', name: 'Maine', id: "28" },
-        { abbr: 'MD', name: 'Maryland', id: "30" },
-        { abbr: 'MA', name: 'Massachusetts', id: "31" },
-        { abbr: 'MI', name: 'Michigan', id: "32" },
-        { abbr: 'MN', name: 'Minnesota', id: "33" },
-        { abbr: 'MS', name: 'Mississippi', id: "34" },
-        { abbr: 'MO', name: 'Missouri', id: "35" },
-        { abbr: 'MT', name: 'Montana', id: "36" },
-        { abbr: 'NE', name: 'Nebraska', id: "37" },
-        { abbr: 'NV', name: 'Nevada', id: "38" },
-        { abbr: 'NH', name: 'New Hampshire', id: "39" },
-        { abbr: 'NJ', name: 'New Jersey', id: "40" },
-        { abbr: 'NM', name: 'New Mexico', id: "41" },
-        { abbr: 'NY', name: 'New York', id: "42" },
-        { abbr: 'NC', name: 'North Carolina', id: "43" },
-        { abbr: 'ND', name: 'North Dakota', id: "44" },
-        { abbr: 'OH', name: 'Ohio', id: "45" },
-        { abbr: 'OK', name: 'Oklahoma', id: "46" },
-        { abbr: 'OR', name: 'Oregon', id: "47" },
-        { abbr: 'PA', name: 'Pennsylvania', id: "49" },
-        { abbr: 'RI', name: 'Rhode Island', id: "50" },
-        { abbr: 'SC', name: 'South Carolina', id: "51" },
-        { abbr: 'SD', name: 'South Dakota', id: "52" },
-        { abbr: 'TN', name: 'Tennessee', id: "53" },
-        { abbr: 'TX', name: 'Texas', id: "54" },
-        { abbr: 'UT', name: 'Utah', id: "55" },
-        { abbr: 'VT', name: 'Vermont', id: "56" },
-        { abbr: 'VA', name: 'Virginia', id: "57" },
-        { abbr: 'WA', name: 'Washington', id: "58" },
-        { abbr: 'WV', name: 'West Virginia', id: "59" },
-        { abbr: 'WI', name: 'Wisconsin', id: "60" },
-        { abbr: 'WY', name: 'Wyoming', id: "61" }
-    ]
-}
+// function states() {
+//     return [
+//         { name: 'Alabama' },
+//         { abbr: 'AK', name: 'Alaska', id: "11" },
+//         { abbr: 'AZ', name: 'Arizona', id: "12" },
+//         { abbr: 'AR', name: 'Arkansas', id: "13" },
+//         { abbr: 'CA', name: 'California', id: "14" },
+//         { abbr: 'CO', name: 'Colorado', id: "15" },
+//         { abbr: 'CT', name: 'Connecticut', id: "16" },
+//         { abbr: 'DE', name: 'Delaware', id: "17" },
+//         { abbr: 'FL', name: 'Florida', id: "18" },
+//         { abbr: 'GA', name: 'Georgia', id: "19" },
+//         { abbr: 'HI', name: 'Hawaii', id: "20" },
+//         { abbr: 'ID', name: 'Idaho', id: "21" },
+//         { abbr: 'IL', name: 'Illinois', id: "22" },
+//         { abbr: 'IN', name: 'Indiana', id: "23" },
+//         { abbr: 'IA', name: 'Iowa', id: "24" },
+//         { abbr: 'KS', name: 'Kansas', id: "25" },
+//         { abbr: 'KY', name: 'Kentucky', id: "26" },
+//         { abbr: 'LA', name: 'Louisiana', id: "27" },
+//         { abbr: 'ME', name: 'Maine', id: "28" },
+//         { abbr: 'MD', name: 'Maryland', id: "30" },
+//         { abbr: 'MA', name: 'Massachusetts', id: "31" },
+//         { abbr: 'MI', name: 'Michigan', id: "32" },
+//         { abbr: 'MN', name: 'Minnesota', id: "33" },
+//         { abbr: 'MS', name: 'Mississippi', id: "34" },
+//         { abbr: 'MO', name: 'Missouri', id: "35" },
+//         { abbr: 'MT', name: 'Montana', id: "36" },
+//         { abbr: 'NE', name: 'Nebraska', id: "37" },
+//         { abbr: 'NV', name: 'Nevada', id: "38" },
+//         { abbr: 'NH', name: 'New Hampshire', id: "39" },
+//         { abbr: 'NJ', name: 'New Jersey', id: "40" },
+//         { abbr: 'NM', name: 'New Mexico', id: "41" },
+//         { abbr: 'NY', name: 'New York', id: "42" },
+//         { abbr: 'NC', name: 'North Carolina', id: "43" },
+//         { abbr: 'ND', name: 'North Dakota', id: "44" },
+//         { abbr: 'OH', name: 'Ohio', id: "45" },
+//         { abbr: 'OK', name: 'Oklahoma', id: "46" },
+//         { abbr: 'OR', name: 'Oregon', id: "47" },
+//         { abbr: 'PA', name: 'Pennsylvania', id: "49" },
+//         { abbr: 'RI', name: 'Rhode Island', id: "50" },
+//         { abbr: 'SC', name: 'South Carolina', id: "51" },
+//         { abbr: 'SD', name: 'South Dakota', id: "52" },
+//         { abbr: 'TN', name: 'Tennessee', id: "53" },
+//         { abbr: 'TX', name: 'Texas', id: "54" },
+//         { abbr: 'UT', name: 'Utah', id: "55" },
+//         { abbr: 'VT', name: 'Vermont', id: "56" },
+//         { abbr: 'VA', name: 'Virginia', id: "57" },
+//         { abbr: 'WA', name: 'Washington', id: "58" },
+//         { abbr: 'WV', name: 'West Virginia', id: "59" },
+//         { abbr: 'WI', name: 'Wisconsin', id: "60" },
+//         { abbr: 'WY', name: 'Wyoming', id: "61" }
+//     ]
+// }
 
 class CreateJob extends Component {
     constructor(props) {
@@ -75,17 +76,20 @@ class CreateJob extends Component {
                 jobCreatedBy: '',
                 jobStatus: '',
                 jobUsers: ""
-                // create_date: new Date().toJSON().slice(0, 10).replace(/-/g, '/'),
-                // create_time: new Date().getHours() + ":" + new Date().getMinutes(),
-
             },
             isSubmitted: false
         }
 
     }
 
+
+    componentDidMount=() => {
+        this.props.GetUserList();
+    }
+
+
     getUsersId = (tags) => {
-        let arr = states().filter(user => {
+        let arr = this.props.userList.filter(user => {
             var resdIndex = tags.findIndex(dt => {
                 return dt == user.name
             });
@@ -123,10 +127,6 @@ class CreateJob extends Component {
         })
     }
     handleSumbit = () => {
-        // this.setState({
-        //     isSubmitted: !this.state.isSubmitted
-        // });
-
         const userDetails = localStorage.getItem("userDetails");
         const user = JSON.parse(userDetails);
         let data = {
@@ -172,15 +172,17 @@ class CreateJob extends Component {
 
     render() {
 
-        console.log("---satte----", this.state);
+        console.log(this.props.userList,"userList");
 
+        console.log("---satte----", this.state);
+        const self= this.props
 
         console.log("----updatedDetails--", this.props.updatedDetails);
 
         if (this.props.updatedDetails.jobId && !this.state.isUpdateMode) {
             let tagsArr = [];
             this.props.updatedDetails.userId.map(dt => {
-                states().findIndex(stData => {
+                this.props.userList.findIndex(stData => {
                     if (stData.id == dt) {
                         tagsArr.push(stData.name);
                     }
@@ -202,6 +204,7 @@ class CreateJob extends Component {
 
 
         function autocompleteRenderInput({ addTag, ...props }) {
+   
             const handleOnChange = (e, { newValue, method }) => {
                 if (method === 'enter') {
                     e.preventDefault()
@@ -213,9 +216,14 @@ class CreateJob extends Component {
             const inputValue = (props.value && props.value.trim().toLowerCase()) || ''
             const inputLength = inputValue.length
 
-            let suggestions = states().filter((state) => {
-                return state.name.toLowerCase().slice(0, inputLength) === inputValue
+            let suggestions =[];
+            console.log(self, "USERLIST")
+             if(self.userList.length > 0) { 
+                suggestions=  self.userList.filter((state) => {
+                 return state.name.toLowerCase().slice(0, inputLength) === inputValue
+                //suggestions.push(state.name.toLowerCase().slice(0, inputLength) === inputValue)  
             })
+            }
 
             return (
                 <Autosuggest
@@ -385,14 +393,16 @@ const mapStateToProps = state => {
         updatedDetails: state.jobDetail.updatedDetails,
         jobUpdated: state.jobDetail.jobUpdated,
         createJob: state.jobDetail.createJob,
-        jobCreateCompleted: state.jobDetail.jobCreateCompleted
+        jobCreateCompleted: state.jobDetail.jobCreateCompleted,
+        userList: state.jobDetail.userList
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         CreateNewJob: (data) => dispatch(CreateNewJob(data)),
-        updateJobDetails: (id, data) => dispatch(updateJobDetails(id, data))
+        updateJobDetails: (id, data) => dispatch(updateJobDetails(id, data)),
+        GetUserList: () => dispatch(GetUserList())
     };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(CreateJob);

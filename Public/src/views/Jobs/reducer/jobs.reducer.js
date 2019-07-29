@@ -7,7 +7,8 @@ const initialState = {
     jobDetails: [],
     jobUpdated: false,
     saerchPermission: false,
-    jobCreateCompleted: false
+    jobCreateCompleted: false,
+    userList: []
 }
 
 
@@ -15,20 +16,20 @@ function JobReducer(state = initialState, action) {
 
     switch (action.type) {
 
-        case JobDetail.JOB_CREATE_COMPLETED: 
-            return{
+        case JobDetail.JOB_CREATE_COMPLETED:
+            return {
                 ...state,
                 jobCreateCompleted: action.payload
             }
 
         case JobDetail.GET_SEARCH:
-                return {
-                    ...state,
-                    saerchPermission: action.payload
-                }
+            return {
+                ...state,
+                saerchPermission: action.payload
+            }
 
-        case JobDetail.JOB_UPDATED: 
-            return{
+        case JobDetail.JOB_UPDATED:
+            return {
                 ...state,
                 jobUpdated: action.payload
             }
@@ -40,17 +41,24 @@ function JobReducer(state = initialState, action) {
                 createJob: true
             }
 
-            case JobDetail.JOB_LIST:
-                    return{
-                        ...state,
-                        jobDetails: action.payload
-                    }
+        case JobDetail.JOB_LIST:
+            return {
+                ...state,
+                jobDetails: action.payload
+            }
 
         case JobDetail.CREATE_JOB:
             return {
                 ...state,
                 createJob: !state.createJob,
-                updatedDetails:{}
+                updatedDetails: {}
+            }
+            
+        case JobDetail.SAVE_USER_LIST:
+            return {
+                ...state,
+                userList: action.payload
+
             }
 
         case JobDetail.CREATE_NEW_JOB:

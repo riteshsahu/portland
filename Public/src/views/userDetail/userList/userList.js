@@ -1,41 +1,53 @@
 import React, { Component } from 'react';
-import { Badge, Modal, ModalBody, ModalFooter, Button, Col, Pagination, PaginationItem, PaginationLink, Row, Table } from 'reactstrap';
+import { Badge, Modal, ModalBody, ModalFooter, Button, Col, Pagination,Label, PaginationItem, PaginationLink, Row, Table } from 'reactstrap';
 import { connect } from "react-redux";
-import { deleteUserData, updateUser,GetUserList } from '../reducer/userDetail.action';
+import { deleteUserData, updateUser, GetUserList } from '../reducer/userDetail.action';
 
 class UserList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            roleKey:{
-                1 : "Admin",
-                2 : "Management",
-                3 : "Internal Employee",
-                4 : "External Employee",
-                5 : "Designer",
-                6 : "Client"
+            roleKey: {
+                1: "Admin",
+                2: "Management",
+                3: "Internal Employee",
+                4: "External Employee",
+                5: "Designer",
+                6: "Client"
             },
             small: false,
-            deleteIndex: ''
+            deleteIndex: '',
+            toggle1: false,
+            selectedIndex: ''
         }
         this.toggleSmall = this.toggleSmall.bind(this);
+        this.toggleModel = this.toggleModel.bind(this);
+
     }
 
 
-    componentDidMount= () => {
+    componentDidMount = () => {
         this.props.GetUserList();
     }
 
-    componentWillReceiveProps =() => {
-      if(  this.props.userDeleted) {
-        this.props.GetUserList();
+    componentWillReceiveProps = () => {
+        if (this.props.userDeleted) {
+            this.props.GetUserList();
 
-      }
+        }
     }
     toggleSmall(i) {
         this.setState({
             deleteIndex: i,
             small: !this.state.small,
+        });
+    }
+
+    toggleModel(i) {
+        console.log("button clicked")
+        this.setState({
+            selectedIndex: i,
+            toggle1: !this.state.toggle1,
         });
     }
 
@@ -48,27 +60,28 @@ class UserList extends Component {
 
     showUserList = () => {
         let result = [];
-        if(this.props.userDetails.length > 0){
-        this.props.userDetails.map((data, i) => {
-            result.push(<tr>
-                <td>{data.firstName}</td>
-                <td>{data.lastName}</td>
-                <td>{data.email}</td>
-                <td>{data.createdAt}</td>
-                <td>{this.state.roleKey[data.role]}</td>
-                <td>
-                    <Badge color="success">Active</Badge>
-                </td>
-                <td>
-                    <i style={{ color: "green", padding: "0px 5px" }} onClick={e => { this.props.updateUser(data) }} className="cui-pencil icons font-xl"></i>
-                    <i style={{ color: "red", padding: "0px 5px" }} onClick={e => { this.toggleSmall(data.userId) }} className="cui-trash icons font-xl"></i>
-                </td>
-            </tr>)
-        })
-    }
+        if (this.props.userDetails.length > 0) {
+            this.props.userDetails.map((data, i) => {
+                result.push(<tr>
+                    <td><a href="javascript:void(0)" onClick={e => { this.toggleModel(data.userId) }}>{data.firstName} </a></td>
+                    <td>{data.lastName}</td>
+                    <td>{data.email}</td>
+                    <td>{data.createdAt}</td>
+                    <td>{this.state.roleKey[data.role]}</td>
+                    <td>
+                        <Badge color="success">Active</Badge>
+                    </td>
+                    <td>
+                        <i style={{ color: "green", padding: "0px 5px" }} onClick={e => { this.props.updateUser(data) }} className="cui-pencil icons font-xl"></i>
+                        <i style={{ color: "red", padding: "0px 5px" }} onClick={e => { this.toggleSmall(data.userId) }} className="cui-trash icons font-xl"></i>
+                    </td>
+                </tr>)
+            })
+        }
         return result
     }
     render() {
+        console.log("selected index", this.state.selectedIndex)
         return (
             <>
                 <Row>
@@ -112,6 +125,52 @@ class UserList extends Component {
                         <ModalFooter>
                             <Button color="primary" onClick={this.deleteUser}>Yes</Button>{' '}
                             <Button color="secondary" onClick={this.toggleSmall}>No</Button>
+                        </ModalFooter>
+                    </Modal>
+                </Row>
+                <Row>
+                    <Modal isOpen={this.state.toggle1} toggle={this.toggleModel }
+                        className={'modal-sm ' + this.props.className}>
+                           {(this.props.userDetails.length > 0) && this.props.userDetails.map((data, i) =>
+                            (this.state.selectedIndex== data.userId) &&
+                            <ModalBody>
+                                <div>
+                                    <Row>
+                                        <Col xs="12" md="4" lg="4">
+                                        <Label> First Name:-</Label>
+                                        </Col>
+                                        <Col xs="12" md="4" lg="4">
+                                        <Label> {data.firstName}</Label>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col xs="12" md="4" lg="4">
+                                        <Label> Last Name:-</Label>
+                                        </Col>
+                                        <Col xs="12" md="4" lg="4">
+                                        <Label> {data.lastName}</Label>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col xs="12" md="4" lg="4">
+                                        <Label> Email:-</Label>
+                                        </Col>
+                                        <Col xs="12" md="4" lg="4">
+                                        <Label> {data.email}</Label>
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col xs="12" md="4" lg="4">
+                                        <Label> Role:-</Label>
+                                        </Col>
+                                        <Col xs="12" md="4" lg="4">
+                                        <Label> {this.state.roleKey[data.role]}</Label>
+                                        </Col>
+                                    </Row>
+                                </div>
+                            </ModalBody>)}
+                        <ModalFooter>
+                            <Button color="primary" onClick={e=>{this.toggleModel("")}} >Exit</Button>
                         </ModalFooter>
                     </Modal>
                 </Row>

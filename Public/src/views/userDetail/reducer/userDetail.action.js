@@ -25,6 +25,17 @@ export const GetUserList = () => {
                     type: UserDetail.GET_USER_LIST,
                     payload: data
                 })
+                if(data.length>0) {
+                    let result = []
+                    data.map((user) => {
+                        result.push({name: user.firstName + " " + user.lastName, id: user.userId })
+                    })
+                    dispatch({
+                        type: JobDetail.SAVE_USER_LIST,
+                        payload: result
+                    })
+                }
+               
             })
             .catch(err => {
                 console.log(err);

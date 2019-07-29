@@ -33,6 +33,11 @@ class DefaultLayout extends Component {
     this.props.history.push('/')
   }
 
+
+  manageProfile(e) {
+    this.props.history.push('/userProfile')
+  }
+  
   render() {
 
     const userDetails = localStorage.getItem("userDetails");
@@ -43,7 +48,7 @@ class DefaultLayout extends Component {
       <div className="app">
         <AppHeader fixed>
           <Suspense fallback={this.loading()}>
-            <DefaultHeader onLogout={e => this.signOut(e)} />
+            <DefaultHeader onLogout={e => this.signOut(e)} handleProfile ={e => this.manageProfile(e)} />
           </Suspense>
         </AppHeader>
         <div className="app-body">

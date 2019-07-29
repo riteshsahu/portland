@@ -6,6 +6,7 @@ import CardToggleReducer from './views/New Business/reducer/reducer.newBusiness'
 import userDetailReducer from './views/userDetail/reducer/userDetail.reducer';
 import jobDetailReducer from './views/Jobs/reducer/jobs.reducer';
 import roleDetailReducer from './views/Roles/reducer/role.reducer';
+import ProfileReducer from './views/Profile/reducer/profile.reducer';
 
 const rootReducer = combineReducers({
     UserGroup: userGroupReducer,
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
     ToggleCard:CardToggleReducer,
     userDetail: userDetailReducer,
     jobDetail: jobDetailReducer,
-    roleDetail: roleDetailReducer
+    roleDetail: roleDetailReducer,
+    ProfileDetail: ProfileReducer
 })
 
 
