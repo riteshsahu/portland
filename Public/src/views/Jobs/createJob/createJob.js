@@ -123,9 +123,9 @@ class CreateJob extends Component {
         })
     }
     handleSumbit = () => {
-        this.setState({
-            isSubmitted: !this.state.isSubmitted
-        });
+        // this.setState({
+        //     isSubmitted: !this.state.isSubmitted
+        // });
 
         const userDetails = localStorage.getItem("userDetails");
         const user = JSON.parse(userDetails);
@@ -362,7 +362,7 @@ class CreateJob extends Component {
                     </Row>}
 
 
-                {this.state.isSubmitted &&
+                {this.props.jobCreateCompleted &&
                     <Row style={{ marginTop: 5 }}>
                         <Col xs="12" md="3" lg="3">
                         </Col>
@@ -383,7 +383,9 @@ class CreateJob extends Component {
 const mapStateToProps = state => {
     return {
         updatedDetails: state.jobDetail.updatedDetails,
-        jobUpdated: state.jobDetail.jobUpdated
+        jobUpdated: state.jobDetail.jobUpdated,
+        createJob: state.jobDetail.createJob,
+        jobCreateCompleted: state.jobDetail.jobCreateCompleted
     };
 }
 

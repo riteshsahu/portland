@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Badge, Modal, ModalBody, ModalFooter, Button, Col, Pagination, PaginationItem, PaginationLink, Row, Table } from 'reactstrap';
 import { connect } from "react-redux";
-import { deleteJob, updateJob, deleteUserJob } from '../reducer/jobs.action';
+import { deleteJob, updateJob, deleteUserJob, getAllJob } from '../reducer/jobs.action';
 
 class JobList extends Component {
     constructor(props) {
@@ -24,6 +24,14 @@ class JobList extends Component {
             }
         }
         this.toggleSmall = this.toggleSmall.bind(this);
+    }
+
+    componentDidMount=()=>{
+        
+        const userDetails = localStorage.getItem("userDetails");
+        const user = JSON.parse(userDetails);
+        this.props.getAllJob(user[0].userId);
+        console.log('---getting All jobs----');
     }
 
     toggleSmall(i, jobId) {
@@ -119,7 +127,8 @@ function mapDispatchToProps(dispatch) {
     return {
         deleteJob: (value) => dispatch(deleteJob(value)),
         updateJob: (value) => dispatch(updateJob(value)),
-        deleteUserJob:(id) => dispatch(deleteUserJob(id))
+        deleteUserJob:(id) => dispatch(deleteUserJob(id)),
+        getAllJob:(id)=> dispatch(getAllJob(id))
     };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(JobList);

@@ -6,13 +6,20 @@ const initialState = {
     jobCreated: false,
     jobDetails: [],
     jobUpdated: false,
-    saerchPermission: false
+    saerchPermission: false,
+    jobCreateCompleted: false
 }
 
 
 function JobReducer(state = initialState, action) {
 
     switch (action.type) {
+
+        case JobDetail.JOB_CREATE_COMPLETED: 
+            return{
+                ...state,
+                jobCreateCompleted: action.payload
+            }
 
         case JobDetail.GET_SEARCH:
                 return {

@@ -8,6 +8,7 @@ jobRoutes.post('/', jobController.createJob);
 jobRoutes.put('/:id', jobController.updateJob);
 jobRoutes.get('/', jobController.getJobs);
 jobRoutes.delete('/:id', jobController.deleteJob);
+jobRoutes.get('/:id', jobController.getAllJob);
 
 
 

@@ -1,6 +1,29 @@
 import { JobDetail } from './jobs.constants'
 import { API_ROOT, URI, StringFormat } from '../../../../src/config/config';
 
+export const getAllJob=(id)=>{
+    console.log("---id----",id);
+    return (dispatch) => {
+        fetch(StringFormat(API_ROOT + URI.GET_ALL_JOBS, id), {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log("-job-All-search list---", data)
+                dispatch({
+                    type: JobDetail.JOB_LIST,
+                    payload: data
+                })
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+}
+
 export const getSearchOFF = () => {
     return (dispatch) => {
         dispatch({
@@ -111,7 +134,16 @@ export const CreateNewJob = (value) => {
         })
             .then(res => res.json())
             .then(data => {
+                dispatch({
+                    type: JobDetail.JOB_CREATE_COMPLETED,
+                    payload: true
+                })
+                console.log("----job created----",data);
                 setTimeout(() => {
+                    dispatch({
+                        type: JobDetail.JOB_CREATE_COMPLETED,
+                        payload: false
+                    })
                     dispatch({
                         type: JobDetail.CREATE_NEW_JOB,
                         payload: false

@@ -5,7 +5,7 @@ const db = require('../util/db');
 class JobService {
 
     static createJob(data) {
-        console.log('--datat---',data);
+        console.log('--datat---', data);
         var connection;
         return new Promise((resolve, reject) => {
             db.getConnection().
@@ -297,8 +297,76 @@ class JobService {
                     reject(err);
                 })
         });
+    }
+
+
+    static getAllJob(id) {
+        var connection;
+        return new Promise((resolve, reject) => {
+            db.getConnection().
+                then(conn => {
+                    connection = conn;
+                    connection.query(`select J.jobId, J.jobTitle,J.createdAt, J.jobDescription, J.jobCreatedBy, J.jobStatus, JU.userId from Job J
+                    LEFT JOIN job_users JU  ON J.jobId = JU.jobId
+                      WHERE  J.isActive = 1 AND JU.isActive = 1`, (err, results) => {
+                            db.releaseConnection(connection);
+                            if (err) {
+                                reject(err)
+                            } else {
+                                
+                                function isJobExist(oldId, id) {
+                                    let count = 0;
+                                    oldId.map(dt => {
+                                        if (dt == id) {
+                                            count = count + 1;
+                                        }
+                                    });
+                                    return count;
+                                }
+
+                                if (results.length > 0) {
+                                    let finalResult = [];
+                                    let jobID = [];
+
+                                    results.map(dt => {
+
+                                        if (!isJobExist(jobID, dt.jobId)) {
+                                            let ids = [];
+                                            ids.push(dt.userId);
+
+                                            jobID.push(dt.jobId);
+                                            finalResult.push({
+                                                jobId: dt.jobId, jobTitle: dt.jobTitle, createdAt: dt.createdAt,
+                                                jobDescription: dt.jobDescription, jobCreatedBy: dt.jobCreatedBy, jobStatus: dt.jobStatus, userId: ids
+                                            });
+                                        } else {
+                                            finalResult.map(availData => {
+                                                if (dt.jobId == availData.jobId) {
+                                                    availData.userId.push(dt.userId);
+                                                }
+                                            })
+                                        }
+                                    });
+                                    resolve(finalResult);
+                                } else {
+                                    resolve(results);
+                                }
+
+
+                                // console.log("---list---",results);
+                                // resolve(results);
+                            }
+                        })
+                })
+                .catch(err => {
+                    console.log("---err--", err);
+                    reject(err);
+                })
+        });
 
     }
+
+
 
 }
 
