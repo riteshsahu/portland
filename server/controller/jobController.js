@@ -52,13 +52,38 @@ class JobController {
 
     static getAllJob(req, res) {
         let id = req.params.id;
-        console.log("--id---",id);
+        console.log("--id--all-",id);
         JobService.getAllJob(id).then(result => {
             res.json(result);
         }).catch(err => {
             res.status(500)
             res.json(err)
             console.log(err)
+        })
+    }
+
+    static getUserJobs(req,res) {
+        let id=req.params.id;
+        console.log("--id--",id);
+        JobService.getUserJobs(id).then(result => {
+            res.json(result);
+        }).catch(err => {
+            console.log(err)
+            res.status(500)
+            res.json(err)
+           
+        })
+    }
+
+    static getJobParticipantsInfo(req,res) {
+        let id=req.params.id;
+        console.log("----ID----",id);
+        JobService.getJobParticipantsInfo(id).then(result => {
+            res.json(result);
+        }).catch(err => {
+            console.log(err)
+            res.status(500)
+            res.json(err)
         })
     }
 

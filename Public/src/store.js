@@ -7,6 +7,8 @@ import userDetailReducer from './views/userDetail/reducer/userDetail.reducer';
 import jobDetailReducer from './views/Jobs/reducer/jobs.reducer';
 import roleDetailReducer from './views/Roles/reducer/role.reducer';
 import ProfileReducer from './views/Profile/reducer/profile.reducer';
+import LayoutReducer from './containers/DefaultLayout/reducer.defaultLayout';
+import ActiveJobsReducer from './views/ActiveJobs/reducer/reducer.activeJobs';
 
 const rootReducer = combineReducers({
     UserGroup: userGroupReducer,
@@ -16,7 +18,9 @@ const rootReducer = combineReducers({
     userDetail: userDetailReducer,
     jobDetail: jobDetailReducer,
     roleDetail: roleDetailReducer,
-    ProfileDetail: ProfileReducer
+    ProfileDetail: ProfileReducer,
+    LayoutDetail: LayoutReducer,
+    ActiveJobDetail: ActiveJobsReducer
 })
 
 

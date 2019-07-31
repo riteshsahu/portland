@@ -1,0 +1,30 @@
+import { LayoutDetail } from './constants.defaultLayout';
+import { API_ROOT, URI, StringFormat } from '../../config/config';
+
+export const GetUserJobs = (id) => {
+    return (dispatch) => {
+        fetch ( StringFormat(API_ROOT + URI.GET_USER_JOBS,id), {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data,"data of api");
+                dispatch({
+                    type: LayoutDetail.GET_JOBS_INFO,
+                    payload: data
+                })
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+}
+
+
+
+
+
+

@@ -1,5 +1,5 @@
-export const API_ROOT = 'https://portland-web.herokuapp.com/api/';
-// export const API_ROOT = 'http://localhost:5000/api/';
+// export const API_ROOT = 'https://portland-web.herokuapp.com/api/';
+export const API_ROOT = 'http://localhost:5000/api/';
 // 
 
 export const URI = {
@@ -18,7 +18,9 @@ export const URI = {
     SEARCH_JOBS:"job",
     UPDATE_JOB:"job/{0}",
     DELETE_JOB:"job/{0}",
-    GET_ALL_JOBS: "job/{0}"
+    GET_ALL_JOBS: "job/{0}",
+    GET_USER_JOBS: "job/userJobs/{0}",
+    GET_JOB_PARTICIPANTS:"job/userInfo/{0}"
 }
 
 export const StringFormat = function() {

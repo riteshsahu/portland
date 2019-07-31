@@ -1,6 +1,9 @@
 import React, { Component, Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { Container } from 'reactstrap';
+import { connect } from "react-redux";
+import {GetUserJobs} from './action.defaultLayout';
+import AppSlidebar from './AppSideBar';
 
 import {
   AppAside,
@@ -27,6 +30,28 @@ class DefaultLayout extends Component {
 
   loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
 
+
+  componentWillReceiveProps = (nextProps) => {
+    // console.log(navigation,"navigation");
+    nextProps.JobDetails && nextProps.JobDetails.map((data)=> {
+      let arrRes = [] ;
+    arrRes.push({
+      id: data.jobId,
+      name: data.jobTitle,
+      url: "/activeJobs",
+      icon: "fa fa-user"
+    });
+    navigation.items[2]["children"]= arrRes;
+    }) 
+    
+  }
+
+  componentDidMount= () => {
+    const userDetails = localStorage.getItem("userDetails");
+    const user= JSON.parse(userDetails) ;
+    console.log(user);
+    this.props.GetUserJobs(user[0].userId);
+  }
   signOut(e) {
     e.preventDefault()
     localStorage.removeItem("userDetails");
@@ -39,10 +64,11 @@ class DefaultLayout extends Component {
   }
   
   render() {
+    // console.log(navigation,"navigation");
 
     const userDetails = localStorage.getItem("userDetails");
     const user= JSON.parse(userDetails) ;
-    console.log(user);
+    // console.log(user);
   
     return (
       <div className="app">
@@ -56,7 +82,8 @@ class DefaultLayout extends Component {
             <AppSidebarHeader />
             <AppSidebarForm />
             <Suspense>
-              <AppSidebarNav navConfig={navigation} {...this.props} />
+              {/* <AppSidebarNav navConfig={navigation} {...this.props} /> */}
+              <AppSlidebar navConfig={navigation} {...this.props} />
 
             </Suspense>
             <AppSidebarFooter />
@@ -100,4 +127,16 @@ class DefaultLayout extends Component {
   }
 }
 
-export default DefaultLayout;
+const mapStateToProps = state => {
+  return {
+    JobDetails: state.LayoutDetail.JobDetails
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    GetUserJobs: (id) => dispatch(GetUserJobs(id))
+  };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(DefaultLayout);
+

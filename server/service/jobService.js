@@ -313,7 +313,7 @@ class JobService {
                             if (err) {
                                 reject(err)
                             } else {
-                                
+
                                 function isJobExist(oldId, id) {
                                     let count = 0;
                                     oldId.map(dt => {
@@ -363,11 +363,57 @@ class JobService {
                     reject(err);
                 })
         });
-
     }
 
+    static getUserJobs(id) {
+        var connection;
+        return new Promise((resolve, reject) => {
+            db.getConnection().
+                then(conn => {
+                    connection = conn;
+                    connection.query(`select J.jobId, J.jobTitle,J.createdAt, J.jobDescription, J.jobCreatedBy, J.jobStatus, JU.userId from job_users 
+                    JU LEFT JOIN Job J ON J.jobId = JU.jobId WHERE J.isActive = 1 AND JU.isActive = 1 AND JU.userId=?`, [id], (err, results) => {
+                            db.releaseConnection(connection);
+                            if (err) {
+                                console.log("error", err)
+                                reject(err)
+                            } else {
+                                console.log("res", results)
+                                resolve(results);
+                            }
+                        });
+                })
+                .catch(err => {
+                    console.log("---err--", err);
+                    reject(err);
+                })
+        })
+    }
 
-
+    static getJobParticipantsInfo(id) {
+        var connection;
+        return new Promise((resolve, reject) => {
+            db.getConnection().
+                then(conn => {
+                    connection = conn;
+                        connection.query(`SELECT JU.jobId,U.firstName,U.lastName,U.email,U.role From User U
+                        INNER JOIN job_users JU ON U.userId = JU.userID and U.isActive=1
+                        where JU.jobId = ?  and U.status = 1 and JU.isActive = 1`, [id], (err, results) => {
+                             db.releaseConnection(connection);
+                            if (err) {
+                                console.log("error", err)
+                                reject(err)
+                            } else {
+                                resolve(results);
+                            }
+                        });
+                })
+                .catch(err => {
+                    console.log("---err--", err);
+                    reject(err);
+                })
+        })
+    }
 }
 
 module.exports = JobService;

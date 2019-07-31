@@ -20,6 +20,7 @@ const userDetail =  React.lazy(() => import('./views/userDetail/userDetail.js'))
 const Jobs =  React.lazy(() => import('./views/Jobs/Jobs.js'));
 const Roles =  React.lazy(() => import('./views/Roles/Roles'));
 const UserProfile =React.lazy(() => import ('./views/Profile/Profile'));
+const ActiveJobs =React.lazy(() => import ('./views/ActiveJobs/ActiveJobs'));
 
 const Breadcrumbs = React.lazy(() => import('./views/Base/Breadcrumbs'));
 const Cards = React.lazy(() => import('./views/Base/Cards'));
@@ -74,6 +75,7 @@ const routes = [
   { path: '/jobs', name: 'Jobs', component: Jobs },
   { path: '/roles', name: 'Roles', component: Roles },
   { path: '/userProfile', name: 'UserProfile', component: UserProfile },
+  { path: '/activeJobs', name: 'Active Jobs', component: ActiveJobs },
 
   
   
