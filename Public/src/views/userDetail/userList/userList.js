@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Badge, Modal, ModalBody, ModalFooter, Button, Col, Pagination,Label, PaginationItem, PaginationLink, Row, Table } from 'reactstrap';
 import { connect } from "react-redux";
-import { deleteUserData, updateUser, GetUserList } from '../reducer/userDetail.action';
+import { deleteUserData, updateUser, GetUserList } from '../userDetail.action';
 
 class UserList extends Component {
     constructor(props) {

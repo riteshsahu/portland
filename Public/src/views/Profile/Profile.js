@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Badge, Input, Card, Modal, ModalBody, ModalFooter, Button, Col, Pagination, Label, PaginationItem, PaginationLink, Row, Table } from 'reactstrap';
 import { connect } from "react-redux";
-import {updateUserProfile} from './reducer/profile.action';
+import {updateUserProfile} from './profile.action';
 
 class UserProfile extends Component {
     constructor(props) {

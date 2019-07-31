@@ -4,7 +4,7 @@ import UserList from './userList/userList';
 import UserSearch from './UserSearch/UserSearch';
 import CreateUser from './createUser/createUser';
 import { connect } from "react-redux";
-import { CreateUserHandler } from './reducer/userDetail.action';
+import { CreateUserHandler } from './userDetail.action';
 class userDetail extends Component {
     constructor(props) {
         super(props);
