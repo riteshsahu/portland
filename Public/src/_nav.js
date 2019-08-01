@@ -19,6 +19,11 @@ export default {
         url: '/activeJobs',
         icon: 'fa fa-tasks',
       },
+      {
+        name: 'Chats',
+        url: '/chats',
+        icon: 'fa fa-tasks'
+      }
       // {
       //   name: 'Roles',
       //   url: '/roles',

@@ -57,6 +57,7 @@ const Typography = React.lazy(() => import('./views/Theme/Typography'));
 const Widgets = React.lazy(() => import('./views/Widgets/Widgets'));
 const Users = React.lazy(() => import('./views/Users/Users'));
 const User = React.lazy(() => import('./views/Users/User'));
+const Chat = React.lazy(() => import('./views/Chat/Chat'));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -76,7 +77,7 @@ const routes = [
   { path: '/roles', name: 'Roles', component: Roles },
   { path: '/userProfile', name: 'UserProfile', component: UserProfile },
   { path: '/activeJobs', name: 'Active Jobs', component: ActiveJobs },
-
+  { path: '/chats', name: 'Chat', component: Chat},
   
   
 
