@@ -7,7 +7,7 @@ import AppSlidebar from './AppSideBar';
 
 import {
   AppAside,
-  AppBreadcrumb,
+  // AppBreadcrumb,
   AppFooter,
   AppHeader,
   AppSidebar,
@@ -15,7 +15,7 @@ import {
   AppSidebarForm,
   AppSidebarHeader,
   AppSidebarMinimizer,
-  AppSidebarNav,
+  // AppSidebarNav,
 } from '@coreui/react';
 // sidebar nav config
 import navigation from '../../_nav';
@@ -33,23 +33,27 @@ class DefaultLayout extends Component {
 
   componentWillReceiveProps = (nextProps) => {
     // console.log(navigation,"navigation");
+     let arrRes = [] ;
     nextProps.JobDetails && nextProps.JobDetails.map((data)=> {
-      let arrRes = [] ;
+     
     arrRes.push({
       id: data.jobId,
       name: data.jobTitle,
       url: "/activeJobs",
       icon: "fa fa-user"
     });
-    navigation.items[2]["children"]= arrRes;
+   
     }) 
-    
+    if(arrRes.length> 0){
+      navigation.items[2]["children"]= arrRes;
+    }
+   
   }
 
   componentDidMount= () => {
     const userDetails = localStorage.getItem("userDetails");
     const user= JSON.parse(userDetails) ;
-    console.log(user);
+    // console.log(user);
     this.props.GetUserJobs(user[0].userId);
   }
   signOut(e) {

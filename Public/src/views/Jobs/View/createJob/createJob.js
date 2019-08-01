@@ -4,9 +4,9 @@ import { connect } from "react-redux";
 import { CreateNewJob, updateJobDetails } from '../../jobs.action';
 // import { COUNTRIES } from './Country';
 import TagsInput from 'react-tagsinput'
-import '../jobs.css';
+import '../../jobs.css';
 import Autosuggest from 'react-autosuggest';
-import {GetUserList} from '../../../userDetail/reducer/userDetail.action';
+import {GetUserList} from '../../../userDetail/userDetail.action';
 
 // function states() {
 //     return [

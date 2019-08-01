@@ -12,15 +12,15 @@ import React from 'react';
 // const Login =  React.lazy(() => import('./views/Pages/Login/Login'));
 
 
-const Rating =  React.lazy(() => import('./views/Rating/rating'));
-const DashboardNew= React.lazy(() => import('./views/Rating Dashboard/ratingDashboard'));
+// const Rating =  React.lazy(() => import('./views/Rating/rating'));
+// const DashboardNew= React.lazy(() => import('./views/Rating Dashboard/ratingDashboard'));
 const NewBussiness =  React.lazy(() => import('./views/New Business/newBusiness'));
 
 const userDetail =  React.lazy(() => import('./views/userDetail/userDetail.js'));
-const Jobs =  React.lazy(() => import('./views/Jobs/Jobs.js'));
-const Roles =  React.lazy(() => import('./views/Roles/Roles'));
+const Jobs =  React.lazy(() => import('./views/Jobs/View/Jobs'));
+const Roles =  React.lazy(() => import('./views/Roles/Views/Roles'));
 const UserProfile =React.lazy(() => import ('./views/Profile/Profile'));
-const ActiveJobs =React.lazy(() => import ('./views/ActiveJobs/ActiveJobs'));
+const ActiveJobs =React.lazy(() => import ('./views/ActiveJobs/Views/ActiveJobs'));
 
 const Breadcrumbs = React.lazy(() => import('./views/Base/Breadcrumbs'));
 const Cards = React.lazy(() => import('./views/Base/Cards'));
@@ -67,8 +67,8 @@ const routes = [
 
   { path: '/', exact: true, name: 'Home'  },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
-  { path: '/rating', name: 'Rating', component: Rating },
-  { path: '/ratingdashboard', name: 'Rating DashBoard', component: DashboardNew},
+  // { path: '/rating', name: 'Rating', component: Rating },
+  // { path: '/ratingdashboard', name: 'Rating DashBoard', component: DashboardNew},
   { path: '/newbusiness', name: 'New Business', component: NewBussiness },
 
   

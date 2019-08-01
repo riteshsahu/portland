@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Button, Col, Label, Input, Row } from 'reactstrap';
 import '../user.css'
 import { connect } from "react-redux";
-import { CreateUserHandler,searchUser } from '../reducer/userDetail.action';
-import {getSearchOFF } from '../../Jobs/reducer/jobs.action';
+import { CreateUserHandler,searchUser } from '../userDetail.action';
+import {getSearchOFF } from '../../Jobs/jobs.action';
 class UserSearch extends Component {
     constructor(props) {
         super(props);

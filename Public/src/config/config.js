@@ -1,5 +1,5 @@
-// export const API_ROOT = 'https://portland-web.herokuapp.com/api/';
-export const API_ROOT = 'http://localhost:5000/api/';
+export const API_ROOT = 'https://portland-web.herokuapp.com/api/';
+// export const API_ROOT = 'http://localhost:5000/api/';
 // 
 
 export const URI = {
@@ -29,7 +29,7 @@ export const StringFormat = function() {
         var reg = new RegExp('\\{' + i + '\\}', 'gm');
         s = s.replace(reg, arguments[i + 1]);
     }
-    console.log(arguments);
-    console.log("string format ,,, ",s)
+    // console.log(arguments);
+    // console.log("string format ,,, ",s)
     return s;
 };

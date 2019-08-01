@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Col, Alert, Label, Input, Row } from 'reactstrap';
 import { connect } from "react-redux";
-import { CreateNewUser, updateUserDetails } from '../reducer/userDetail.action';
+import { CreateNewUser, updateUserDetails } from '../userDetail.action';
 
 
 class CreateUser extends Component {

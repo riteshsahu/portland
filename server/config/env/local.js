@@ -2,8 +2,8 @@ module.exports = {
     env: 'local',
     port: process.env.PORT || 8080,
     db: {
-      "uri": "mysql://root@localhost:3306/portland_web",
-      //  "uri": "mysql://QN4icqhwDK:8HATfqaoyF@remotemysql.com:3306/QN4icqhwDK",
+      // "uri": "mysql://root@localhost:3306/portland_web",
+       "uri": "mysql://QN4icqhwDK:8HATfqaoyF@remotemysql.com:3306/QN4icqhwDK",
 
       "connectionLimit": 100,
       "acquireTimeout": 100000,

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Button, Col, Label, Input, Row } from 'reactstrap';
 import { connect } from "react-redux";
 import { CreateJobHandler, searchJobs, getSearchOFF } from '../../jobs.action';
-import {GetUserJobs} from '../../../containers/DefaultLayout/action.defaultLayout';
 
 class JobSearch extends Component {
     constructor(props) {
@@ -51,10 +50,6 @@ class JobSearch extends Component {
                     jobCreatedBy : this.state.jobSearch.jobCreatedBy,
                 };
                 this.props.searchJobs(data);
-                const userDetails = localStorage.getItem("userDetails");
-                const user= JSON.parse(userDetails) ;
-                this.props.GetUserJobs(user[0].userId);
-                // jjjjjjjjjjjjjjjjj 
                 this.setState({
                     searchPersmission: false
                 });
@@ -115,8 +110,7 @@ function mapDispatchToProps(dispatch) {
     return {
         CreateJobHandler: () => dispatch(CreateJobHandler()),
         searchJobs:(data)=> dispatch(searchJobs(data)),
-        getSearchOFF:()=> dispatch(getSearchOFF()),
-        GetUserJobs: (id) => dispatch(GetUserJobs(id))
+        getSearchOFF:()=> dispatch(getSearchOFF())
     };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(JobSearch);

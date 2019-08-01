@@ -1,7 +1,0 @@
-{
-    "name": "PendingRequest",
-    "version": "0.0.0",
-    "private": true,
-    "main": "./PendingRequest.js"
-  }
-  

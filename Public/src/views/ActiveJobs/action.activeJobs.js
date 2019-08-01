@@ -1,9 +1,22 @@
-import { LayoutDetail } from './constants.defaultLayout';
+import { ActiveJobDetail } from './constants.activeJobs';
 import { API_ROOT, URI, StringFormat } from '../../config/config';
 
-export const GetUserJobs = (id) => {
+
+export const SelectedJob = (id,value) => {
+  return (dispatch) => {
+     dispatch({
+        type: ActiveJobDetail.GET_JOB_ID,
+        payload: id,
+        title: value
+    })
+}
+}
+
+
+
+export const GetJobParticipants =(id) => {
     return (dispatch) => {
-        fetch ( StringFormat(API_ROOT + URI.GET_USER_JOBS,id), {
+        fetch ( StringFormat(API_ROOT + URI.GET_JOB_PARTICIPANTS,id), {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -11,9 +24,9 @@ export const GetUserJobs = (id) => {
         })
             .then(res => res.json())
             .then(data => {
-                // console.log(data,"data of api");
+                console.log(data,"data of api");
                 dispatch({
-                    type: LayoutDetail.GET_JOBS_INFO,
+                    type: ActiveJobDetail.GET_JOB_PARTICIPANTS,
                     payload: data
                 })
             })
