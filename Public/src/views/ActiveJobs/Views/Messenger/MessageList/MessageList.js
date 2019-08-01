@@ -13,82 +13,114 @@ export default class MessageList extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      message:"",
       messages: []
     };
   }
 
-  componentDidMount() {
-    this.getMessages();
-  }
+  // componentDidMount() {
+  //   this.getMessages();
+  // }
 
-  getMessages = () => {
-    this.setState(prevState => {
-      return {
-        ...prevState,
-        messages: [
-          {
-            id: 1,
-            author: 'apple',
-            message: 'Hello world! This is a long message that will hopefully get wrapped by our message bubble component! We will see how well it works.',
-            timestamp: new Date().getTime()
-          },
-          {
-            id: 2,
-            author: 'orange',
-            message: 'It looks like it wraps exactly as it is supposed to. Lets see what a reply looks like!',
-            timestamp: new Date().getTime()
-          },
-          {
-            id: 3,
-            author: 'orange',
-            message: 'Hello world! This is a long message that will hopefully get wrapped by our message bubble component! We will see how well it works.',
-            timestamp: new Date().getTime()
-          },
-          {
-            id: 4,
-            author: 'apple',
-            message: 'It looks like it wraps exactly as it is supposed to. Lets see what a reply looks like!',
-            timestamp: new Date().getTime()
-          },
-          {
-            id: 5,
-            author: 'apple',
-            message: 'Hello world! This is a long message that will hopefully get wrapped by our message bubble component! We will see how well it works.',
-            timestamp: new Date().getTime()
-          },
-          {
-            id: 6,
-            author: 'apple',
-            message: 'It looks like it wraps exactly as it is supposed to. Lets see what a reply looks like!',
-            timestamp: new Date().getTime()
-          },
-          {
-            id: 7,
-            author: 'orange',
-            message: 'Hello world! This is a long message that will hopefully get wrapped by our message bubble component! We will see how well it works.',
-            timestamp: new Date().getTime()
-          },
-          {
-            id: 8,
-            author: 'orange',
-            message: 'It looks like it wraps exactly as it is supposed to. Lets see what a reply looks like!',
-            timestamp: new Date().getTime()
-          },
-          {
-            id: 9,
-            author: 'apple',
-            message: 'Hello world! This is a long message that will hopefully get wrapped by our message bubble component! We will see how well it works.',
-            timestamp: new Date().getTime()
-          },
-          {
-            id: 10,
-            author: 'orange',
-            message: 'It looks like it wraps exactly as it is supposed to. Lets see what a reply looks like!',
-            timestamp: new Date().getTime()
-          },
-        ]
-      };
-    });
+  // getMessages = () => {
+  //   this.setState(prevState => {
+  //     return {
+  //       ...prevState,
+  //       messages: [
+          // {
+          //   id: 1,
+          //   author: 'apple',
+          //   message: 'Hello world! This is a long message that will hopefully get wrapped by our message bubble component! We will see how well it works.',
+          //   timestamp: new Date().getTime()
+          // },
+          // {
+          //   id: 2,
+          //   author: 'orange',
+          //   message: 'It looks like it wraps exactly as it is supposed to. Lets see what a reply looks like!',
+          //   timestamp: new Date().getTime()
+          // },
+          // {
+          //   id: 3,
+          //   author: 'orange',
+          //   message: 'Hello world! This is a long message that will hopefully get wrapped by our message bubble component! We will see how well it works.',
+          //   timestamp: new Date().getTime()
+          // },
+          // {
+          //   id: 4,
+          //   author: 'apple',
+          //   message: 'It looks like it wraps exactly as it is supposed to. Lets see what a reply looks like!',
+          //   timestamp: new Date().getTime()
+          // },
+          // {
+          //   id: 5,
+          //   author: 'apple',
+          //   message: 'Hello world! This is a long message that will hopefully get wrapped by our message bubble component! We will see how well it works.',
+          //   timestamp: new Date().getTime()
+          // },
+          // {
+          //   id: 6,
+          //   author: 'apple',
+          //   message: 'It looks like it wraps exactly as it is supposed to. Lets see what a reply looks like!',
+          //   timestamp: new Date().getTime()
+          // },
+          // {
+          //   id: 7,
+          //   author: 'orange',
+          //   message: 'Hello world! This is a long message that will hopefully get wrapped by our message bubble component! We will see how well it works.',
+          //   timestamp: new Date().getTime()
+          // },
+          // {
+          //   id: 8,
+          //   author: 'orange',
+          //   message: 'It looks like it wraps exactly as it is supposed to. Lets see what a reply looks like!',
+          //   timestamp: new Date().getTime()
+          // },
+          // {
+          //   id: 9,
+          //   author: 'apple',
+          //   message: 'Hello world! This is a long message that will hopefully get wrapped by our message bubble component! We will see how well it works.',
+          //   timestamp: new Date().getTime()
+          // },
+          // {
+          //   id: 10,
+          //   author: 'orange',
+          //   message: 'It looks like it wraps exactly as it is supposed to. Lets see what a reply looks like!',
+          //   timestamp: new Date().getTime()
+          // },
+  //       ]
+  //     };
+  //   });
+  // }
+
+  handleMessages=(e) => {
+    this.setState({
+      message: e.target.value
+    })
+  }
+  keyPressed=(event) =>  {
+    if (event.key === "Enter") {
+      this.submitMessage(event.target.value)
+    }
+  }
+  
+  submitMessage=(value) => {
+  console.log("hello world msg submitted",this.state.message)
+  console.log("===message--",this.state.messages);
+  let tempArr= this.state.messages;
+  let id = this.state.messages.length;
+  tempArr.push({
+    id: 1,
+    author: "apple",
+    message: this.state.message,
+    timestamp: new Date().getTime()
+  });
+
+  // tempArr.push (value);
+  this.setState({
+    messages:tempArr,
+    message:""
+  })
+  
   }
 
   renderMessages() {
@@ -166,15 +198,20 @@ export default class MessageList extends Component {
 
         <div className="message-list-container">{this.renderMessages()}</div>
 
-        <Compose rightItems={[
-          <ToolbarButton key="photo" icon="ion-ios-camera" />,
-          <ToolbarButton key="image" icon="ion-ios-image" />,
-          <ToolbarButton key="audio" icon="ion-ios-mic" />,
-          <ToolbarButton key="money" icon="ion-ios-card" />,
-          <ToolbarButton key="games" icon="ion-logo-game-controller-b" />,
-          <ToolbarButton key="emoji" icon="ion-ios-happy" />
-        ]}/>
+
+        <div className="compose">
+        <input
+          type="text"
+          className="compose-input"
+          placeholder="  Type a message"
+          onChange={e=>{this.handleMessages(e)}}
+          value={this.state.message}
+          onKeyPress={e=>this.keyPressed(e)}
+
+        />
+                <i style={{color:"#44c372",fontSize: "x-large",marginLeft: 15}} onClick={this.submitMessage} class="fa fa-paper-plane"></i>
       </div>
+     </div>
     );
   }
 }

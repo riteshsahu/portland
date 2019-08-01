@@ -75,7 +75,7 @@ const routes = [
   { path: '/jobs', name: 'Jobs', component: Jobs },
   { path: '/roles', name: 'Roles', component: Roles },
   { path: '/userProfile', name: 'UserProfile', component: UserProfile },
-  { path: '/activeJobs', name: 'Active Jobs', component: ActiveJobs },
+  { path: '/activeJobs/:id', name: 'Active Jobs', component: ActiveJobs },
 
   
   

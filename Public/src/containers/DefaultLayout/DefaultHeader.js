@@ -39,7 +39,7 @@ constructor(props){
 
         <Nav className="d-md-down-none" navbar>
           <NavItem className="px-3">
-          <AppBreadcrumb appRoutes={routes} />
+          {/* <AppBreadcrumb appRoutes={routes} /> */}
             {/* <NavLink to="/dashboard" className="nav-link" >Dashboard</NavLink> */}
           </NavItem>
           {/* <NavItem className="px-3">
