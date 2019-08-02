@@ -1,11 +1,11 @@
 .compose {
     padding: 10px;
-    display: flex;
+    display: block;
     align-items: center;
     background: white;
     border-top: 1px solid #eeeef1;
-    position: fixed;
-    width: 94%;
+    position: sticky;
+    /* width: 79%; */
     bottom: 0px;
   }
   
@@ -23,11 +23,13 @@
     font-size: 14px;
     height: 40px;
     background: none;
+    width: 95%;
+    /* padding-left: 5px; */
   }
   
-  .compose-input::placeholder {
+  /* .compose-input::placeholder {
     opacity: 0.3;
-  }
+  } */
   
   .compose .toolbar-button {
     color: #bbbbbf;
@@ -36,4 +38,8 @@
   
   .compose .toolbar-button:hover {
     color: #99999c;
+  }
+
+  .app-footer {
+    display: none
   }

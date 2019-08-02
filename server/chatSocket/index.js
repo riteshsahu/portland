@@ -1,17 +1,38 @@
+// const ClientManager = require('./ClientManager')
+// const ChatroomManager = require('./ChatroomManager')
+// const makeHandlers = require('./handlers')
 
-function socketConnection (wss, WebSocket) {
-    wss.on('connection', function connection(ws) {
-    console.log('ws---', ws);
-    ws.on('message', function incoming(data) {
-      console.log('data---', data)
-      wss.clients.forEach(function each(client) {
-        console.log('clients----', client)
-        if (client !== ws && client.readyState === WebSocket.OPEN) {
-          client.send(data);
-        }
-      });
+// const clientManager = ClientManager()
+// const chatroomManager = ChatroomManager()
+
+function socketConnection (io) {
+    io.on('connection', client => {
+        
+        // client.on('event', data => { 
+        //     console.log("data----", data)
+        //     client.emit('response', data);
+        // });
+        client.on('subscribe', function(room) {
+            console.log('joining room', room);
+            client.join(room);
+        });
+
+        client.on('send message', function(data) {
+
+            console.log('sending room post', data.room);
+            client.broadcast.to(data.room).emit('response', {
+                message: data.message
+            });
+        });
+        
+
+        client.on('disconnect', (error) => { 
+            console.log("disconnected----", error) 
+        });
+        client.on('error', error => {
+            console.log('error---', error)
+        })
     });
-  });
 }
 
 module.exports = socketConnection;

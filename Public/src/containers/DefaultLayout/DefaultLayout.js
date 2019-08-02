@@ -39,7 +39,7 @@ class DefaultLayout extends Component {
     arrRes.push({
       id: data.jobId,
       name: data.jobTitle,
-      url: "/activeJobs",
+      url: "/activeJobs/"+data.jobId,
       icon: "fa fa-user"
     });
    

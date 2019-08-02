@@ -75,9 +75,10 @@ const routes = [
   { path: '/userDetail', name: 'User', component: userDetail },
   { path: '/jobs', name: 'Jobs', component: Jobs },
   { path: '/roles', name: 'Roles', component: Roles },
-  { path: '/userProfile', name: 'UserProfile', component: UserProfile },
-  { path: '/activeJobs', name: 'Active Jobs', component: ActiveJobs },
+  { path: '/userProfile', exact: true, name: 'UserProfile', component: UserProfile },
   { path: '/chats', name: 'Chat', component: Chat},
+  { path: '/activeJobs/:id', exact: true, name: 'Active Jobs', component: ActiveJobs },
+
   
   
 

@@ -4,10 +4,11 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const port = process.env.PORT || 5000;
 const http = require('http');
-const WebSocket = require('ws');
+const server = http.createServer(app);
+const WebSocket = require('socket.io')(server);
 const cors = require('cors');
 
-const server = http.createServer(app);
+
 
 const apiRoutes = require('./server/routes');
 const socket = require('./server/chatSocket');
@@ -19,8 +20,8 @@ app.use('/api', apiRoutes);
 app.use(express.static(path.join(__dirname, 'Public/build')));
 
 
-const wss = new WebSocket.Server({ server });
-socket(wss, WebSocket);
+//const wss = new WebSocket.Server({ server });
+socket(WebSocket);
 
 
 //production mode

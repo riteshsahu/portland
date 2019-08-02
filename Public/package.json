@@ -57,11 +57,12 @@
     "redux-thunk": "^2.3.0",
     "save": "^2.3.3",
     "simple-line-icons": "^2.4.1",
-    "webpack": "^4.28.3",
+    "socket.io-client": "^2.2.0",
+    "webpack": "4.29.6",
     "yup": "^0.27.0"
   },
   "devDependencies": {
-    "react-scripts": "^2.1.8"
+    "react-scripts": "^3.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
