@@ -133,7 +133,7 @@ class CreateJob extends Component {
             "jobId": this.state.jobDetails.jobId,
             "jobTitle": this.state.jobDetails.jobTitle,
             "jobDescription": this.state.jobDetails.jobDescription,
-            "jobCreatedBy": this.state.jobDetails.jobCreatedBy,
+            "jobCreatedBy": user[0].userId,
             "jobStatus": this.state.jobDetails.jobStatus,
             "isActive": 1, // FIX
             "jobUsers": this.state.jobDetails.jobUsers,
@@ -155,7 +155,7 @@ class CreateJob extends Component {
             "jobTitle": this.state.jobDetails.jobTitle,
             "jobDescription": this.state.jobDetails.jobDescription,
             "jobStatus": this.state.jobDetails.jobStatus,
-            "jobCreatedBy": this.state.jobDetails.jobCreatedBy,
+            "jobCreatedBy": user[0].userId,
             "createdBy": user[0].userId,
             "createdAt": new Date(),
             "updatedAt": new Date(),
@@ -284,7 +284,7 @@ class CreateJob extends Component {
                     <Col xs="12" md="3" lg="3">
                     </Col>
                 </Row>
-                <Row style={{ marginTop: 5 }}>
+                {/* <Row style={{ marginTop: 5 }}>
                     <Col xs="12" md="3" lg="3">
                     </Col>
                     <Col xs="5" md="2" lg="2">
@@ -303,7 +303,7 @@ class CreateJob extends Component {
                     </Col>
                     <Col xs="12" md="3" lg="3">
                     </Col>
-                </Row>
+                </Row> */}
                 <Row style={{ marginTop: 5 }}>
                     <Col xs="12" md="3" lg="3">
                     </Col>

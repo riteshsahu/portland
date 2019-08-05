@@ -20,7 +20,7 @@ function socketConnection (io) {
         client.on('send message', function(data) {
 
             console.log('sending room post', data.room);
-            client.broadcast.to(data.room).emit('response', {
+            client.to(data.room).emit('response', {
                 message: data.message
             });
         });
