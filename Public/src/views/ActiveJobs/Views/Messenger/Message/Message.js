@@ -1,39 +1,28 @@
-import React, { Component } from 'react';
-import moment from 'moment';
+import React from 'react';
 import './Message.css';
 
-export default class Message extends Component {
+class Message extends React.Component {
   render() {
-    const {
-      data,
-      isMine,
-      startsSequence,
-      endsSequence,
-      showTimestamp
-    } = this.props;
+    // Was the message sent by the current user. If so, add a css class
+    const fromMe = this.props.fromMe ? 'from-me' : '';
 
-    const friendlyTimestamp = moment(data.timestamp).format('LLLL');
     return (
-      <div 
-      className={[
-        'message',
-        `${isMine ? 'mine' : ''}`,
-        `${startsSequence ? 'start' : ''}`,
-        `${endsSequence ? 'end' : ''}`
-      ].join(' ')}>
-        {
-          showTimestamp &&
-            <div className="timestamp">
-              { friendlyTimestamp }
-            </div>
-        }
-
-        <div className="bubble-container">
-          <div className="bubble" title={friendlyTimestamp}>
-            { data.message }
-          </div>
+      <div className={`message ${fromMe}`}>
+        <div className='username'>
+          { this.props.username }
+        </div>
+        <div className='message-body'>
+          { this.props.message }
         </div>
       </div>
     );
   }
 }
+
+Message.defaultProps = {
+  message: '',
+  username: '',
+  fromMe: false
+};
+
+export default Message;
