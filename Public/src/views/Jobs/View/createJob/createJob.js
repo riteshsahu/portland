@@ -137,7 +137,7 @@ class CreateJob extends Component {
             "jobStatus": this.state.jobDetails.jobStatus,
             "isActive": 1, // FIX
             "jobUsers": this.state.jobDetails.jobUsers,
-            "createdAt": new Date(),
+            "createAt": new Date(),
             "updatedAt": null,
             "createdBy": user[0].userId,
             "updatedBy": null
@@ -157,7 +157,7 @@ class CreateJob extends Component {
             "jobStatus": this.state.jobDetails.jobStatus,
             "jobCreatedBy": this.state.jobDetails.jobCreatedBy,
             "createdBy": user[0].userId,
-            "createdAt": new Date(),
+            "createAt": new Date(),
             "updatedAt": new Date(),
             "updatedBy": user[0].userId,
             "jobUsers": this.state.jobDetails.jobUsers

@@ -104,9 +104,9 @@ class UserService {
                         role: data.role,
                         isActive: 1,
                         status: data.status,
-                        createdAt: data.createdAt,
+                        createAt: data.createAt,
                         updatedAt: data.updatedAt,
-                        createdBy: data.createdBy,
+                        createBy: data.createBy,
                         updatedBy: data.updatedBy
                     }
                     connection.query('INSERT INTO User SET ?',
