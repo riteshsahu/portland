@@ -15,7 +15,7 @@ class JobService {
                 }).then(() => {
                     return new Promise((res, rej) => {
                         connection.query('INSERT INTO Job ( jobId, jobTitle,jobDescription , jobCreatedBy, jobStatus,isActive, createAt, updatedAt, createBy, updatedBy) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ',
-                            [data.jobId, data.jobTitle, data.jobDescription, data.jobCreatedBy, data.jobStatus, data.isActive, data.createAt, data.updatedAt, data.createBy, data.updatedBy],
+                            [data.jobId, data.jobTitle, data.jobDescription, data.jobCreatedBy, data.jobStatus, data.isActive, data.createAt, data.updatedAt, data.createdBy, data.updatedBy],
                             (err, results) => {                    // jobCreatedBy
                                 if (err) {
                                     db.rollbackTransaction(connection);
