@@ -32,9 +32,8 @@ class DefaultLayout extends Component {
 
 
   componentWillReceiveProps = (nextProps) => {
-    // console.log(navigation,"navigation");
-     let arrRes = [] ;
-    nextProps.JobDetails && nextProps.JobDetails.map((data)=> {
+    let arrRes = [] ;
+    nextProps.JobDetails && nextProps.JobDetails.map((data) => {
      
     arrRes.push({
       id: data.jobId,
@@ -66,14 +65,51 @@ class DefaultLayout extends Component {
   manageProfile(e) {
     this.props.history.push('/userProfile')
   }
+
+  getNavigationForRoles(role, navigation) {
+    let roleNavigation = {
+      items: []
+    }
+
+    let user = navigation.items.find(item => { return (item.name === 'User') });
+    let jobs = navigation.items.find(item => { return (item.name === 'Jobs') });
+    let activeJobs = navigation.items.find(item => { return (item.name === 'Active Jobs') });
+
+    if (role === 1) { //  Admin
+      roleNavigation.items.push(user);
+      roleNavigation.items.push(jobs);
+      roleNavigation.items.push(activeJobs);
+    }
+    if (role === 2) { // Management
+      roleNavigation.items.push(activeJobs);
+    }
+
+    if (role === 3) { // Internal Employee 
+      roleNavigation.items.push(activeJobs);
+      // roleNavigation.items.push(gic);
+    }
+
+    if(role === 4) { // External employee
+      roleNavigation.items.push(activeJobs);
+    }
+
+    if(role === 5) { // contractor
+      roleNavigation.items.push(activeJobs);
+    }
+
+    if(role === 6) { // Client
+      roleNavigation.items.push(activeJobs);
+    }
+
+    return roleNavigation;
+  }
   
   render() {
-    // console.log(navigation,"navigation");
 
     const userDetails = localStorage.getItem("userDetails");
     const user= JSON.parse(userDetails) ;
-    // console.log(user);
   
+    let roleNavigation = this.getNavigationForRoles(user[0].role, navigation)
     return (
       <div className="app">
         <AppHeader fixed>
@@ -86,8 +122,7 @@ class DefaultLayout extends Component {
             <AppSidebarHeader />
             <AppSidebarForm />
             <Suspense>
-              {/* <AppSidebarNav navConfig={navigation} {...this.props} /> */}
-              <AppSlidebar navConfig={navigation} {...this.props} />
+              <AppSlidebar navConfig={roleNavigation} {...this.props} />
 
             </Suspense>
             <AppSidebarFooter />

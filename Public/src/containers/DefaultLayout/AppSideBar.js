@@ -140,7 +140,7 @@ class AppSlideBar extends Component {
     let createCustomerUrl = localStorage.getItem('urlPath');
     if(createCustomerUrl && createCustomerUrl.indexOf('createCustomer') > -1 ){
       const r = window.confirm("Do you really want to leave this page,your data will be lost."); 
-      if(r == true){ 
+      if(r === true){ 
        localStorage.setItem('urlPath',"");
         return;
        }else{

@@ -124,11 +124,11 @@ class CreateUser extends Component {
                     </Col>
                     <Col xs="5" md="4" lg="4">
                         <Input id="role" type="select"  onChange={this.handleUserChange}>
-                            <option value="2" selected={this.state.userDetails.role == 2 ? true: false } >Management</option>
-                            <option value="3" selected={this.state.userDetails.role == 3 ? true: false } >Internal Employee</option>
-                            <option value="4" selected={this.state.userDetails.role == 4 ? true: false } >External Employee</option>
-                            <option value="5" selected={this.state.userDetails.role == 5 ? true: false } >Designer</option>
-                            <option value="6" selected={this.state.userDetails.role == 6 ? true: false } >Client</option>
+                            <option value="2" selected={this.state.userDetails.role === 2 ? true: false } >Management</option>
+                            <option value="3" selected={this.state.userDetails.role === 3 ? true: false } >Internal Employee</option>
+                            <option value="4" selected={this.state.userDetails.role === 4 ? true: false } >External Employee</option>
+                            <option value="5" selected={this.state.userDetails.role === 5 ? true: false } >Designer</option>
+                            <option value="6" selected={this.state.userDetails.role === 6 ? true: false } >Client</option>
                         </Input>
                     </Col>
                     <Col xs="12" md="3" lg="3">
