@@ -4,9 +4,9 @@ import { connect } from "react-redux";
 import { CreateNewJob, updateJobDetails } from '../../jobs.action';
 // import { COUNTRIES } from './Country';
 import TagsInput from 'react-tagsinput'
-import '../../jobs.css';
+import '../jobs.css';
 import Autosuggest from 'react-autosuggest';
-import {GetUserList} from '../../../userDetail/userDetail.action';
+import {GetUserList} from '../../../userDetail/reducer/userDetail.action';
 
 // function states() {
 //     return [
@@ -91,7 +91,7 @@ class CreateJob extends Component {
     getUsersId = (tags) => {
         let arr = this.props.userList.filter(user => {
             var resdIndex = tags.findIndex(dt => {
-                return dt == user.name
+                return dt === user.name
             });
             if (resdIndex >= 0) {
                 return true;
@@ -133,14 +133,10 @@ class CreateJob extends Component {
             "jobId": this.state.jobDetails.jobId,
             "jobTitle": this.state.jobDetails.jobTitle,
             "jobDescription": this.state.jobDetails.jobDescription,
-            "jobCreatedBy": user[0].userId,
+            "jobCreatedBy": this.state.jobDetails.jobCreatedBy,
             "jobStatus": this.state.jobDetails.jobStatus,
             "isActive": 1, // FIX
-            "jobUsers": this.state.jobDetails.jobUsers,
-            "createAt": new Date(),
-            "updatedAt": null,
-            "createdBy": user[0].userId,
-            "updatedBy": null
+            "jobUsers": this.state.jobDetails.jobUsers
         }
 
         console.log('----datat==========----------', data, "---user.userId---", user);
@@ -155,7 +151,7 @@ class CreateJob extends Component {
             "jobTitle": this.state.jobDetails.jobTitle,
             "jobDescription": this.state.jobDetails.jobDescription,
             "jobStatus": this.state.jobDetails.jobStatus,
-            "jobCreatedBy": user[0].userId,
+            "jobCreatedBy": this.state.jobDetails.jobCreatedBy,
             "createdBy": user[0].userId,
             "createAt": new Date(),
             "updatedAt": new Date(),
@@ -183,7 +179,7 @@ class CreateJob extends Component {
             let tagsArr = [];
             this.props.updatedDetails.userId.map(dt => {
                 this.props.userList.findIndex(stData => {
-                    if (stData.id == dt) {
+                    if (stData.id === dt) {
                         tagsArr.push(stData.name);
                     }
                 })
@@ -284,7 +280,7 @@ class CreateJob extends Component {
                     <Col xs="12" md="3" lg="3">
                     </Col>
                 </Row>
-                {/* <Row style={{ marginTop: 5 }}>
+                <Row style={{ marginTop: 5 }}>
                     <Col xs="12" md="3" lg="3">
                     </Col>
                     <Col xs="5" md="2" lg="2">
@@ -293,17 +289,17 @@ class CreateJob extends Component {
                     <Col xs="5" md="4" lg="4">
                         <Input id="jobCreatedBy" type="select" onChange={this.handleJobChange}>
                             <option selected disabled >--- Select Role-----</option>
-                            <option value="1" selected={this.state.jobDetails.jobCreatedBy == 1 ? true : false} >Admin</option>
-                            <option value="2" selected={this.state.jobDetails.jobCreatedBy == 2 ? true : false} >Management</option>
-                            <option value="3" selected={this.state.jobDetails.jobCreatedBy == 3 ? true : false} >Internal Employee</option>
-                            <option value="4" selected={this.state.jobDetails.jobCreatedBy == 4 ? true : false} >External Employee</option>
-                            <option value="5" selected={this.state.jobDetails.jobCreatedBy == 5 ? true : false} >Designer</option>
-                            <option value="6" selected={this.state.jobDetails.jobCreatedBy == 6 ? true : false} >Client</option>
+                            <option value="1" selected={this.state.jobDetails.jobCreatedBy === 1 ? true : false} >Admin</option>
+                            <option value="2" selected={this.state.jobDetails.jobCreatedBy === 2 ? true : false} >Management</option>
+                            <option value="3" selected={this.state.jobDetails.jobCreatedBy === 3 ? true : false} >Internal Employee</option>
+                            <option value="4" selected={this.state.jobDetails.jobCreatedBy === 4 ? true : false} >External Employee</option>
+                            <option value="5" selected={this.state.jobDetails.jobCreatedBy === 5 ? true : false} >Designer</option>
+                            <option value="6" selected={this.state.jobDetails.jobCreatedBy === 6 ? true : false} >Client</option>
                         </Input>
                     </Col>
                     <Col xs="12" md="3" lg="3">
                     </Col>
-                </Row> */}
+                </Row>
                 <Row style={{ marginTop: 5 }}>
                     <Col xs="12" md="3" lg="3">
                     </Col>
@@ -313,8 +309,8 @@ class CreateJob extends Component {
                     <Col xs="5" md="4" lg="4">
                         <Input id="jobStatus" type="select" onChange={this.handleJobChange}>
                             <option selected disabled >--- Select Status-----</option>
-                            <option value="1" selected={this.state.jobDetails.jobStatus == 1 ? true : false} >Pending</option>
-                            <option value="2" selected={this.state.jobDetails.jobStatus == 2 ? true : false} >Completed</option>
+                            <option value="1" selected={this.state.jobDetails.jobStatus === 1 ? true : false} >Pending</option>
+                            <option value="2" selected={this.state.jobDetails.jobStatus === 2 ? true : false} >Completed</option>
                         </Input>
                     </Col>
                     <Col xs="12" md="3" lg="3">

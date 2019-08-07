@@ -14,8 +14,8 @@ class JobService {
                     return db.beginTransaction(conn);
                 }).then(() => {
                     return new Promise((res, rej) => {
-                        connection.query('INSERT INTO Job ( jobId, jobTitle,jobDescription , jobCreatedBy, jobStatus,isActive, createdAt, updatedAt, createdBy, updatedBy) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ',
-                            [data.jobId, data.jobTitle, data.jobDescription, data.jobCreatedBy, data.jobStatus, data.isActive, data.createdAt, data.updatedAt, data.createdBy, data.updatedBy],
+                        connection.query('INSERT INTO Job ( jobId, jobTitle,jobDescription , jobCreatedBy, jobStatus,isActive, createAt, updatedAt, createBy, updatedBy) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ',
+                            [data.jobId, data.jobTitle, data.jobDescription, data.jobCreatedBy, data.jobStatus, data.isActive, data.createAt, data.updatedAt, data.createBy, data.updatedBy],
                             (err, results) => {                    // jobCreatedBy
                                 if (err) {
                                     db.rollbackTransaction(connection);
@@ -33,13 +33,13 @@ class JobService {
                         arr[0] = data.jobId;
                         arr[1] = dt;
                         arr[2] = data.isActive;
-                        arr[3] = data.createdAt;
+                        arr[3] = data.createAt;
                         arr[4] = data.updatedAt;
-                        arr[5] = data.createdBy;
+                        arr[5] = data.createBy;
                         arr[6] = data.updatedBy;
                         return arr;
                     })
-                    connection.query('INSERT INTO job_users ( jobId, userId,isActive, createdAt, updatedAt, createdBy, updatedBy) VALUES ? ',
+                    connection.query('INSERT INTO JobUsers ( jobId, userId,isActive, createAt, updatedAt, createBy, updatedBy) VALUES ? ',
                         [jobUsers],
                         (err, results) => {
                             if (err) {
@@ -84,7 +84,7 @@ class JobService {
                 })
                 .then(() => {
                     return new Promise((resS, rejS) => {
-                        connection.query('Select * from job_users  WHERE jobId = ? AND isActive = 1 ',
+                        connection.query('Select * from JobUsers  WHERE jobId = ? AND isActive = 1 ',
                             [jobId],
                             (err, results) => {
                                 if (err) {
@@ -124,7 +124,7 @@ class JobService {
                 .then((resSResponse) => {
                     return new Promise((resJob, rejJob) => {
                         if (resSResponse.isDelete.length > 0) {
-                            connection.query(' Update job_users SET isActive = 0, updatedAt =?, updatedBy= ?  WHERE jobId = ? AND userId in ?  ',
+                            connection.query(' Update JobUsers SET isActive = 0, updatedAt =?, updatedBy= ?  WHERE jobId = ? AND userId in ?  ',
                                 [data.updatedAt, data.updatedBy, jobId, [resSResponse.isDelete]],
                                 // [deleteArr],
                                 (err, results) => {
@@ -150,13 +150,13 @@ class JobService {
                                 arr[0] = jobId;
                                 arr[1] = dt;
                                 arr[2] = 1;
-                                arr[3] = data.createdAt;
+                                arr[3] = data.createAt;
                                 arr[4] = "null";
-                                arr[5] = data.createdBy;
+                                arr[5] = data.createBy;
                                 arr[6] = "null";
                                 return arr;
                             })
-                            connection.query('INSERT INTO job_users ( jobId, userId,isActive, createdAt, updatedAt, createdBy, updatedBy) VALUES ?  ',
+                            connection.query('INSERT INTO JobUsers ( jobId, userId,isActive, createAt, updatedAt, createBy, updatedBy) VALUES ?  ',
                                 [jobUsers],
                                 (err, results) => {
                                     if (err) {
@@ -174,8 +174,8 @@ class JobService {
                 })
                 .then(() => {
                     return new Promise((resUser, rejUser) => {
-                        connection.query('INSERT INTO Job ( jobId, jobTitle,jobDescription , jobCreatedBy, jobStatus,isActive, createdAt, updatedAt, createdBy, updatedBy) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ',
-                            [jobId, data.jobTitle, data.jobDescription, data.jobCreatedBy, data.jobStatus, 1, data.createdAt, data.updatedAt, data.createdBy, data.updatedBy],
+                        connection.query('INSERT INTO Job ( jobId, jobTitle,jobDescription , jobCreatedBy, jobStatus,isActive, createAt, updatedAt, createBy, updatedBy) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ',
+                            [jobId, data.jobTitle, data.jobDescription, data.jobCreatedBy, data.jobStatus, 1, data.createAt, data.updatedAt, data.createBy, data.updatedBy],
                             (err, results) => {
                                 if (err) {
                                     db.rollbackTransaction(connection);
@@ -206,8 +206,8 @@ class JobService {
             db.getConnection().
                 then(conn => {
                     connection = conn;
-                    connection.query(`select J.jobId, J.jobTitle,J.createdAt, J.jobDescription, J.jobCreatedBy, J.jobStatus, JU.userId from Job J
-                    LEFT JOIN job_users JU  ON J.jobId = JU.jobId  WHERE (J.jobId LIKE ? AND J.jobStatus LIKE ? AND J.jobCreatedBy LIKE ?)   AND J.isActive = 1 AND JU.isActive = 1`,
+                    connection.query(`select J.jobId, J.jobTitle,J.createAt, J.jobDescription, J.jobCreatedBy, J.jobStatus, JU.userId from Job J
+                    LEFT JOIN JobUsers JU  ON J.jobId = JU.jobId  WHERE (J.jobId LIKE ? AND J.jobStatus LIKE ? AND J.jobCreatedBy LIKE ?)   AND J.isActive = 1 AND JU.isActive = 1`,
                         ["%" + jobId + "%", "%" + jobStatus + "%", "%" + jobCreatedBy + "%"], (err, results) => {
                             db.releaseConnection(connection);
                             if (err) {
@@ -236,7 +236,7 @@ class JobService {
 
                                             jobID.push(dt.jobId);
                                             finalResult.push({
-                                                jobId: dt.jobId, jobTitle: dt.jobTitle, createdAt: dt.createdAt,
+                                                jobId: dt.jobId, jobTitle: dt.jobTitle, createAt: dt.createAt,
                                                 jobDescription: dt.jobDescription, jobCreatedBy: dt.jobCreatedBy, jobStatus: dt.jobStatus, userId: ids
                                             });
                                         } else {
@@ -284,7 +284,7 @@ class JobService {
                 })
                 .then(() => {
                     // connection = conn;
-                    connection.query('update job_users SET isActive = 0  WHERE jobId = ? ', [id], (err, results) => {
+                    connection.query('update JobUsers SET isActive = 0  WHERE jobId = ? ', [id], (err, results) => {
                         db.releaseConnection(connection);
                         if (err) {
                             reject(err)
@@ -306,8 +306,8 @@ class JobService {
             db.getConnection().
                 then(conn => {
                     connection = conn;
-                    connection.query(`select J.jobId, J.jobTitle,J.createdAt, J.jobDescription, J.jobCreatedBy, J.jobStatus, JU.userId from Job J
-                    LEFT JOIN job_users JU  ON J.jobId = JU.jobId
+                    connection.query(`select J.jobId, J.jobTitle,J.createAt, J.jobDescription, J.jobCreatedBy, J.jobStatus, JU.userId from Job J
+                    LEFT JOIN JobUsers JU  ON J.jobId = JU.jobId
                       WHERE  J.isActive = 1 AND JU.isActive = 1`, (err, results) => {
                             db.releaseConnection(connection);
                             if (err) {
@@ -336,7 +336,7 @@ class JobService {
 
                                             jobID.push(dt.jobId);
                                             finalResult.push({
-                                                jobId: dt.jobId, jobTitle: dt.jobTitle, createdAt: dt.createdAt,
+                                                jobId: dt.jobId, jobTitle: dt.jobTitle, createAt: dt.createAt,
                                                 jobDescription: dt.jobDescription, jobCreatedBy: dt.jobCreatedBy, jobStatus: dt.jobStatus, userId: ids
                                             });
                                         } else {
@@ -371,7 +371,7 @@ class JobService {
             db.getConnection().
                 then(conn => {
                     connection = conn;
-                    connection.query(`select J.jobId, J.jobTitle,J.createdAt, J.jobDescription, J.jobCreatedBy, J.jobStatus, JU.userId from job_users 
+                    connection.query(`select J.jobId, J.jobTitle,J.createAt, J.jobDescription, J.jobCreatedBy, J.jobStatus, JU.userId from JobUsers 
                     JU LEFT JOIN Job J ON J.jobId = JU.jobId WHERE J.isActive = 1 AND JU.isActive = 1 AND JU.userId=?`, [id], (err, results) => {
                             db.releaseConnection(connection);
                             if (err) {
@@ -397,7 +397,7 @@ class JobService {
                 then(conn => {
                     connection = conn;
                         connection.query(`SELECT JU.jobId,U.firstName,U.lastName,U.email,U.role From User U
-                        INNER JOIN job_users JU ON U.userId = JU.userID and U.isActive=1
+                        INNER JOIN JobUsers JU ON U.userId = JU.userID and U.isActive=1
                         where JU.jobId = ?  and U.status = 1 and JU.isActive = 1`, [id], (err, results) => {
                              db.releaseConnection(connection);
                             if (err) {

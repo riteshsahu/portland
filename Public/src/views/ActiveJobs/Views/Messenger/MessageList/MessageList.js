@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import Toolbar from '../Toolbar/Toolbar';
-import Message from '../Message/Message';
-import moment from 'moment';
 import socketIOClient from "socket.io-client";
 
 import './MessageList.css';
+import Messages from '../Message/Messages';
+import Toolbar from '../Toolbar/Toolbar';
 
-const MY_USER_ID = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails'))[0].email : 'not defined';
+const MY_USER_ID = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails'))[0].userId : 'not defined';
+const author = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails'))[0].firstName : 'not defined';
 class MessageList extends Component {
   constructor(props) {
     super(props);
@@ -20,8 +20,11 @@ class MessageList extends Component {
   ws = socketIOClient('http://localhost:5000/')
   
   componentDidMount() {
-
-    this.ws.emit('subscribe', window.location.href.split('/').pop());
+    let subscribe = {
+      room: window.location.href.split('/').pop(),
+      userId: MY_USER_ID
+    }
+    this.ws.emit('subscribe', subscribe);
 
     this.ws.on("response", evt => {
       console.log('evt', evt)
@@ -31,7 +34,11 @@ class MessageList extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    console.log('prev props-----', prevProps)
+    let subscribe = {
+      room: window.location.href.split('/').pop(),
+      userId: MY_USER_ID
+    }
+    this.ws.emit('subscribe', subscribe);
     if(this.props.ActiveJobDetail) {
       if(this.props.ActiveJobDetail.JobId !== prevProps.ActiveJobDetail.JobId) {
         this.ws.emit('subscribe', window.location.href.split('/').pop());
@@ -42,8 +49,18 @@ class MessageList extends Component {
     }
   }
 
-  addMessage = message =>
-    this.setState(state => ({ messages: [message, ...state.messages] }))
+  addMessage = message => {
+    let tempArr= this.state.messages;
+    tempArr.push({
+      author: message.author,
+      message: message.message,
+      fromMe: false,
+      timestamp: new Date().getTime()
+    });
+    this.setState({messages: tempArr})
+
+  }
+    
 
   keyPressed=(event) =>  {
     if (event.key === "Enter") {
@@ -52,115 +69,44 @@ class MessageList extends Component {
   }
   
   submitMessage=(value) => {
-    console.log("hello world msg submitted",this.state.message)
-    console.log("===message--",this.state.messages);
     let tempArr= this.state.messages;
-    // let id = this.state.messages.length;
     tempArr.push({
-      id: 1,
-      author: MY_USER_ID,
+      author: author,
       message: this.state.message,
+      fromMe: true,
       timestamp: new Date().getTime()
     });
-    const message = { name: MY_USER_ID, message: this.state.message, room: window.location.href.split('/').pop()}
+    const message = { userId: MY_USER_ID, message: this.state.message, room: window.location.href.split('/').pop(), author: author }
     this.ws.emit('send message',message)
 
-    // tempArr.push (value);
     this.setState({
       messages:tempArr,
       message:""
-    })
-  }
+    });
 
-  renderMessages() {
-    let i = 0;
-    let messageCount = this.state.messages.length;
-    let messages = [];
-
-    while (i < messageCount) {
-      let previous = this.state.messages[i - 1];
-      let current = this.state.messages[i];
-      let next = this.state.messages[i + 1];
-      let isMine = current.author === MY_USER_ID;
-      let currentMoment = moment(current.timestamp);
-      let prevBySameAuthor = false;
-      let nextBySameAuthor = false;
-      let startsSequence = true;
-      let endsSequence = true;
-      let showTimestamp = true;
-
-      if (previous) {
-        let previousMoment = moment(previous.timestamp);
-        let previousDuration = moment.duration(currentMoment.diff(previousMoment));
-        prevBySameAuthor = previous.author === current.author;
-        
-        if (prevBySameAuthor && previousDuration.as('hours') < 1) {
-          startsSequence = false;
-        }
-
-        if (previousDuration.as('hours') < 1) {
-          showTimestamp = false;
-        }
-      }
-
-      if (next) {
-        let nextMoment = moment(next.timestamp);
-        let nextDuration = moment.duration(nextMoment.diff(currentMoment));
-        nextBySameAuthor = next.author === current.author;
-
-        if (nextBySameAuthor && nextDuration.as('hours') < 1) {
-          endsSequence = false;
-        }
-      }
-
-      messages.push(
-        <Message
-          key={i}
-          isMine={isMine}
-          startsSequence={startsSequence}
-          endsSequence={endsSequence}
-          showTimestamp={showTimestamp}
-          data={current}
-        />
-      );
-
-      // Proceed to the next message.
-      i += 1;
-    }
-
-    return messages;
   }
 
   render() {
     return(
-      <div className="message-list">
+      <div className="container">
         <Toolbar
-            leftItems= "Job Title"
-        //   title=""
-          rightItems= "Participants"
-
-            // <ToolbarButton key="info" icon="ion-ios-information-circle-outline" />,
-            // <ToolbarButton key="video" icon="ion-ios-videocam" />,
-            // <ToolbarButton key="phone" icon="ion-ios-call" />
-          
+          leftItems= "Job Title"
+          rightItems= "Participants"          
         />
-
-        <div className="message-list-container">{this.renderMessages()}</div>
-
-
+        <Messages messages={this.state.messages} />
+        
         <div className="compose">
-        <input
-          type="text"
-          className="compose-input"
-          placeholder="  Type a message"
-          onChange={e=>{this.setState({message: e.target.value})}}
-          value={this.state.message}
-          onKeyPress={e=>this.keyPressed(e)}
-
-        />
-                <i style={{color:"#44c372",fontSize: "x-large",marginLeft: 15}} onClick={() => this.submitMessage(this.state.message)} class="fa fa-paper-plane"></i>
+          <input
+            type="text"
+            className="compose-input"
+            placeholder="  Type a message"
+            onChange={e=>{this.setState({message: e.target.value})}}
+            value={this.state.message}
+            onKeyPress={e=>this.keyPressed(e)}
+          />
+          <i style={{color:"#44c372",fontSize: "x-large",marginLeft: 15}} onClick={() => this.submitMessage(this.state.message)} class="fa fa-paper-plane"></i>
+        </div>
       </div>
-     </div>
     );
   }
 }

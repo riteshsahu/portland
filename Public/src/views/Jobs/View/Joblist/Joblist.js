@@ -56,7 +56,7 @@ class JobList extends Component {
     showJobList = () => {
         let result = [];
         this.props.jobDetails.map((data, i) => {
-            let date= data.createdAt.split("T");
+            let date= data.createAt.split("T");
             result.push(<tr>
                 <td>{data.jobId}</td>
                 <td>{data.jobTitle}</td>
