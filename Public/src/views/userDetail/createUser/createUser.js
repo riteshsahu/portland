@@ -51,10 +51,6 @@ class CreateUser extends Component {
             role: 2,
             isActive: 1,
             status: 1,
-            createdAt: new Date().toJSON().slice(0, 10).replace(/-/g, '/'),
-            updatedAt: "null",
-            createdBy: "john",
-            updatedBy: "null"
         }
         this.props.CreateNewUser(data);
     }
@@ -73,10 +69,6 @@ class CreateUser extends Component {
             "role": this.state.userDetails.role,
             "isActive": 1, //fix
             "status": this.state.userDetails.status,
-            "createdAt": this.state.userDetails.createdAt,
-            "updatedAt": "null", //fix
-            "createdBy": this.state.userDetails.firstName,
-            "updatedBy": "null" //fix
         }
         this.props.updateUserDetails(this.state.userDetails.userId,data);
     }
