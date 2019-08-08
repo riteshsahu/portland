@@ -14,7 +14,7 @@ export const SelectedJob = (id,value) => {
 
 
 
-export const GetJobParticipants =(id) => {
+export const GetJobParticipants = (id) => {
     return (dispatch) => {
         fetch ( StringFormat(API_ROOT + URI.GET_JOB_PARTICIPANTS,id), {
             method: 'GET',

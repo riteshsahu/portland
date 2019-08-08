@@ -20,7 +20,7 @@ class Toolbar extends Component {
   componentWillReceiveProps = (nextProps) => {
     // console.log(nextProps.JobId,"jobId for this job"),
     // console.log("Value in props",nextProps)
-    if (this.state.selectedJobId != nextProps.JobId) {
+    if (this.state.selectedJobId !== nextProps.JobId) {
       this.props.GetJobParticipants(nextProps.JobId);
       this.setState({
         isJobIdUpdated: false,

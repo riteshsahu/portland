@@ -64,6 +64,8 @@ class CreateUser extends Component {
         })
 
         console.log("===update data====",);
+        const userDetails = localStorage.getItem("userDetails");
+        const user = JSON.parse(userDetails);
         let data = {
             "firstName": this.state.userDetails.firstName,
             "lastName": this.state.userDetails.lastName,
@@ -72,6 +74,7 @@ class CreateUser extends Component {
             "role": this.state.userDetails.role,
             "isActive": 1, //fix
             "status": this.state.userDetails.status,
+            userId: user[0].userId
         }
         this.props.updateUserDetails(this.state.userDetails.userId,data);
     }
