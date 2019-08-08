@@ -75,7 +75,7 @@ class CreateJob extends Component {
                 jobTitle: '',
                 jobCreatedBy: '',
                 jobStatus: '',
-                jobUsers: ""
+                jobUsers: []
             },
             isSubmitted: false
         }
@@ -91,7 +91,7 @@ class CreateJob extends Component {
     getUsersId = (tags) => {
         let arr = this.props.userList.filter(user => {
             var resdIndex = tags.findIndex(dt => {
-                return dt == user.name
+                return dt === user.name
             });
             if (resdIndex >= 0) {
                 return true;
@@ -137,10 +137,7 @@ class CreateJob extends Component {
             "jobStatus": this.state.jobDetails.jobStatus,
             "isActive": 1, // FIX
             "jobUsers": this.state.jobDetails.jobUsers,
-            "createdAt": new Date(),
-            "updatedAt": null,
-            "createdBy": user[0].userId,
-            "updatedBy": null
+            userId: user[0].id
         }
 
         console.log('----datat==========----------', data, "---user.userId---", user);
@@ -156,8 +153,8 @@ class CreateJob extends Component {
             "jobDescription": this.state.jobDetails.jobDescription,
             "jobStatus": this.state.jobDetails.jobStatus,
             "jobCreatedBy": this.state.jobDetails.jobCreatedBy,
-            "createdBy": user[0].userId,
-            "createdAt": new Date(),
+            "createBy": user[0].userId,
+            "createAt": new Date(),
             "updatedAt": new Date(),
             "updatedBy": user[0].userId,
             "jobUsers": this.state.jobDetails.jobUsers
@@ -183,7 +180,7 @@ class CreateJob extends Component {
             let tagsArr = [];
             this.props.updatedDetails.userId.map(dt => {
                 this.props.userList.findIndex(stData => {
-                    if (stData.id == dt) {
+                    if (stData.id === dt) {
                         tagsArr.push(stData.name);
                     }
                 })
@@ -293,12 +290,12 @@ class CreateJob extends Component {
                     <Col xs="5" md="4" lg="4">
                         <Input id="jobCreatedBy" type="select" onChange={this.handleJobChange}>
                             <option selected disabled >--- Select Role-----</option>
-                            <option value="1" selected={this.state.jobDetails.jobCreatedBy == 1 ? true : false} >Admin</option>
-                            <option value="2" selected={this.state.jobDetails.jobCreatedBy == 2 ? true : false} >Management</option>
-                            <option value="3" selected={this.state.jobDetails.jobCreatedBy == 3 ? true : false} >Internal Employee</option>
-                            <option value="4" selected={this.state.jobDetails.jobCreatedBy == 4 ? true : false} >External Employee</option>
-                            <option value="5" selected={this.state.jobDetails.jobCreatedBy == 5 ? true : false} >Designer</option>
-                            <option value="6" selected={this.state.jobDetails.jobCreatedBy == 6 ? true : false} >Client</option>
+                            <option value="1" selected={this.state.jobDetails.jobCreatedBy === 1 ? true : false} >Admin</option>
+                            <option value="2" selected={this.state.jobDetails.jobCreatedBy === 2 ? true : false} >Management</option>
+                            <option value="3" selected={this.state.jobDetails.jobCreatedBy === 3 ? true : false} >Internal Employee</option>
+                            <option value="4" selected={this.state.jobDetails.jobCreatedBy === 4 ? true : false} >External Employee</option>
+                            <option value="5" selected={this.state.jobDetails.jobCreatedBy === 5 ? true : false} >Designer</option>
+                            <option value="6" selected={this.state.jobDetails.jobCreatedBy === 6 ? true : false} >Client</option>
                         </Input>
                     </Col>
                     <Col xs="12" md="3" lg="3">
@@ -313,8 +310,8 @@ class CreateJob extends Component {
                     <Col xs="5" md="4" lg="4">
                         <Input id="jobStatus" type="select" onChange={this.handleJobChange}>
                             <option selected disabled >--- Select Status-----</option>
-                            <option value="1" selected={this.state.jobDetails.jobStatus == 1 ? true : false} >Pending</option>
-                            <option value="2" selected={this.state.jobDetails.jobStatus == 2 ? true : false} >Completed</option>
+                            <option value="1" selected={this.state.jobDetails.jobStatus === 1 ? true : false} >Pending</option>
+                            <option value="2" selected={this.state.jobDetails.jobStatus === 2 ? true : false} >Completed</option>
                         </Input>
                     </Col>
                     <Col xs="12" md="3" lg="3">

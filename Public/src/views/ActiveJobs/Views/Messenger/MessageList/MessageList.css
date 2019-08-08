@@ -1,8 +1,7 @@
-.message-list-container {
-    padding: 10px;
-    padding-bottom: 70px;
-  }
-
+.container {
+  display: flex;
+  flex-direction: column;
+}
 
   .compose {
     padding: 10px;
@@ -44,8 +43,4 @@
   
   .compose .toolbar-button:hover {
     color: #99999c;
-  }
-
-  .app-footer {
-    display: none
   }
