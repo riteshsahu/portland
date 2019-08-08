@@ -17,7 +17,7 @@ class MessageList extends Component {
     };
   }
 
-  ws = socketIOClient('https://portland-web.herokuapp.com')
+  ws = socketIOClient('ws://portland-web.herokuapp.com')
   
   componentDidMount() {
     let subscribe = {
