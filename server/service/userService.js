@@ -188,6 +188,8 @@ class UserService {
                         })
                     })
                 }).then(() => {
+                    data = db.addAttributesForNew(data, data.userId);
+                    delete data.userId;
                     connection.query(`INSERT INTO User SET ?`, [data], (err, result) => {
                         db.releaseConnection(connection);
                         if (err) {
