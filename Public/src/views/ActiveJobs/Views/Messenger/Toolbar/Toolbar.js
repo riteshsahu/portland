@@ -49,9 +49,9 @@ class Toolbar extends Component {
     return (
       <>
         <div className="toolbar">
-          <div className="left-items">{this.state.jobTitle}</div>
+          <div className="left-items">{this.state.jobTitle ? this.state.jobTitle:leftItems}</div>
           <h1 className="toolbar-title">{title}</h1>
-          <div className="right-items" onClick={this.handleParticipants}>{rightItems}</div>
+          <div className="right-items" onClick={this.handleParticipants}>{rightItems}{<i style={{marginTop: 5 ,marginRight: 5}} className="fa fa-users"></i>}</div>
         </div>
 
         <Modal isOpen={this.state.Model} toggle={this.toggleModel}
