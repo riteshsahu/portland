@@ -70,7 +70,7 @@ function JobReducer(state = initialState, action) {
 
         case JobDetail.DELETE_JOB:
             var updatedJobs = state.jobDetails.filter((data, index) => {
-                return (action.payload != index)
+                return (action.payload !== index)
             });
             return {
                 ...state,

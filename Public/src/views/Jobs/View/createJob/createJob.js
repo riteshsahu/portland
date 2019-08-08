@@ -2,67 +2,10 @@ import React, { Component } from 'react';
 import { Button, Col, Alert, Label, Input, Row } from 'reactstrap';
 import { connect } from "react-redux";
 import { CreateNewJob, updateJobDetails } from '../../jobs.action';
-// import { COUNTRIES } from './Country';
 import TagsInput from 'react-tagsinput'
 import '../../jobs.css';
 import Autosuggest from 'react-autosuggest';
-import {GetUserList} from '../../../userDetail/userDetail.action';
-
-// function states() {
-//     return [
-//         { name: 'Alabama' },
-//         { abbr: 'AK', name: 'Alaska', id: "11" },
-//         { abbr: 'AZ', name: 'Arizona', id: "12" },
-//         { abbr: 'AR', name: 'Arkansas', id: "13" },
-//         { abbr: 'CA', name: 'California', id: "14" },
-//         { abbr: 'CO', name: 'Colorado', id: "15" },
-//         { abbr: 'CT', name: 'Connecticut', id: "16" },
-//         { abbr: 'DE', name: 'Delaware', id: "17" },
-//         { abbr: 'FL', name: 'Florida', id: "18" },
-//         { abbr: 'GA', name: 'Georgia', id: "19" },
-//         { abbr: 'HI', name: 'Hawaii', id: "20" },
-//         { abbr: 'ID', name: 'Idaho', id: "21" },
-//         { abbr: 'IL', name: 'Illinois', id: "22" },
-//         { abbr: 'IN', name: 'Indiana', id: "23" },
-//         { abbr: 'IA', name: 'Iowa', id: "24" },
-//         { abbr: 'KS', name: 'Kansas', id: "25" },
-//         { abbr: 'KY', name: 'Kentucky', id: "26" },
-//         { abbr: 'LA', name: 'Louisiana', id: "27" },
-//         { abbr: 'ME', name: 'Maine', id: "28" },
-//         { abbr: 'MD', name: 'Maryland', id: "30" },
-//         { abbr: 'MA', name: 'Massachusetts', id: "31" },
-//         { abbr: 'MI', name: 'Michigan', id: "32" },
-//         { abbr: 'MN', name: 'Minnesota', id: "33" },
-//         { abbr: 'MS', name: 'Mississippi', id: "34" },
-//         { abbr: 'MO', name: 'Missouri', id: "35" },
-//         { abbr: 'MT', name: 'Montana', id: "36" },
-//         { abbr: 'NE', name: 'Nebraska', id: "37" },
-//         { abbr: 'NV', name: 'Nevada', id: "38" },
-//         { abbr: 'NH', name: 'New Hampshire', id: "39" },
-//         { abbr: 'NJ', name: 'New Jersey', id: "40" },
-//         { abbr: 'NM', name: 'New Mexico', id: "41" },
-//         { abbr: 'NY', name: 'New York', id: "42" },
-//         { abbr: 'NC', name: 'North Carolina', id: "43" },
-//         { abbr: 'ND', name: 'North Dakota', id: "44" },
-//         { abbr: 'OH', name: 'Ohio', id: "45" },
-//         { abbr: 'OK', name: 'Oklahoma', id: "46" },
-//         { abbr: 'OR', name: 'Oregon', id: "47" },
-//         { abbr: 'PA', name: 'Pennsylvania', id: "49" },
-//         { abbr: 'RI', name: 'Rhode Island', id: "50" },
-//         { abbr: 'SC', name: 'South Carolina', id: "51" },
-//         { abbr: 'SD', name: 'South Dakota', id: "52" },
-//         { abbr: 'TN', name: 'Tennessee', id: "53" },
-//         { abbr: 'TX', name: 'Texas', id: "54" },
-//         { abbr: 'UT', name: 'Utah', id: "55" },
-//         { abbr: 'VT', name: 'Vermont', id: "56" },
-//         { abbr: 'VA', name: 'Virginia', id: "57" },
-//         { abbr: 'WA', name: 'Washington', id: "58" },
-//         { abbr: 'WV', name: 'West Virginia', id: "59" },
-//         { abbr: 'WI', name: 'Wisconsin', id: "60" },
-//         { abbr: 'WY', name: 'Wyoming', id: "61" }
-//     ]
-// }
-
+import { GetUserList } from '../../../userDetail/userDetail.action';
 class CreateJob extends Component {
     constructor(props) {
         super(props);
@@ -75,23 +18,21 @@ class CreateJob extends Component {
                 jobTitle: '',
                 jobCreatedBy: '',
                 jobStatus: '',
-                jobUsers: ""
+                jobUsers: []
             },
             isSubmitted: false
         }
 
     }
 
-
     componentDidMount=() => {
         this.props.GetUserList();
     }
 
-
     getUsersId = (tags) => {
         let arr = this.props.userList.filter(user => {
             var resdIndex = tags.findIndex(dt => {
-                return dt == user.name
+                return dt === user.name
             });
             if (resdIndex >= 0) {
                 return true;
@@ -139,7 +80,7 @@ class CreateJob extends Component {
             "jobUsers": this.state.jobDetails.jobUsers,
             "createAt": new Date(),
             "updatedAt": null,
-            "createdBy": user[0].userId,
+            "createBy": user[0].userId,
             "updatedBy": null
         }
 
@@ -155,8 +96,8 @@ class CreateJob extends Component {
             "jobTitle": this.state.jobDetails.jobTitle,
             "jobDescription": this.state.jobDetails.jobDescription,
             "jobStatus": this.state.jobDetails.jobStatus,
-            "jobCreatedBy": user[0].userId,
-            "createdBy": user[0].userId,
+            "jobCreatedBy": this.state.jobDetails.jobCreatedBy,
+            "createBy": user[0].userId,
             "createAt": new Date(),
             "updatedAt": new Date(),
             "updatedBy": user[0].userId,
@@ -183,7 +124,7 @@ class CreateJob extends Component {
             let tagsArr = [];
             this.props.updatedDetails.userId.map(dt => {
                 this.props.userList.findIndex(stData => {
-                    if (stData.id == dt) {
+                    if (stData.id === dt) {
                         tagsArr.push(stData.name);
                     }
                 })
@@ -293,12 +234,12 @@ class CreateJob extends Component {
                     <Col xs="5" md="4" lg="4">
                         <Input id="jobCreatedBy" type="select" onChange={this.handleJobChange}>
                             <option selected disabled >--- Select Role-----</option>
-                            <option value="1" selected={this.state.jobDetails.jobCreatedBy == 1 ? true : false} >Admin</option>
-                            <option value="2" selected={this.state.jobDetails.jobCreatedBy == 2 ? true : false} >Management</option>
-                            <option value="3" selected={this.state.jobDetails.jobCreatedBy == 3 ? true : false} >Internal Employee</option>
-                            <option value="4" selected={this.state.jobDetails.jobCreatedBy == 4 ? true : false} >External Employee</option>
-                            <option value="5" selected={this.state.jobDetails.jobCreatedBy == 5 ? true : false} >Designer</option>
-                            <option value="6" selected={this.state.jobDetails.jobCreatedBy == 6 ? true : false} >Client</option>
+                            <option value="1" selected={this.state.jobDetails.jobCreatedBy === 1 ? true : false} >Admin</option>
+                            <option value="2" selected={this.state.jobDetails.jobCreatedBy === 2 ? true : false} >Management</option>
+                            <option value="3" selected={this.state.jobDetails.jobCreatedBy === 3 ? true : false} >Internal Employee</option>
+                            <option value="4" selected={this.state.jobDetails.jobCreatedBy === 4 ? true : false} >External Employee</option>
+                            <option value="5" selected={this.state.jobDetails.jobCreatedBy === 5 ? true : false} >Designer</option>
+                            <option value="6" selected={this.state.jobDetails.jobCreatedBy === 6 ? true : false} >Client</option>
                         </Input>
                     </Col>
                     <Col xs="12" md="3" lg="3">
@@ -313,8 +254,8 @@ class CreateJob extends Component {
                     <Col xs="5" md="4" lg="4">
                         <Input id="jobStatus" type="select" onChange={this.handleJobChange}>
                             <option selected disabled >--- Select Status-----</option>
-                            <option value="1" selected={this.state.jobDetails.jobStatus == 1 ? true : false} >Pending</option>
-                            <option value="2" selected={this.state.jobDetails.jobStatus == 2 ? true : false} >Completed</option>
+                            <option value="1" selected={this.state.jobDetails.jobStatus === 1 ? true : false} >Pending</option>
+                            <option value="2" selected={this.state.jobDetails.jobStatus === 2 ? true : false} >Completed</option>
                         </Input>
                     </Col>
                     <Col xs="12" md="3" lg="3">

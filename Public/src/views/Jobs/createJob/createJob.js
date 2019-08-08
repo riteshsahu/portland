@@ -75,7 +75,7 @@ class CreateJob extends Component {
                 jobTitle: '',
                 jobCreatedBy: '',
                 jobStatus: '',
-                jobUsers: ""
+                jobUsers: []
             },
             isSubmitted: false
         }
@@ -136,7 +136,8 @@ class CreateJob extends Component {
             "jobCreatedBy": this.state.jobDetails.jobCreatedBy,
             "jobStatus": this.state.jobDetails.jobStatus,
             "isActive": 1, // FIX
-            "jobUsers": this.state.jobDetails.jobUsers
+            "jobUsers": this.state.jobDetails.jobUsers,
+            userId: user[0].id
         }
 
         console.log('----datat==========----------', data, "---user.userId---", user);
@@ -152,7 +153,7 @@ class CreateJob extends Component {
             "jobDescription": this.state.jobDetails.jobDescription,
             "jobStatus": this.state.jobDetails.jobStatus,
             "jobCreatedBy": this.state.jobDetails.jobCreatedBy,
-            "createdBy": user[0].userId,
+            "createBy": user[0].userId,
             "createAt": new Date(),
             "updatedAt": new Date(),
             "updatedBy": user[0].userId,
