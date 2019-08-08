@@ -79,9 +79,7 @@ class CreateJob extends Component {
             "isActive": 1, // FIX
             "jobUsers": this.state.jobDetails.jobUsers,
             "createAt": new Date(),
-            "updatedAt": null,
             "createBy": user[0].userId,
-            "updatedBy": null
         }
 
         console.log('----datat==========----------', data, "---user.userId---", user);
@@ -97,11 +95,8 @@ class CreateJob extends Component {
             "jobDescription": this.state.jobDetails.jobDescription,
             "jobStatus": this.state.jobDetails.jobStatus,
             "jobCreatedBy": this.state.jobDetails.jobCreatedBy,
-            "createBy": user[0].userId,
-            "createAt": new Date(),
-            "updatedAt": new Date(),
-            "updatedBy": user[0].userId,
-            "jobUsers": this.state.jobDetails.jobUsers
+            "jobUsers": this.state.jobDetails.jobUsers,
+            userId: user[0].userId,
         };
         console.log("---update Details-----", data);
         this.props.updateJobDetails(this.props.updatedDetails.jobId, data);

@@ -17,7 +17,7 @@ class MessageList extends Component {
     };
   }
 
-  ws = socketIOClient('http://localhost:5000/')
+  ws = socketIOClient('https://portland-web.herokuapp.com')
   
   componentDidMount() {
     let subscribe = {
@@ -31,6 +31,10 @@ class MessageList extends Component {
       const message = evt
       this.addMessage(message)
     }); 
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log('next props---', nextProps)
   }
 
   componentDidUpdate(prevProps) {

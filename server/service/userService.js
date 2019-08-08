@@ -11,7 +11,7 @@ class UserService {
             db.getConnection().
                 then(conn => {
                     connection = conn;
-                    connection.query('Select * from User WHERE isActive = 1 AND role != 1', (err, results) => {
+                    connection.query('Select * from User WHERE isActive = 1', (err, results) => {
                         db.releaseConnection(connection);
                         if (err) {
                             reject(err)
@@ -54,7 +54,7 @@ class UserService {
             db.getConnection().
                 then(conn => {
                     connection = conn;
-                    connection.query('select * from User WHERE isActive= 1 AND role != 1 AND (role LIKE  ? AND firstName LIKE ? AND lastName LIKE ? AND email LIKE ?) ',
+                    connection.query('select * from User WHERE isActive= 1 AND (role LIKE  ? AND firstName LIKE ? AND lastName LIKE ? AND email LIKE ?) ',
                         ["%"+role+ "%", "%" + firstName + "%", "%" + lastName + "%", "%" + email + "%"], (err, results) => {
                             db.releaseConnection(connection);
                             if (err) {
@@ -82,8 +82,9 @@ class UserService {
                 }).then(() => {
                     // update isActive 
                     return new Promise((res, rej) => {
+
                         connection.query('Update User SET isActive = 0, updatedAt =?, updatedBy= ?  WHERE userId = ?',
-                            [data.updatedAt, data.updatedBy, id], (err, results) => {
+                            [new Date(), data.userId, id], (err, results) => {
                                 if (err) {
                                     db.rollbackTransaction(connection);
                                     db.releaseConnection(connection);
@@ -104,11 +105,9 @@ class UserService {
                         role: data.role,
                         isActive: 1,
                         status: data.status,
-                        createAt: data.createAt,
-                        updatedAt: data.updatedAt,
-                        createBy: data.createBy,
-                        updatedBy: data.updatedBy
                     }
+                    updatedData = db.addAttributesForNew(updatedData, data.userId);
+                    delete data.userId;
                     connection.query('INSERT INTO User SET ?',
                         [updatedData], (err, results) => {
                             if (err) {
