@@ -40,6 +40,8 @@ class CreateUser extends Component {
     }
 
     handleSumbit = () => {
+        const userDetails = localStorage.getItem("userDetails");
+        const user = JSON.parse(userDetails);
         this.setState({
             isSubmitted: !this.state.isSubmitted
         })
@@ -51,6 +53,7 @@ class CreateUser extends Component {
             role: 2,
             isActive: 1,
             status: 1,
+            userId: user[0].userId
         }
         this.props.CreateNewUser(data);
     }

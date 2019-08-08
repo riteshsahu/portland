@@ -14,9 +14,9 @@ class JobService {
                     return db.beginTransaction(conn);
                 }).then(() => {
                     return new Promise((res, rej) => {
-                        connection.query('INSERT INTO Job ( jobId, jobTitle,jobDescription , jobCreatedBy, jobStatus,isActive, createAt, updatedAt, createBy, updatedBy) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ',
-                            [data.jobId, data.jobTitle, data.jobDescription, data.jobCreatedBy, data.jobStatus, data.isActive, data.createAt, data.updatedAt, data.createdBy, data.updatedBy],
-                            (err, results) => {                    // jobCreatedBy
+                        connection.query('INSERT INTO Job ( jobId, jobTitle, jobDescription , jobCreatedBy, jobStatus, isActive, createAt, updatedAt, createBy, updatedBy) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ',
+                            [data.jobId, data.jobTitle, data.jobDescription, data.jobCreatedBy, data.jobStatus, data.isActive, data.createAt, data.updatedAt, data.createBy, data.updatedBy],
+                            (err, results) => {                    // jobCreatedBy                                                                                 createBy
                                 if (err) {
                                     db.rollbackTransaction(connection);
                                     db.releaseConnection(connection);
@@ -34,13 +34,15 @@ class JobService {
                             arr[0] = data.jobId;
                             arr[1] = dt;
                             arr[2] = data.isActive;
-                            arr[3] = new Date()
-                            arr[4] = null
-                            arr[5] = data.createBy,
-                            arr[6] = null;
+                            arr[3] = 0;
+                            arr[4] = new Date()
+                            arr[5] = null
+                            arr[6] = data.createBy,
+                            arr[7] = null;
                             return arr;
                         })
-                        connection.query('INSERT INTO JobUsers ( jobId, userId,isActive, createAt, updatedAt, createBy, updatedBy) VALUES ? ',
+                        console.log('job users-----', jobUsers);
+                        connection.query('INSERT INTO JobUsers ( jobId, userId, isActive, isSubscribed, createAt, updatedAt, createBy, updatedBy) VALUES ? ',
                             [jobUsers],
                             (err, results) => {
                                 if (err) {
