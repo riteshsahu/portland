@@ -30,7 +30,7 @@ class MessageList extends Component {
       console.log('evt', evt)
       const message = evt
       this.addMessage(message)
-    });
+    }); 
   }
 
   componentDidUpdate(prevProps) {
@@ -41,6 +41,7 @@ class MessageList extends Component {
     this.ws.emit('subscribe', subscribe);
     if(this.props.ActiveJobDetail) {
       if(this.props.ActiveJobDetail.JobId !== prevProps.ActiveJobDetail.JobId) {
+        this.ws.emit('subscribe', window.location.href.split('/').pop());
         this.setState({
           messages: []
         })

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Badge, Input, Card, Modal, ModalBody, ModalFooter, Button, Col, Pagination, Label, PaginationItem, PaginationLink, Row, Table } from 'reactstrap';
 import { connect } from "react-redux";
 import Messenger from './Messenger/Messenger';
 
