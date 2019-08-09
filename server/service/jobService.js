@@ -57,11 +57,13 @@ class JobService {
                             }
                         )
                     } else {
+                        db.releaseConnection(connection);
                         resolve(results)
                     }
                     
                 })
                 .catch(err => {
+                    db.releaseConnection(connection);
                     reject(err);
                 })
         });
@@ -199,6 +201,7 @@ class JobService {
                     })
                 })
                 .catch(err => {
+                    db.releaseConnection(connection);
                     reject(err);
                 })
         });
@@ -256,8 +259,10 @@ class JobService {
                                             })
                                         }
                                     });
+                                    db.releaseConnection(connection);
                                     resolve(finalResult);
                                 } else {
+                                    db.releaseConnection(connection);
                                     resolve(results);
                                 }
 
@@ -267,6 +272,7 @@ class JobService {
                         })
                 })
                 .catch(err => {
+                    db.releaseConnection(connection);
                     reject(err);
                 })
         });
@@ -294,15 +300,17 @@ class JobService {
                 .then(() => {
                     // connection = conn;
                     connection.query('update JobUsers SET isActive = 0  WHERE jobId = ? ', [id], (err, results) => {
-                        db.releaseConnection(connection);
                         if (err) {
+                            db.releaseConnection(connection);
                             reject(err)
                         } else {
+                            db.releaseConnection(connection);
                             resolve(results);
                         }
                     })
                 })
                 .catch(err => {
+                    db.releaseConnection(connection);
                     reject(err);
                 })
         });
@@ -369,6 +377,7 @@ class JobService {
                 })
                 .catch(err => {
                     console.log("---err--", err);
+                    db.releaseConnection(connection);
                     reject(err);
                 })
         });
@@ -419,6 +428,7 @@ class JobService {
                 })
                 .catch(err => {
                     console.log("---err--", err);
+                    db.releaseConnection(connection);
                     reject(err);
                 })
         })

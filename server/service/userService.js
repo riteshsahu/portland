@@ -21,6 +21,7 @@ class UserService {
                     })
                 })
                 .catch(err => {
+                    db.releaseConnection(connection);
                     reject(err);
                 })
         });
@@ -66,6 +67,7 @@ class UserService {
                         })
                 })
                 .catch(err => {
+                    db.releaseConnection(connection);
                     reject(err);
                 })
         });
@@ -124,6 +126,7 @@ class UserService {
                 })
                 .catch(err => {
                     console.log(err);
+                    db.releaseConnection(connection);
                     reject(err);
                 })
         });
@@ -147,6 +150,7 @@ class UserService {
                     })
                 })
                 .catch(err => {
+                    db.releaseConnection(connection);
                     reject(err);
                 })
         });
@@ -205,6 +209,7 @@ class UserService {
                     })
                 })
                 .catch(err => {
+                    db.releaseConnection(connection);
                     reject(err);
                 })
         });
@@ -243,6 +248,7 @@ class UserService {
                         });
                 })
                 .catch(err => {
+                    db.releaseConnection(connection);
                     reject(err);
                 })
         });
