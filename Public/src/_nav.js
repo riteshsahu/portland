@@ -23,7 +23,7 @@ export default {
         name: 'Chats',
         url: '/chats',
         icon: 'fa fa-tasks'
-      }
+      },
       // {
       //   name: 'Roles',
       //   url: '/roles',

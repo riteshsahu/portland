@@ -17,7 +17,7 @@ class MessageList extends Component {
     };
   }
 
-  ws = socketIOClient(window.location.hostname);
+  ws = socketIOClient(window.location.hostname + ':5000');
   
   componentDidMount() {
     let subscribe = {
@@ -53,6 +53,11 @@ class MessageList extends Component {
     }
   }
 
+  isValidMessage=() => {
+    return this.state.message.trim()
+  }
+  
+
   addMessage = message => {
     let tempArr= this.state.messages;
     tempArr.push({
@@ -68,12 +73,15 @@ class MessageList extends Component {
 
   keyPressed=(event) =>  {
     if (event.key === "Enter") {
+      if(event.target.value!= ''){
       this.submitMessage(event.target.value)
+      }
     }
   }
   
   submitMessage=(value) => {
     let tempArr= this.state.messages;
+    if (this.isValidMessage()) {
     tempArr.push({
       author: author,
       message: this.state.message,
@@ -87,12 +95,12 @@ class MessageList extends Component {
       messages:tempArr,
       message:""
     });
-
+  }
   }
 
   render() {
     return(
-      <div className="container">
+      <div  className="layout">
         <Toolbar
           leftItems= "Job Title"
           rightItems= "Participants"          

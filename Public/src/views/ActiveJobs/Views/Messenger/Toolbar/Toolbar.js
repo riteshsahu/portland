@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import './Toolbar.css';
-import { Modal, ModalBody, ModalHeader, ModalFooter, Button, Col, Label, Row, } from 'reactstrap';
+import { Modal, ModalBody, ModalHeader, ModalFooter, Button, Col, Label, Row,Input } from 'reactstrap';
 import { GetJobParticipants } from '../../../action.activeJobs';
 
 class Toolbar extends Component {
@@ -11,9 +11,13 @@ class Toolbar extends Component {
       isJobIdUpdated: true,
       selectedJobId: '',
       jobTitle: '',
-      Model: false
+      Model: false,
+      primary: false,
+      Answer: ''
     }
     this.toggleModel = this.toggleModel.bind(this);
+    this.togglePrimary = this.togglePrimary.bind(this);
+
   }
 
 
@@ -37,21 +41,55 @@ class Toolbar extends Component {
 
   }
 
+  handleAnswer = () => {
+    this.setState({
+      primary: !this.state.primary
+    })
+  }
+
+  handleAnswerInput = (e) => {
+    this.setState({
+      Answer: e.target.value
+    })
+  }
+
   toggleModel() {
     this.setState({
       Model: !this.state.Model,
     });
   }
+
+  togglePrimary() {
+    this.setState({
+      primary: !this.state.primary,
+    });
+  }
+
+  handleSumbit=() => {
+    this.togglePrimary();
+    console.log("answer", this.state.Answer)
+  }
+
+  keyPressed=(event) =>  {
+    if (event.key === "Enter") {
+      this.handleSumbit()
+      }
+  }
   render() {
     // console.log("Participants",this.props.ParticipantsDetails);
-    console.log("job Title of this job", this.state.jobTitle)
+    // console.log("job Title of this job", this.state.jobTitle)
     const { title, leftItems, rightItems } = this.props;
     return (
       <>
         <div className="toolbar">
           <div className="left-items">{this.state.jobTitle ? this.state.jobTitle:leftItems}</div>
           <h1 className="toolbar-title">{title}</h1>
-          <div className="right-items" onClick={this.handleParticipants}>{rightItems}{<i style={{marginTop: 5 ,marginRight: 5}} className="fa fa-users"></i>}</div>
+          <div className="right-items" >
+         
+          <Label  style={{cursor: "pointer",marginTop: 4}} onClick={this.handleParticipants}>
+          {<i style={{marginTop: 5 ,marginRight: 5,marginLeft: 5}} className="fa fa-users"></i>}{rightItems}</Label>
+          <Button  onClick={this.handleAnswer} color="success">Answer</Button> 
+          </div>
         </div>
 
         <Modal isOpen={this.state.Model} toggle={this.toggleModel}
@@ -77,6 +115,15 @@ class Toolbar extends Component {
             <Button color="primary" onClick={this.toggleModel} >Exit</Button>
           </ModalFooter>
         </Modal>
+
+
+        <Modal isOpen={this.state.primary} toggle={this.togglePrimary}
+                       className={'modal-primary ' + this.props.className}>
+                  <ModalBody>
+                    <Input type = "text" placeholder = "Answer Here" onKeyPress={e=>this.keyPressed(e)} onChange={this.handleAnswerInput}></Input>
+                    <Button  style={{float: "right",marginTop: 10}}color="primary" onClick={this.handleSumbit}>Send</Button>
+                  </ModalBody>
+                </Modal>
       </>
     );
   }
