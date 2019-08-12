@@ -68,6 +68,7 @@ class ChatService {
                 let message = {
                     message: data.message,
                     creatorId: data.userId,
+                    // isClientVisible: data.isClientVisible
                 }
                 message = db.addAttributesForNew(message, data.userId);
                 return new Promise((resMessage, rejMessage) => {

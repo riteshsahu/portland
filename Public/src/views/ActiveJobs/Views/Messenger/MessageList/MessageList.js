@@ -88,7 +88,9 @@ class MessageList extends Component {
       fromMe: true,
       timestamp: new Date().getTime()
     });
-    const message = { userId: MY_USER_ID, message: this.state.message, room: window.location.href.split('/').pop(), author: author }
+    const message = { 
+      // isClientVisible: false,
+      userId: MY_USER_ID,  message: this.state.message, room: window.location.href.split('/').pop(), author: author }
     this.ws.emit('send message',message)
 
     this.setState({
