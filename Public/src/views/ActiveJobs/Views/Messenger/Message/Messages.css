@@ -1,6 +1,7 @@
 .messages {
-  overflow-y: scroll;
-  overflow-x: hidden;
+  overflow: auto;
+  height: 485px;
   flex-grow: 1;
   padding: 20px;
+  /* min-height: 440px; */
 }

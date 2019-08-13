@@ -9,9 +9,7 @@ export default class Compose extends Component {
     }
 }
 handleMessages=(e) => {
-  this.setState({
-    message: e.target.value
-  })
+  this.submitMessage(event.target.value)
 }
 keyPressed=(event) =>  {
   if (event.key === "Enter") {
@@ -21,7 +19,9 @@ keyPressed=(event) =>  {
 
 submitMessage=(value) => {
 console.log("hello world msg submitted")
-
+this.setState({
+  message: value
+})
 }
   render() {
     console.log("this.state.message",this.state.message)

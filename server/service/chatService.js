@@ -49,7 +49,7 @@ class ChatService {
                     })
                 })
                 .catch(err => {
-                    console.log('error 1----', error);
+                    console.log('error 1----', err);
                     db.releaseConnection(connection);
                     reject(err);
                 })
@@ -68,6 +68,7 @@ class ChatService {
                 let message = {
                     message: data.message,
                     creatorId: data.userId,
+                    // isClientVisible: data.isClientVisible
                 }
                 message = db.addAttributesForNew(message, data.userId);
                 return new Promise((resMessage, rejMessage) => {
@@ -131,6 +132,7 @@ class ChatService {
                             // ChatService.messageById(result.insertId, connection)
                             // .then((result) => {
                                 db.commitTransaction(connection);
+                                db.releaseConnection(connection);
                                 resMessageRecipient(result);
                                 resolve(result)
                             // })
@@ -146,26 +148,26 @@ class ChatService {
         });
     }
 
-    static messageById(id, connection) {
-        return new Promise((resolve, reject) => {
-            // var connection;
-            // db.getConnection().then((conn) => {
-            //     connection = conn;
-                connection.query('select * from Message where id = ? ', [id], (err, data) => {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        let message = {};
-                        if (data && data.length > 0) {
-                            message = new Message(data[0]);
-                            console.log('message---', message)
-                        }
-                        resolve(message);
-                    }
-                })
-           // })
-        })
-    }
+    // static messageById(id, connection) {
+    //     return new Promise((resolve, reject) => {
+    //         // var connection;
+    //         // db.getConnection().then((conn) => {
+    //         //     connection = conn;
+    //             connection.query('select * from Message where id = ? ', [id], (err, data) => {
+    //                 if (err) {
+    //                     reject(err);
+    //                 } else {
+    //                     let message = {};
+    //                     if (data && data.length > 0) {
+    //                         message = new Message(data[0]);
+    //                         console.log('message---', message)
+    //                     }
+    //                     resolve(message);
+    //                 }
+    //             })
+    //        // })
+    //     })
+    // }
 
 }
 

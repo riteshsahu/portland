@@ -25,6 +25,7 @@ class RoleService {
                     })
                 })
                 .catch(err => {
+                    db.releaseConnection(connection);
                     reject(err);
                 })
         });

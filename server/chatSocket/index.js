@@ -29,7 +29,8 @@ function socketConnection (io) {
                 console.log('final results-----', result)
                 client.broadcast.to(data.room).emit('response', {
                     message: data.message,
-                    author: data.author
+                    author: data.author,
+                    // isClientVisible: data.isClientVisible
                 });
             })
             // client.broadcast.to(data.room).emit('response', {

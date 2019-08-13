@@ -80,7 +80,7 @@ export const CreateNewUser = (values) => {
         })
             .then(res => res.json())
             .then(data => {
-                if (data == "USER_ALREADY_REGISTERED") {
+                if (data === "USER_ALREADY_REGISTERED") {
                     dispatch({
                         type: UserDetail.DUPLICATE_USER_ERROR,
                         payload: true

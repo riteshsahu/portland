@@ -17,7 +17,7 @@ class MessageList extends Component {
     };
   }
 
-  ws = socketIOClient('http://localhost:5000/')
+  ws = socketIOClient(window.location.hostname + ':5000');
   
   componentDidMount() {
     let subscribe = {
@@ -31,6 +31,10 @@ class MessageList extends Component {
       const message = evt
       this.addMessage(message)
     }); 
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log('next props---', nextProps)
   }
 
   componentDidUpdate(prevProps) {
@@ -49,6 +53,11 @@ class MessageList extends Component {
     }
   }
 
+  isValidMessage=() => {
+    return this.state.message.trim()
+  }
+  
+
   addMessage = message => {
     let tempArr= this.state.messages;
     tempArr.push({
@@ -64,31 +73,36 @@ class MessageList extends Component {
 
   keyPressed=(event) =>  {
     if (event.key === "Enter") {
+      if(event.target.value!= ''){
       this.submitMessage(event.target.value)
+      }
     }
   }
   
   submitMessage=(value) => {
     let tempArr= this.state.messages;
+    if (this.isValidMessage()) {
     tempArr.push({
       author: author,
       message: this.state.message,
       fromMe: true,
       timestamp: new Date().getTime()
     });
-    const message = { userId: MY_USER_ID, message: this.state.message, room: window.location.href.split('/').pop(), author: author }
+    const message = { 
+      // isClientVisible: false,
+      userId: MY_USER_ID,  message: this.state.message, room: window.location.href.split('/').pop(), author: author }
     this.ws.emit('send message',message)
 
     this.setState({
       messages:tempArr,
       message:""
     });
-
+  }
   }
 
   render() {
     return(
-      <div className="container">
+      <div  className="layout">
         <Toolbar
           leftItems= "Job Title"
           rightItems= "Participants"          

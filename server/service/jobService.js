@@ -14,9 +14,9 @@ class JobService {
                     return db.beginTransaction(conn);
                 }).then(() => {
                     return new Promise((res, rej) => {
-                        connection.query('INSERT INTO Job ( jobId, jobTitle,jobDescription , jobCreatedBy, jobStatus,isActive, createAt, updatedAt, createBy, updatedBy) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ',
-                            [data.jobId, data.jobTitle, data.jobDescription, data.jobCreatedBy, data.jobStatus, data.isActive, data.createAt, data.updatedAt, data.createdBy, data.updatedBy],
-                            (err, results) => {                    // jobCreatedBy
+                        connection.query('INSERT INTO Job ( jobId, jobTitle, jobDescription , jobCreatedBy, jobStatus, isActive, createAt, updatedAt, createBy, updatedBy) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ',
+                            [data.jobId, data.jobTitle, data.jobDescription, data.jobCreatedBy, data.jobStatus, data.isActive, data.createAt, data.updatedAt, data.createBy, data.updatedBy],
+                            (err, results) => {                    // jobCreatedBy                                                                                 
                                 if (err) {
                                     db.rollbackTransaction(connection);
                                     db.releaseConnection(connection);
@@ -34,13 +34,15 @@ class JobService {
                             arr[0] = data.jobId;
                             arr[1] = dt;
                             arr[2] = data.isActive;
-                            arr[3] = new Date()
-                            arr[4] = null
-                            arr[5] = data.createBy,
-                            arr[6] = null;
+                            arr[3] = 0;
+                            arr[4] = new Date()
+                            arr[5] = null
+                            arr[6] = data.createBy,
+                            arr[7] = null;
                             return arr;
                         })
-                        connection.query('INSERT INTO JobUsers ( jobId, userId,isActive, createAt, updatedAt, createBy, updatedBy) VALUES ? ',
+                        console.log('job users-----', jobUsers);
+                        connection.query('INSERT INTO JobUsers ( jobId, userId, isActive, isSubscribed, createAt, updatedAt, createBy, updatedBy) VALUES ? ',
                             [jobUsers],
                             (err, results) => {
                                 if (err) {
@@ -55,11 +57,13 @@ class JobService {
                             }
                         )
                     } else {
+                        db.releaseConnection(connection);
                         resolve(results)
                     }
                     
                 })
                 .catch(err => {
+                    db.releaseConnection(connection);
                     reject(err);
                 })
         });
@@ -76,7 +80,7 @@ class JobService {
                 .then(() => {
                     return new Promise((resJob, rejJob) => {
                         connection.query(' Update Job SET isActive = 0, updatedAt =?, updatedBy= ?  WHERE jobId = ? ',
-                            [data.updatedAt, data.updatedBy, jobId],
+                            [new Date(), data.userId, jobId],
                             (err, results) => {
                                 if (err) {
                                     db.rollbackTransaction(connection);
@@ -131,7 +135,7 @@ class JobService {
                     return new Promise((resJob, rejJob) => {
                         if (resSResponse.isDelete.length > 0) {
                             connection.query(' Update JobUsers SET isActive = 0, updatedAt =?, updatedBy= ?  WHERE jobId = ? AND userId in ?  ',
-                                [data.updatedAt, data.updatedBy, jobId, [resSResponse.isDelete]],
+                                [new Date(), data.userId, jobId, [resSResponse.isDelete]],
                                 // [deleteArr],
                                 (err, results) => {
                                     if (err) {
@@ -156,13 +160,14 @@ class JobService {
                                 arr[0] = jobId;
                                 arr[1] = dt;
                                 arr[2] = 1;
-                                arr[3] = data.createAt;
-                                arr[4] = null;
-                                arr[5] = data.createBy;
-                                arr[6] = null;
+                                arr[3] = 0;
+                                arr[4] = new Date()
+                                arr[5] = null;
+                                arr[6] = data.userId;
+                                arr[7] = null;
                                 return arr;
                             })
-                            connection.query('INSERT INTO JobUsers ( jobId, userId,isActive, createAt, updatedAt, createBy, updatedBy) VALUES ?  ',
+                            connection.query('INSERT INTO JobUsers ( jobId, userId, isActive, isSubscribed, createAt, updatedAt, createBy, updatedBy) VALUES ?  ',
                                 [jobUsers],
                                 (err, results) => {
                                     if (err) {
@@ -181,7 +186,7 @@ class JobService {
                 .then(() => {
                     return new Promise((resUser, rejUser) => {
                         connection.query('INSERT INTO Job ( jobId, jobTitle,jobDescription , jobCreatedBy, jobStatus,isActive, createAt, updatedAt, createBy, updatedBy) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ',
-                            [jobId, data.jobTitle, data.jobDescription, data.jobCreatedBy, data.jobStatus, 1, data.createAt, data.updatedAt, data.createBy, data.updatedBy],
+                            [jobId, data.jobTitle, data.jobDescription, data.jobCreatedBy, data.jobStatus, 1, new Date(), data.updatedAt, data.userId, data.updatedBy],
                             (err, results) => {
                                 if (err) {
                                     db.rollbackTransaction(connection);
@@ -196,6 +201,7 @@ class JobService {
                     })
                 })
                 .catch(err => {
+                    db.releaseConnection(connection);
                     reject(err);
                 })
         });
@@ -253,8 +259,10 @@ class JobService {
                                             })
                                         }
                                     });
+                                    db.releaseConnection(connection);
                                     resolve(finalResult);
                                 } else {
+                                    db.releaseConnection(connection);
                                     resolve(results);
                                 }
 
@@ -264,6 +272,7 @@ class JobService {
                         })
                 })
                 .catch(err => {
+                    db.releaseConnection(connection);
                     reject(err);
                 })
         });
@@ -291,15 +300,17 @@ class JobService {
                 .then(() => {
                     // connection = conn;
                     connection.query('update JobUsers SET isActive = 0  WHERE jobId = ? ', [id], (err, results) => {
-                        db.releaseConnection(connection);
                         if (err) {
+                            db.releaseConnection(connection);
                             reject(err)
                         } else {
+                            db.releaseConnection(connection);
                             resolve(results);
                         }
                     })
                 })
                 .catch(err => {
+                    db.releaseConnection(connection);
                     reject(err);
                 })
         });
@@ -366,6 +377,7 @@ class JobService {
                 })
                 .catch(err => {
                     console.log("---err--", err);
+                    db.releaseConnection(connection);
                     reject(err);
                 })
         });
@@ -416,6 +428,7 @@ class JobService {
                 })
                 .catch(err => {
                     console.log("---err--", err);
+                    db.releaseConnection(connection);
                     reject(err);
                 })
         })
