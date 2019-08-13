@@ -6,30 +6,33 @@ import './MessageList.css';
 import Messages from '../Message/Messages';
 import Toolbar from '../Toolbar/Toolbar';
 
-const MY_USER_ID = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails'))[0].userId : 'not defined';
-const author = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails'))[0].firstName : 'not defined';
+const USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
 class MessageList extends Component {
   constructor(props) {
     super(props);
     this.state = {
       message:"",
-      messages: []
+      messages: [],
+      isVisibleToClient: false
     };
   }
 
-  ws = socketIOClient(window.location.hostname + ':5000');
+  ws = socketIOClient(window.location.hostname);
   
   componentDidMount() {
     let subscribe = {
       room: window.location.href.split('/').pop(),
-      userId: MY_USER_ID
+      userId: USER_DETAILS[0].userId
     }
     this.ws.emit('subscribe', subscribe);
 
     this.ws.on("response", evt => {
       console.log('evt', evt)
-      const message = evt
-      this.addMessage(message)
+      if((USER_DETAILS[0].role !== 6) || (USER_DETAILS[0].role === 6 && evt.isVisibleToClient)) {
+        const message = evt;
+        this.addMessage(message)
+      }
+      
     }); 
   }
 
@@ -40,7 +43,7 @@ class MessageList extends Component {
   componentDidUpdate(prevProps) {
     let subscribe = {
       room: window.location.href.split('/').pop(),
-      userId: MY_USER_ID
+      userId: USER_DETAILS[0].userId
     }
     this.ws.emit('subscribe', subscribe);
     if(this.props.ActiveJobDetail) {
@@ -73,39 +76,61 @@ class MessageList extends Component {
 
   keyPressed=(event) =>  {
     if (event.key === "Enter") {
-      if(event.target.value!= ''){
-      this.submitMessage(event.target.value)
+      if(event.target.value !== ''){
+        this.submitMessage()
       }
     }
   }
   
-  submitMessage=(value) => {
+  // handleClientAnswer = (value) => {
+  //   this.setState({
+      
+  //   })
+  //   this.submitMessage()
+  // }
+
+  handleAnswerInput = (value) => {
+    this.setState({
+      isVisibleToClient: 1,
+      message: value
+    })
+  }
+
+
+  submitMessage = () => {
     let tempArr= this.state.messages;
     if (this.isValidMessage()) {
-    tempArr.push({
-      author: author,
-      message: this.state.message,
-      fromMe: true,
-      timestamp: new Date().getTime()
-    });
-    const message = { 
-      // isClientVisible: false,
-      userId: MY_USER_ID,  message: this.state.message, room: window.location.href.split('/').pop(), author: author }
-    this.ws.emit('send message',message)
-
-    this.setState({
-      messages:tempArr,
-      message:""
-    });
+      tempArr.push({
+        author: USER_DETAILS[0].firstName,
+        message: this.state.message,
+        fromMe: true,
+        timestamp: new Date().getTime()
+      });
+      const message = { 
+        isVisibleToClient: this.state.isVisibleToClient,
+        userId: USER_DETAILS[0].userId,  
+        message: this.state.message, 
+        room: window.location.href.split('/').pop(), 
+        author: USER_DETAILS[0].firstName 
+      }
+      this.ws.emit('send message',message)
+      this.setState({
+        messages:tempArr,
+        message:""
+      });
+    }
   }
-  }
 
+  
   render() {
     return(
       <div  className="layout">
         <Toolbar
           leftItems= "Job Title"
-          rightItems= "Participants"          
+          rightItems= "Participants"       
+          handleClientAnswer = {this.submitMessage}   
+          handleAnswerInput = {this.handleAnswerInput}
+          userRole = {USER_DETAILS[0].role}
         />
         <Messages messages={this.state.messages} />
         
@@ -114,11 +139,15 @@ class MessageList extends Component {
             type="text"
             className="compose-input"
             placeholder="  Type a message"
-            onChange={e=>{this.setState({message: e.target.value})}}
+            onChange={ e => { this.setState({message: e.target.value}) }}
             value={this.state.message}
             onKeyPress={e=>this.keyPressed(e)}
           />
-          <i style={{color:"#44c372",fontSize: "x-large",marginLeft: 15}} onClick={() => this.submitMessage(this.state.message)} class="fa fa-paper-plane"></i>
+          <i 
+            style={{color:"#44c372",fontSize: "x-large",marginLeft: 15}} 
+            onClick={this.submitMessage} 
+            className="fa fa-paper-plane">
+            </i>
         </div>
       </div>
     );
