@@ -30,7 +30,7 @@ function socketConnection (io) {
                 client.broadcast.to(data.room).emit('response', {
                     message: data.message,
                     author: data.author,
-                    // isClientVisible: data.isClientVisible
+                    isVisibleToClient: data.isVisibleToClient
                 });
             })
             // client.broadcast.to(data.room).emit('response', {
