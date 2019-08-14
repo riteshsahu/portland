@@ -133,8 +133,8 @@ class MessageList extends Component {
           <input
             type="text"
             className="compose-input"
-            placeholder="  Type a message"
-            onChange={ e => { this.setState({message: e.target.value}) }}
+            placeholder="Type a message"
+            onChange={e=>{this.setState({message: e.target.value})}}
             value={this.state.message}
             onKeyPress={e=>this.keyPressed(e)}
           />
