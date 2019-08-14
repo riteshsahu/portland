@@ -50,7 +50,7 @@ class CreateUser extends Component {
             lastName: this.state.userDetails.lastName,
             email: this.state.userDetails.email,
             password: this.state.userDetails.password,
-            role: 2,
+            role: this.state.userDetails.role,
             isActive: 1,
             status: 1,
             userId: user[0].userId

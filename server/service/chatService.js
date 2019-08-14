@@ -68,7 +68,7 @@ class ChatService {
                 let message = {
                     message: data.message,
                     creatorId: data.userId,
-                    // isClientVisible: data.isClientVisible
+                    isVisibleToClient: data.isVisibleToClient
                 }
                 message = db.addAttributesForNew(message, data.userId);
                 return new Promise((resMessage, rejMessage) => {
@@ -108,16 +108,10 @@ class ChatService {
                 })
             })
             .then(() => {
-                // let messageRecipient = {
-                //     messageId: messageId,
-                //     recipientGroupId: data.room,
-                //     isRead: isSubscribed
-                // }
                 let records = [];
                 isSubscribedArray.map(value => {
                     records.push([value.userId, data.room, messageId, value.isSubscribed, new Date(), data.userId])
                 })
-                // messageRecipient = db.addAttributesForNew(messageRecipient, data.userId)
                 return new Promise((resMessageRecipient, rejMessageRescipient) => {
                     connection.query('INSERT INTO MessageRecipient ( recipientId, recipientGroupId, messageId, isRead, createAt, createBy) VALUES ? ',
                     [records], 
@@ -129,19 +123,38 @@ class ChatService {
                             reject(err);
                         } else {
                             console.log('result of message user', result);
-                            // ChatService.messageById(result.insertId, connection)
-                            // .then((result) => {
-                                db.commitTransaction(connection);
-                                db.releaseConnection(connection);
-                                resMessageRecipient(result);
-                                resolve(result)
-                            // })
+                            db.commitTransaction(connection);
+                            resMessageRecipient(result);
+                        }
+                    })
+                })
+            })
+            .then(() => {
+                return new Promise((resMessage, rejMessage) => {
+                    connection.query('SELECT * from message WHERE id=?',
+                    [messageId], 
+                    (err, data) => {
+                        if(err) {
+                            db.rollbackTransaction(connection);
+                            db.releaseConnection(connection);
+                            rejMessage(err);
+                            reject(err);
+                        } else {
+                            let message = {};
+                            if (data && data.length > 0) {
+                                message = new Message(data[0]);
+                                console.log('message---', message)
+                            }
+                            db.commitTransaction(connection);
+                            db.releaseConnection(connection);
+                            resMessage(message)
+                            resolve(message)
                         }
                     })
                 })
             })
             .catch(err => {
-                console.log('error 1----', error);
+                console.log('error 1----', err);
                 db.releaseConnection(connection);
                 reject(err);
             })
@@ -172,39 +185,3 @@ class ChatService {
 }
 
 module.exports = ChatService;
-
-
-// static addFavCollection(collectionId, userId) {
-//     var favCollection = {
-//         'collection_id': collectionId,
-//         'user_id': userId
-//     }
-//     favCollection = DB.addAttributesForNew(favCollection);
-//     return new Promise((resolve, reject) => {
-//         var connection;
-//         DB.getConnection().then(conn => {
-//             connection = conn;
-//             return DB.beginTransaction(connection);
-//         })
-//             .then(() => {
-//                 connection.query(`INSERT INTO fav_collection SET ?`, favCollection, (err, data) => {
-//                     if (err) {
-//                         DB.rollbackTransaction(connection);
-//                         DB.release(connection);
-//                         reject(err);
-//                     } else {
-//                         DB.commitTransaction(connection).then(() => {
-//                             NotificationService.addFollowCollectionNotification(collectionId,userId).then(() => {
-//                                 FavCollectionService.getFavCollection(userId).then(collection => {
-//                                     resolve(collection);
-//                                 })
-//                             });                                
-//                         })
-//                     }
-//                 });
-//             })
-//             .catch(err => {
-//                 reject(err);
-//             })
-//     })
-// }

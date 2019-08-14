@@ -95,8 +95,11 @@ class CreateJob extends Component {
             "jobDescription": this.state.jobDetails.jobDescription,
             "jobStatus": this.state.jobDetails.jobStatus,
             "jobCreatedBy": this.state.jobDetails.jobCreatedBy,
-            "jobUsers": this.state.jobDetails.jobUsers,
-            userId: user[0].userId,
+            "createBy": user[0].userId,
+            "createAt": new Date(),
+            "updatedAt": new Date(),
+            "updatedBy": user[0].userId,
+            "jobUsers": this.state.jobDetails.jobUsers
         };
         console.log("---update Details-----", data);
         this.props.updateJobDetails(this.props.updatedDetails.jobId, data);
