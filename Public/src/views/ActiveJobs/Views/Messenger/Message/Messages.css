@@ -1,6 +1,6 @@
 .messages {
   overflow: auto;
-  height: 440px;
+  height: 485px;
   flex-grow: 1;
   padding: 20px;
   /* min-height: 440px; */
