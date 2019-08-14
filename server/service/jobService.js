@@ -80,7 +80,7 @@ class JobService {
                 .then(() => {
                     return new Promise((resJob, rejJob) => {
                         connection.query(' Update Job SET isActive = 0, updatedAt =?, updatedBy= ?  WHERE jobId = ? ',
-                            [new Date(), data.userId, jobId],
+                            [new Date(), data.updatedBy, jobId],
                             (err, results) => {
                                 if (err) {
                                     db.rollbackTransaction(connection);
@@ -135,12 +135,13 @@ class JobService {
                     return new Promise((resJob, rejJob) => {
                         if (resSResponse.isDelete.length > 0) {
                             connection.query(' Update JobUsers SET isActive = 0, updatedAt =?, updatedBy= ?  WHERE jobId = ? AND userId in ?  ',
-                                [new Date(), data.userId, jobId, [resSResponse.isDelete]],
+                                [new Date(), data.updatedBy, jobId, [resSResponse.isDelete]],
                                 // [deleteArr],
                                 (err, results) => {
                                     if (err) {
                                         db.rollbackTransaction(connection);
                                         db.releaseConnection(connection);
+                                        rejJob(err)
                                         reject(err)
                                     } else {
                                         resJob(resSResponse);
@@ -163,7 +164,7 @@ class JobService {
                                 arr[3] = 0;
                                 arr[4] = new Date()
                                 arr[5] = null;
-                                arr[6] = data.userId;
+                                arr[6] = data.createBy;
                                 arr[7] = null;
                                 return arr;
                             })
@@ -185,8 +186,8 @@ class JobService {
                 })
                 .then(() => {
                     return new Promise((resUser, rejUser) => {
-                        connection.query('INSERT INTO Job ( jobId, jobTitle,jobDescription , jobCreatedBy, jobStatus,isActive, createAt, updatedAt, createBy, updatedBy) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ',
-                            [jobId, data.jobTitle, data.jobDescription, data.jobCreatedBy, data.jobStatus, 1, new Date(), data.updatedAt, data.userId, data.updatedBy],
+                        connection.query('INSERT INTO Job ( jobId, jobTitle, jobDescription, jobCreatedBy, jobStatus, isActive, createAt, updatedAt, createBy, updatedBy) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ',
+                            [jobId, data.jobTitle, data.jobDescription, data.jobCreatedBy, data.jobStatus, 1, new Date(), data.updatedAt, data.createBy, data.updatedBy],
                             (err, results) => {
                                 if (err) {
                                     db.rollbackTransaction(connection);
@@ -403,6 +404,7 @@ class JobService {
                 })
                 .catch(err => {
                     console.log("---err--", err);
+                    db.releaseConnection(connection);
                     reject(err);
                 })
         })
