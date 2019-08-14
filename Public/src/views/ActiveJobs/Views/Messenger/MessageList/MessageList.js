@@ -13,7 +13,7 @@ class MessageList extends Component {
     this.state = {
       message:"",
       messages: [],
-      isVisibleToClient: false
+      isVisibleToClient: 0
     };
   }
 
@@ -69,7 +69,7 @@ class MessageList extends Component {
       fromMe: false,
       timestamp: new Date().getTime()
     });
-    this.setState({messages: tempArr})
+    this.setState({messages: tempArr, isVisibleToClient: message.isVisibleToClient})
 
   }
     
@@ -81,13 +81,7 @@ class MessageList extends Component {
       }
     }
   }
-  
-  // handleClientAnswer = (value) => {
-  //   this.setState({
-      
-  //   })
-  //   this.submitMessage()
-  // }
+
 
   handleAnswerInput = (value) => {
     this.setState({
@@ -116,7 +110,8 @@ class MessageList extends Component {
       this.ws.emit('send message',message)
       this.setState({
         messages:tempArr,
-        message:""
+        message:"",
+        isVisibleToClient: 0
       });
     }
   }
