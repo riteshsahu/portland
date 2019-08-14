@@ -2,6 +2,20 @@ node server/script/index.js
 node -e "require('./server/script').sync();"
 node -e "require('./server/script').seedData();"
 
+1. When taking pull
+    - git pull
+    - run sync() command
+    - change database to local
+    - change api to local
+    - change socket connection to local
+
+2. Before pushed to heroku
+    - change database back to remote
+    - change api back to remote
+    - change socket connection back to remote
+
+3. After pushed to heroku
+    - run the sync() command for remote db from local.
 
 Role --- 
 1. Admin
