@@ -27,6 +27,20 @@ class CreateJob extends Component {
 
     componentDidMount=() => {
         this.props.GetUserList();
+        const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+        let loggedUserID = [];
+        console.log("userDetails -----",userDetails)
+        let jobDetail = this.state.jobDetails; 
+        jobDetail["jobUsers"].push(userDetails[0].userId);
+        console.log("jobdetail",jobDetail)
+        let tag =[];
+        tag.push(userDetails[0].firstName +" "+ userDetails[0].lastName);
+        console.log("tag",tag)
+        // loggedUserID;
+        this.setState({
+            jobDetails: jobDetail,
+            tags: tag
+        })
     }
 
     getUsersId = (tags) => {
@@ -110,7 +124,8 @@ class CreateJob extends Component {
 
 
     render() {
-
+        const loggedUser = localStorage.getItem("userDetails");
+        console.log("LOGGED user detail", loggedUser)
         console.log(this.props.userList,"userList");
 
         console.log("---satte----", this.state);

@@ -131,7 +131,7 @@ class ChatService {
             })
             .then(() => {
                 return new Promise((resMessage, rejMessage) => {
-                    connection.query('SELECT * from message WHERE id=?',
+                    connection.query('SELECT * from Message WHERE id=?',
                     [messageId], 
                     (err, data) => {
                         if(err) {
