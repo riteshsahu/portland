@@ -18,6 +18,7 @@ class MessageList extends Component {
   }
 
   ws = socketIOClient(window.location.hostname);
+  //ws = socketIOClient(window.location.hostname + ':5000');
   
   componentDidMount() {
     let subscribe = {
