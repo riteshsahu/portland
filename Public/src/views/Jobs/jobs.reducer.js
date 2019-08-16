@@ -2,6 +2,7 @@ import { JobDetail } from './jobs.constants';
 
 const initialState = {
     createJob: false,
+    updateJob: false,
     updatedDetails: {},
     jobCreated: false,
     jobDetails: [],
@@ -38,7 +39,8 @@ function JobReducer(state = initialState, action) {
             return {
                 ...state,
                 updatedDetails: action.payload,
-                createJob: true
+                createJob: true,
+                updateJob: true
             }
 
         case JobDetail.JOB_LIST:
@@ -51,6 +53,7 @@ function JobReducer(state = initialState, action) {
             return {
                 ...state,
                 createJob: !state.createJob,
+                updateJob: false,
                 updatedDetails: {}
             }
             
