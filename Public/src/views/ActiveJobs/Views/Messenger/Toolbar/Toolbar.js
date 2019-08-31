@@ -96,11 +96,11 @@ class Toolbar extends Component {
               }
               {rightItems}
             </Label>
-            { this.props.userRole !== 6
+            { this.props.userRole != 6
               ?
-              <Button 
+              <Button  style={{background: "#ff8f00", color: "white"}}
               onClick={this.handleAnswer} 
-              color="success"
+              
             >
               Answer
             </Button> 
