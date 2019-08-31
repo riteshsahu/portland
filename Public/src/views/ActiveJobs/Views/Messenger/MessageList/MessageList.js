@@ -6,7 +6,6 @@ import './MessageList.css';
 import Messages from '../Message/Messages';
 import Toolbar from '../Toolbar/Toolbar';
 
-const USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
 class MessageList extends Component {
   constructor(props) {
     super(props);
@@ -18,9 +17,11 @@ class MessageList extends Component {
   }
 
   ws = socketIOClient(window.location.hostname);
-  //ws = socketIOClient(window.location.hostname + ':5000');
+  // ws = socketIOClient('http://localhost:5000')
   
   componentDidMount() {
+    var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
+
     let subscribe = {
       room: window.location.href.split('/').pop(),
       userId: USER_DETAILS[0].userId
@@ -42,6 +43,8 @@ class MessageList extends Component {
   }
 
   componentDidUpdate(prevProps) {
+    var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
+
     let subscribe = {
       room: window.location.href.split('/').pop(),
       userId: USER_DETAILS[0].userId
@@ -93,6 +96,8 @@ class MessageList extends Component {
 
 
   submitMessage = () => {
+    var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
+
     let tempArr= this.state.messages;
     if (this.isValidMessage()) {
       tempArr.push({
@@ -119,6 +124,9 @@ class MessageList extends Component {
 
   
   render() {
+    // const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+    var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
+
     return(
       <div  className="layout">
         <Toolbar

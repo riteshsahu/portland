@@ -29,7 +29,7 @@ constructor(props){
       <React.Fragment>
         <AppSidebarToggler className="d-lg-none" display="md" mobile />
         <h3 className="logo">Dashboard</h3>
-        <AppSidebarToggler className="d-md-down-none" display="lg" />
+        <AppSidebarToggler className="d-md-down-none" display="sm" />
         {/* <Nav className="d-md-down-none" navbar>
         User name
         </Nav> */}
@@ -64,7 +64,7 @@ constructor(props){
           <DropdownToggle nav>
             <img src={user} style={{marginBottom:20}} className="img-avatar" alt="admin@bootstrapmaster.com" />
           </DropdownToggle>
-          <DropdownMenu right style={{ right: 'auto',marginTop: "-15px" }}>
+          <DropdownMenu right style={{ right: 'auto',marginTop: "-15px"}}>
             <DropdownItem onClick={e=> this.props.handleProfile(e)}><i className="fa fa-user"></i> Profile</DropdownItem>
             <DropdownItem onClick={e => this.props.onLogout(e)}><i className="fa fa-lock"></i> Logout</DropdownItem>
           </DropdownMenu>

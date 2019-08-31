@@ -118,11 +118,11 @@ class DefaultLayout extends Component {
           </Suspense>
         </AppHeader>
         <div className="app-body">
-          <AppSidebar fixed display="lg">
+          <AppSidebar fixed display="lg" style={{backgroundColor: "#1F4E3A"}}>
             <AppSidebarHeader />
-            <AppSidebarForm />
+            <AppSidebarForm  style={{backgroundColor: "#1F4E3A"}}/>
             <Suspense>
-              <AppSlidebar navConfig={roleNavigation} {...this.props} />
+              <AppSlidebar  navConfig={roleNavigation} {...this.props} />
 
             </Suspense>
             <AppSidebarFooter />

@@ -114,7 +114,7 @@ class AppSlideBar extends Component {
     const classIcon = classNames('nav-icon', item.icon);
     return (
       <li key={key} className={this.activeRoute(item.url, this.props)}>
-        <a className="nav-link nav-dropdown-toggle"  href="#" onClick={this.handleClick}><i className={classIcon} />{item.name}{this.navBadge(item.badge)}</a>
+        <a className="nav-link nav-dropdown-toggle" style={{}} href="#" onClick={this.handleClick}><i className={classIcon} />{item.name}{this.navBadge(item.badge)}</a>
         <ul className="nav-dropdown-items">
           {this.navList(item.children)}
         </ul>
@@ -160,17 +160,17 @@ class AppSlideBar extends Component {
     const itemBadge = this.navBadge(item.badge)
     const attributes = item.attributes || {}
     return (
-      <NavItem key={key} className={classes.item} onClick={e=> {this.clickCalled(item)}} >
+      <NavItem style={{backgroundColor: "#1F4E3A"}} key={key} className={classes.item} onClick={e=> {this.clickCalled(item)}} >
         { attributes.disabled ?
-            <RsNavLink href={""} className={classes.link} {...attributes}>
+            <RsNavLink  style={{backgroundColor: "#1F4E3A"}} href={""} className={classes.link} {...attributes}>
               {itemIcon}{item.name}{itemBadge}
             </RsNavLink>
          :
           this.isExternal(url) ?
-            <RsNavLink href={url} className={classes.link} active {...attributes}>
+            <RsNavLink href={url} className={classes.link} style={{backgroundColor: "#1F4E3A", }} active {...attributes}>
               {itemIcon}{item.name}{itemBadge}
             </RsNavLink> :
-            <NavLink to={url} className={classes.link} activeClassName="active" onClick={this.hideMobile} {...attributes}>
+            <NavLink to={url} className={classes.link}  style={{backgroundColor: "#1F4E3A", }} activeClassName="active" onClick={this.hideMobile} {...attributes}>
               {itemIcon}{item.name}{itemBadge}
             </NavLink>
         }
