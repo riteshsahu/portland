@@ -70,12 +70,12 @@ class UserSearch extends Component {
                 </Col>
                 <Col xs="12" md="2" lg="2">
                     {!this.props.createUser &&
-                        <Button onClick={this.props.CreateUserHandler} className="btn btn-success " style={{ float: "right", fontSize: "medium" }}>
+                        <Button onClick={this.props.CreateUserHandler}  style={{ float: "right", background: "#ff8f00", fontSize: "large",color: "white" }}>
                             <i style={{ marginRight: 5 }} className="fa fa-plus "></i>
                             Create User
                         </Button>}
                     {this.props.createUser &&
-                        <Button onClick={this.props.CreateUserHandler} className="btn btn-info " style={{ float: "right", fontSize: "medium" }}>
+                        <Button onClick={this.props.CreateUserHandler} style={{ float: "right",background: "#ff8f00",fontSize: "large", color: "white" }}>
                             User List
                         </Button>}
                 </Col>

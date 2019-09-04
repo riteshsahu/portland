@@ -84,12 +84,12 @@ class JobSearch extends Component {
                 </Col>
                 <Col xs="12" md="2" lg="2">
                     {!this.props.createJob &&
-                        <Button onClick={this.props.CreateJobHandler} className="btn btn-success " style={{ float: "right", fontSize: "medium" }}>
+                        <Button onClick={this.props.CreateJobHandler}  style={{ float: "right", background: "#ff8f00", color: "white",fontSize: "medium" }}>
                             <i style={{ marginRight: 5 }} className="fa fa-plus "></i>
                             Create Job
                         </Button>}
                     {this.props.createJob &&
-                        <Button onClick={this.props.CreateJobHandler} className="btn btn-info " style={{ float: "right", fontSize: "medium" }}>
+                        <Button onClick={this.props.CreateJobHandler}  style={{ float: "right",  background: "#ff8f00", color: "white",fontSize: "medium" }}>
                             Job List
                         </Button>}
                 </Col>

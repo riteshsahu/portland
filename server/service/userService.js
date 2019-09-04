@@ -204,7 +204,7 @@ class UserService {
                             reject(err)
                         } else {
                             console.log("--user Created----");
-                            resolve(result);
+                            resolve("USER_CREATED");
                         }
                     })
                 })

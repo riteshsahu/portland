@@ -39,7 +39,7 @@ class DefaultLayout extends Component {
       id: data.jobId,
       name: data.jobTitle,
       url: "/activeJobs/"+data.jobId,
-      icon: "fa fa-user"
+      icon: "fa fa-briefcase"
     });
    
     }) 
@@ -120,7 +120,7 @@ class DefaultLayout extends Component {
         <div className="app-body">
           <AppSidebar fixed display="lg" style={{backgroundColor: "#1F4E3A"}}>
             <AppSidebarHeader />
-            <AppSidebarForm  style={{backgroundColor: "#1F4E3A"}}/>
+            <AppSidebarForm />
             <Suspense>
               <AppSlidebar  navConfig={roleNavigation} {...this.props} />
 

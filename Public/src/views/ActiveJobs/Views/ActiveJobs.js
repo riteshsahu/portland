@@ -8,14 +8,12 @@ class ActiveJobs extends Component {
         this.state = {
 
         }
+       
+
     }
     render() {
         return (
-            // <div style={{padding: "0px 0px"}}>
-                <Messenger />
-            // </div>
-                
-        
+                <Messenger params={this.props.match.params}/>               
         )
     }
 }

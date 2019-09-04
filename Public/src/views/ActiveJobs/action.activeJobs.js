@@ -24,7 +24,6 @@ export const GetJobParticipants = (id) => {
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data,"data of api");
                 dispatch({
                     type: ActiveJobDetail.GET_JOB_PARTICIPANTS,
                     payload: data
@@ -35,6 +34,45 @@ export const GetJobParticipants = (id) => {
             })
     }
 }
+
+export const GetChatHistory = (id) => {
+    return (dispatch) => {
+        dispatch({
+            type: ActiveJobDetail.UPDATE_JOB_ID,
+            payload: id
+        })
+        dispatch({
+            type: ActiveJobDetail.GET_CHAT_HISTORY,
+            payload: [],
+            isChatUpdated: false
+        })
+        fetch ( StringFormat(API_ROOT + URI.GET_CHAT_HISTORY,id), {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                // console.log(data,"data of api");
+                dispatch({
+                    type: ActiveJobDetail.GET_CHAT_HISTORY,
+                    payload: data,
+                    isChatUpdated: true
+                });
+                setTimeout(()=>{
+                    dispatch({
+                        type: ActiveJobDetail.GET_CHAT_HISTORY_UPDATE,
+                        isChatUpdated: false
+                    });
+                },1000)
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+}
+
 
 
 

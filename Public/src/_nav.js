@@ -17,7 +17,7 @@ export default {
       {
         name: 'Active Jobs',
         url: '/activeJobs',
-        icon: 'fa fa-tasks',
+        icon: 'fa fa-briefcase',
       },
       {
         name: 'Chats',

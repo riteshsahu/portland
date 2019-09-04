@@ -20,10 +20,15 @@ class Toolbar extends Component {
 
   }
 
+  componentDidMount = () => {
+    this.props.GetJobParticipants(this.props.JobId);
+  }
 
   componentWillReceiveProps = (nextProps) => {
     // console.log(nextProps.JobId,"jobId for this job"),
     // console.log("Value in props",nextProps)
+    console.log("this.state.selectedJobId",this.state.selectedJobId);
+    console.log("nextProps.JobId",nextProps.JobId);
     if (this.state.selectedJobId !== nextProps.JobId) {
       this.props.GetJobParticipants(nextProps.JobId);
       this.setState({
@@ -84,7 +89,7 @@ class Toolbar extends Component {
     return (
       <>
         <div className="toolbar">
-          <div className="left-items">{this.state.jobTitle ? this.state.jobTitle : leftItems}</div>
+          <div className="left-items">{this.props.JobTitle ? this.props.JobTitle : leftItems}</div>
           <h1 className="toolbar-title">{title}</h1>
           <div className="right-items" >
 
@@ -139,7 +144,8 @@ class Toolbar extends Component {
           className={'modal-primary ' + this.props.className}>
           <ModalBody>
             <Input
-              type="text"
+              type="textarea"
+              rows={4}
               placeholder="Answer Here"
               onKeyPress={(e) => this.keyPressed(e)}
               onChange={this.handleAnswerInput}

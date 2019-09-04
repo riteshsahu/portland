@@ -28,8 +28,10 @@ constructor(props){
     return (
       <React.Fragment>
         <AppSidebarToggler className="d-lg-none" display="md" mobile />
-        <h3 className="logo">Dashboard</h3>
-        <AppSidebarToggler className="d-md-down-none" display="sm" />
+        <h3 className="logo" style={{ color :"#1F4E3A"}}>Dashboard</h3>
+        {/* <AppSidebarToggler className="d-md-down-none" display="lg" /> */}
+        <AppSidebarToggler className="d-md-down-none dashboardIcon" display="lg"  />
+
         {/* <Nav className="d-md-down-none" navbar>
         User name
         </Nav> */}
@@ -60,7 +62,7 @@ constructor(props){
           &nbsp;
         </div> : 
         <AppHeaderDropdown direction="down" style={{display: 'contents'}}>
-          <div> Welcome {userDetails[0].firstName}</div>
+          <div style={{marginBottom: "15px"}}> Welcome {userDetails[0].firstName}</div>
           <DropdownToggle nav>
             <img src={user} style={{marginBottom:20}} className="img-avatar" alt="admin@bootstrapmaster.com" />
           </DropdownToggle>

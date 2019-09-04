@@ -292,7 +292,7 @@ class CreateJob extends Component {
                         <Col xs="12" md="3" lg="3">
                         </Col>
                         <Col xs="12" md="6" lg="6">
-                            <Button disabled={this.state.isSubmitted} color="success" style={{ float: "right" }} onClick={this.handleSumbit}>Create</Button>
+                            <Button disabled={this.state.isSubmitted}  style={{ float: "right",background: "#ff8f00", color: "white" }} onClick={this.handleSumbit}>Create</Button>
                         </Col>
                         <Col xs="12" md="3" lg="3">
                         </Col>

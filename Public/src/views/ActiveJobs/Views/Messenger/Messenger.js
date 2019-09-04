@@ -6,7 +6,7 @@ export default class Messenger extends Component {
   render() {
     return (
       <div className="layout"> 
-        <MessageList />
+        <MessageList params={this.props.params} />
       </div>
          
     );

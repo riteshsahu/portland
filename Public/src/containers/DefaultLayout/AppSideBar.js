@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import 'react-perfect-scrollbar/dist/css/styles.css';
 import {SelectedJob} from '../../views/ActiveJobs/action.activeJobs';
-
+import './header.css';
 
 const propTypes = {
   children: PropTypes.node,
@@ -113,8 +113,8 @@ class AppSlideBar extends Component {
   navDropdown(item, key) {
     const classIcon = classNames('nav-icon', item.icon);
     return (
-      <li key={key} className={this.activeRoute(item.url, this.props)}>
-        <a className="nav-link nav-dropdown-toggle" style={{}} href="#" onClick={this.handleClick}><i className={classIcon} />{item.name}{this.navBadge(item.badge)}</a>
+      <li key={key} className={this.activeRoute(item.url, this.props)} >
+        <a className="nav-link nav-dropdown-toggle"  href="#" onClick={this.handleClick}><i className={classIcon} />{item.name}{this.navBadge(item.badge)}</a>
         <ul className="nav-dropdown-items">
           {this.navList(item.children)}
         </ul>

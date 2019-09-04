@@ -18,7 +18,7 @@ class UserProfile extends Component {
     componentDidMount=() => {
         const userDetails = localStorage.getItem("userDetails");
         const user= JSON.parse(userDetails) ;
-        console.log(user);
+        // console.log(user);
         this.setState({
             firstName: user[0].firstName,
             lastName: user[0].lastName,
@@ -61,7 +61,7 @@ class UserProfile extends Component {
 
     render() {
     
-        console.log(this.state);
+        // console.log(this.state);
         return (
             <>
                 <Row>

@@ -85,8 +85,13 @@ export const CreateNewUser = (values) => {
                         type: UserDetail.DUPLICATE_USER_ERROR,
                         payload: true
                     })
-                } else {
-                    dispatch({ type: UserDetail.CREATE_NEW_USER, payload: true })
+                }
+                
+                else if (data == "USER_CREATED") {
+                    dispatch({ 
+                        type: UserDetail.CREATE_NEW_USER, 
+                        payload: true 
+                    })
                 }
             })
             .catch(err => {

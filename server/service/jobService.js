@@ -424,6 +424,7 @@ class JobService {
                                 console.log("error", err)
                                 reject(err)
                             } else {
+                                console.log("Result of participant api", results)
                                 resolve(results);
                             }
                         });

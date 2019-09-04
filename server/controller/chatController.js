@@ -1,0 +1,17 @@
+const ChatService = require("../service/chatService");
+
+class ChatController {
+    static getMessageHistory(req, res) {
+        let id = req.params.id
+        ChatService.getMessageHistory(id).then(result => {
+            res.json(result);
+            // console.log(result)
+        }).catch(err => {
+            res.status(500)
+            res.json(err)
+            console.log(err)
+        })
+    }
+}
+
+module.exports = ChatController;
