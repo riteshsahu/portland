@@ -22,7 +22,7 @@ class Jobs extends Component {
 
                 <CardBody>
                     {!this.props.createJob && <JobList />}
-                    {this.props.createJob && <CreateJob />}
+                    {this.props.createJob && <CreateJob updateJob={this.props.updateJob}/>}
                 </CardBody>
             </Card>
         )
@@ -32,6 +32,7 @@ class Jobs extends Component {
 const mapStateToProps = state => {
     return {
         createJob: state.jobDetail.createJob,
+        updateJob: state.jobDetail.updateJob
     };
 }
 

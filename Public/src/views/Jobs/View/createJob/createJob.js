@@ -12,7 +12,7 @@ class CreateJob extends Component {
         this.state = {
             isUpdateMode: false,
             tags: [],
-            isUpdated: false,
+            createNew: false,
             jobDetails: {
                 jobId: Date.now(),
                 jobTitle: '',
@@ -25,22 +25,21 @@ class CreateJob extends Component {
 
     }
 
-    componentDidMount=() => {
+    componentDidMount() {
+        console.log('state----', this.state)
         this.props.GetUserList();
         const userDetails = JSON.parse(localStorage.getItem("userDetails"));
-        let loggedUserID = [];
-        console.log("userDetails -----",userDetails)
         let jobDetail = this.state.jobDetails; 
-        jobDetail["jobUsers"].push(userDetails[0].userId);
-        console.log("jobdetail",jobDetail)
-        let tag =[];
-        tag.push(userDetails[0].firstName +" "+ userDetails[0].lastName);
-        console.log("tag",tag)
-        // loggedUserID;
-        this.setState({
-            jobDetails: jobDetail,
-            tags: tag
-        })
+        if(!this.props.updateJob) {
+            jobDetail["jobUsers"].push(userDetails[0].userId);
+            let tag =[];
+            tag.push(userDetails[0].firstName +" "+ userDetails[0].lastName);
+            this.setState({
+                jobDetails: jobDetail,
+                tags: tag
+            })
+        }
+        
     }
 
     getUsersId = (tags) => {
@@ -95,13 +94,10 @@ class CreateJob extends Component {
             "createAt": new Date(),
             "createBy": user[0].userId,
         }
-
-        console.log('----datat==========----------', data, "---user.userId---", user);
           this.props.CreateNewJob(data);
     }
 
     updateJob = () => {
-        console.log('--uodate job callling-----', this.state.jobDetails);
         const userDetails = localStorage.getItem("userDetails");
         const user = JSON.parse(userDetails);
         let data = {
@@ -115,48 +111,56 @@ class CreateJob extends Component {
             "updatedBy": user[0].userId,
             "jobUsers": this.state.jobDetails.jobUsers
         };
-        console.log("---update Details-----", data);
         this.props.updateJobDetails(this.props.updatedDetails.jobId, data);
         this.setState({
             tags: []
               })
     }
 
-
-    render() {
-        const loggedUser = localStorage.getItem("userDetails");
-        console.log("LOGGED user detail", loggedUser)
-        console.log(this.props.userList,"userList");
-
-        console.log("---satte----", this.state);
-        const self= this.props
-
-        console.log("----updatedDetails--", this.props.updatedDetails);
-
-        if (this.props.updatedDetails.jobId && !this.state.isUpdateMode) {
+    componentWillReceiveProps(nextProps) {
+        console.log('next props-----', nextProps);
+        if (nextProps.updatedDetails.jobId && !this.state.isUpdateMode) {
             let tagsArr = [];
-            this.props.updatedDetails.userId.map(dt => {
-                this.props.userList.findIndex(stData => {
+            nextProps.updatedDetails.userId.map(dt => {
+                nextProps.userList.findIndex(stData => {
                     if (stData.id === dt) {
                         tagsArr.push(stData.name);
                     }
                 })
             });
+            this.setState(prevState => ({
+                ...prevState,
+                jobDetails: {
+                    ...prevState.jobDetails,
+                    jobTitle: nextProps.updatedDetails.jobTitle,
+                    jobDescription: nextProps.updatedDetails.jobDescription,
+                    jobCreatedBy: nextProps.updatedDetails.jobCreatedBy,
+                    jobStatus: nextProps.updatedDetails.jobStatus,
+                    jobUsers: tagsArr
+                },
+                isUpdateMode: true,
+                tags: tagsArr
+            }))
 
-            let temp = this.state.jobDetails;
-            temp["jobTitle"] = this.props.updatedDetails.jobTitle;
-            temp["jobDescription"] = this.props.updatedDetails.jobDescription;
-            temp["jobCreatedBy"] = this.props.updatedDetails.jobCreatedBy;
-            temp["jobStatus"] = this.props.updatedDetails.jobStatus;
-            temp["jobUsers"] = tagsArr;
-            this.setState({
-                tags: tagsArr,
-                jobDetails: temp,
-                isUpdateMode: true
-            })
+            // let temp = this.state.jobDetails;
+            // temp["jobTitle"] = this.props.updatedDetails.jobTitle;
+            // temp["jobDescription"] = this.props.updatedDetails.jobDescription;
+            // temp["jobCreatedBy"] = this.props.updatedDetails.jobCreatedBy;
+            // temp["jobStatus"] = this.props.updatedDetails.jobStatus;
+            // temp["jobUsers"] = tagsArr;
+            // this.setState({
+            //     tags: tagsArr,
+            //     jobDetails: temp,
+            //     isUpdateMode: true
+            // })
         }
 
 
+    }
+
+
+    render() {
+        const self= this.props
         function autocompleteRenderInput({ addTag, ...props }) {
    
             const handleOnChange = (e, { newValue, method }) => {
@@ -233,7 +237,7 @@ class CreateJob extends Component {
                         <Label> Job Description:-  </Label>
                     </Col>
                     <Col xs="5" md="4" lg="4">
-                        <Input type="text" id="jobDescription" value={this.state.jobDetails.jobDescription} onChange={this.handleJobChange} placeholder="Job Description" />
+                        <Input type="text" value={this.state.jobDetails.jobDescription} onChange={this.handleJobChange} placeholder="Job Description" />
                     </Col>
                     <Col xs="12" md="3" lg="3">
                     </Col>
@@ -287,7 +291,8 @@ class CreateJob extends Component {
                     </Col>
                 </Row>
 
-                {!this.props.updatedDetails.jobId &&
+                {this.props.updatedDetails.jobId 
+                    ? 
                     <Row style={{ marginTop: 5 }}>
                         <Col xs="12" md="3" lg="3">
                         </Col>
@@ -297,14 +302,12 @@ class CreateJob extends Component {
                         <Col xs="12" md="3" lg="3">
                         </Col>
                     </Row>
-                }
-
-                {this.props.updatedDetails.jobId &&
+                    :
                     <Row style={{ marginTop: 5 }}>
                         <Col xs="12" md="3" lg="3">
                         </Col>
                         <Col xs="12" md="6" lg="6">
-                            <Button disabled={this.state.isSubmitted} color="success" style={{ float: "right" }} onClick={this.updateJob}>Update Job</Button>
+                            <Button disabled={this.state.isSubmitted} color="success" style={{ float: "right" }} onClick={this.handleSumbit}>Create</Button>
                         </Col>
                         <Col xs="12" md="3" lg="3">
                         </Col>
@@ -335,7 +338,8 @@ class CreateJob extends Component {
                         </Col>
                         <Col xs="12" md="3" lg="3">
                         </Col>
-                    </Row>}
+                    </Row>
+                }
             </div>
         )
     }
