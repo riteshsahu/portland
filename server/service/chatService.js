@@ -186,7 +186,7 @@ class ChatService {
             db.getConnection().
                 then(conn => {
                     connection = conn;
-                    connection.query(` SELECT DISTINCT MR.recipientGroupId, M.id, M.message, M.createBy,M.createAt,M.isVisibleToClient, U.firstName, U.lastName 
+                    connection.query(` SELECT DISTINCT MR.recipientGroupId, M.id, M.message, U.role,M.createBy,M.createAt,M.isVisibleToClient, U.firstName, U.lastName 
                     FROM MessageRecipient MR JOIN Message M ON MR.messageId = M.id 
                     JOIN User U ON U.userId = M.creatorId WHERE MR.recipientGroupId= ? ORDER BY M.createAt ASC`, [id],(err, results) => {
                             db.releaseConnection(connection);

@@ -18,7 +18,8 @@ class CreateJob extends Component {
                 jobTitle: '',
                 jobCreatedBy: '',
                 jobStatus: '',
-                jobUsers: []
+                jobUsers: [],
+                jobDescription: ''
             },
             isSubmitted: false
         }
@@ -81,6 +82,7 @@ class CreateJob extends Component {
         })
     }
     handleSumbit = () => {
+        console.log("inside submit",)
         const userDetails = localStorage.getItem("userDetails");
         const user = JSON.parse(userDetails);
         let data = {
@@ -175,7 +177,7 @@ class CreateJob extends Component {
             const inputLength = inputValue.length
 
             let suggestions =[];
-            console.log(self, "USERLIST")
+            // console.log(self, "USERLIST")
              if(self.userList.length > 0) { 
                 suggestions=  self.userList.filter((state) => {
                  return state.name.toLowerCase().slice(0, inputLength) === inputValue
@@ -237,7 +239,7 @@ class CreateJob extends Component {
                         <Label> Job Description:-  </Label>
                     </Col>
                     <Col xs="5" md="4" lg="4">
-                        <Input type="text" value={this.state.jobDetails.jobDescription} onChange={this.handleJobChange} placeholder="Job Description" />
+                        <Input type="text" id="jobDescription" value={this.state.jobDetails.jobDescription} onChange={this.handleJobChange} placeholder="Job Description" />
                     </Col>
                     <Col xs="12" md="3" lg="3">
                     </Col>

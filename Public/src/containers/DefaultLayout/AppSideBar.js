@@ -114,7 +114,7 @@ class AppSlideBar extends Component {
     const classIcon = classNames('nav-icon', item.icon);
     return (
       <li key={key} className={this.activeRoute(item.url, this.props)} >
-        <a className="nav-link nav-dropdown-toggle"  href="#" onClick={this.handleClick}><i className={classIcon} />{item.name}{this.navBadge(item.badge)}</a>
+        <a className="nav-link nav-dropdown-toggle hoverDD"  href="#" onClick={this.handleClick}><i className={classIcon} />{item.name}{this.navBadge(item.badge)}</a>
         <ul className="nav-dropdown-items">
           {this.navList(item.children)}
         </ul>

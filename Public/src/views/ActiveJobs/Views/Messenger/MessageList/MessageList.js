@@ -14,12 +14,20 @@ class MessageList extends Component {
     this.state = {
       message: "",
       messages: [],
-      isVisibleToClient: 0
+      isVisibleToClient: 0,
+      KeyRole: {
+        1: "Admin",
+        2: "Management",
+        3: "Internal Employee",
+        4: "External Employee",
+        5: "Designer",
+        6: "Client"
+      }
     };
   }
 
-  // ws = socketIOClient(window.location.hostname);
-  ws = socketIOClient('http://localhost:5000')
+  ws = socketIOClient(window.location.hostname);
+  // ws = socketIOClient('http://localhost:5000')
 
   componentDidMount() {
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
@@ -52,9 +60,9 @@ class MessageList extends Component {
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
     // console.log(prevProps.ActiveJobDetail.JobId, "job id in props");
     // console.log(this.props.params.id,"props wali id");
-      // if(prevProps.ActiveJobDetail.JobId)
-    if( prevProps.ActiveJobDetail.JobId != this.props.params.id){
-          this.props.GetChatHistory(this.props.params.id);
+    // if(prevProps.ActiveJobDetail.JobId)
+    if (prevProps.ActiveJobDetail.JobId != this.props.params.id) {
+      this.props.GetChatHistory(this.props.params.id);
     }
     let subscribe = {
       room: window.location.href.split('/').pop(),
@@ -74,28 +82,28 @@ class MessageList extends Component {
       let messages = [];
       this.props.chatHistory.map((data, index) => {
         let fromMe = (data.createBy == USER_DETAILS[0].userId) ? true : false
-        if(USER_DETAILS[0].role == 6 && data.isVisibleToClient == 1){
+        if (USER_DETAILS[0].role == 6 && data.isVisibleToClient == 1) {
           messages.push({
             // isVisibleToClient: data.isVisibleToClient,
             // room: window.location.href.split('/').pop(),
             // userId: data.createBy,
-            author: data.firstName,
+            author: this.state.KeyRole[data.role] + "-" + data.firstName,
             fromMe: fromMe,
             message: data.message,
             timestamp: new Date().getTime()
           })
-        }else if(USER_DETAILS[0].role != 6){
+        } else if (USER_DETAILS[0].role != 6) {
           messages.push({
             // isVisibleToClient: data.isVisibleToClient,
             // room: window.location.href.split('/').pop(),
             // userId: data.createBy,
-            author: data.firstName,
+            author: this.state.KeyRole[data.role]+ "-" + data.firstName,
             fromMe: fromMe,
             message: data.message,
             timestamp: new Date().getTime()
           })
         }
-        
+
       })
       // console.log("--messages list from props---", messages);
       this.setState({

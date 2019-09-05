@@ -124,6 +124,7 @@ export const CreateJobHandler = () => {
 }
 
 export const CreateNewJob = (value) => {
+    console.log("action called")
     return (dispatch) => {
         fetch(API_ROOT + URI.CREATE_JOB, {
             method: 'POST',

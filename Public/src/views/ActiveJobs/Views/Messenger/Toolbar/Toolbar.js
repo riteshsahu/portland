@@ -13,7 +13,15 @@ class Toolbar extends Component {
       jobTitle: '',
       Model: false,
       primary: false,
-      answer: ''
+      answer: '',
+      KeyRole: {
+        1: "Admin",
+        2: "Management",
+        3: "Internal Employee",
+        4: "External Employee",
+        5: "Designer",
+        6: "Client"
+      }
     }
     this.toggleModel = this.toggleModel.bind(this);
     this.togglePrimary = this.togglePrimary.bind(this);
@@ -89,7 +97,7 @@ class Toolbar extends Component {
     return (
       <>
         <div className="toolbar">
-          <div className="left-items">{this.props.JobTitle ? this.props.JobTitle : leftItems}</div>
+          <div ><h3 className="jobtitle" >{this.props.JobTitle ? this.props.JobTitle : leftItems}</h3></div>
           <h1 className="toolbar-title">{title}</h1>
           <div className="right-items" >
 
@@ -123,8 +131,9 @@ class Toolbar extends Component {
               <>
                 <Row key={i} style={{ padding: "5 0px" }} >
                   <Col style={{ padding: "0 30px" }} xs="12" md="6" lg="6">
-                    <Label style={{ marginBottom: 0 }}> {data.firstName} {data.lastName}</Label> <br />
-                    <Label style={{ color: "grey", fontSize: 12, marginBottom: 0 }}> {data.email}</Label>
+                     <Label style={{ marginBottom: 0 }}> {this.state.KeyRole[data.role]+ "-" + data.firstName} </Label> <br />
+                    {/* <Label style={{ marginBottom: 0 }}> {data.firstName} {data.lastName}</Label> <br />
+                    <Label style={{ color: "grey", fontSize: 12, marginBottom: 0 }}> {data.email}</Label> */}
                   </Col>
                   <Col xs="12" md="6" lg="6" >
                     <Button style={{ marginTop: 5, marginBottom: 5 }} color="success">Private Chat</Button>

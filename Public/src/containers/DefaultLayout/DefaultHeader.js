@@ -63,7 +63,7 @@ constructor(props){
         </div> : 
         <AppHeaderDropdown direction="down" style={{display: 'contents'}}>
           <div style={{marginBottom: "15px"}}> Welcome {userDetails[0].firstName}</div>
-          <DropdownToggle nav>
+          <DropdownToggle nav style={{marginRight: 20}}>
             <img src={user} style={{marginBottom:20}} className="img-avatar" alt="admin@bootstrapmaster.com" />
           </DropdownToggle>
           <DropdownMenu right style={{ right: 'auto',marginTop: "-15px"}}>
