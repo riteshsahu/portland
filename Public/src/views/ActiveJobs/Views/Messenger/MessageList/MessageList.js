@@ -6,7 +6,6 @@ import './MessageList.css';
 import Messages from '../Message/Messages';
 import Toolbar from '../Toolbar/Toolbar';
 import { GetChatHistory } from '../../../action.activeJobs';
-import { stat } from 'fs';
 
 class MessageList extends Component {
   constructor(props) {
@@ -31,13 +30,8 @@ class MessageList extends Component {
 
   componentDidMount() {
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
-    // console.log("params", this.props.params.id)
     var JobId = this.props.params.id;
     this.props.GetChatHistory(JobId);
-
-
-
-
 
     let subscribe = {
       room: window.location.href.split('/').pop(),
@@ -180,7 +174,7 @@ class MessageList extends Component {
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
 
     return (
-      <div className="layout">
+      <div >
         <Toolbar
           leftItems="Job Title"
           rightItems="Participants"
@@ -200,7 +194,7 @@ class MessageList extends Component {
             onKeyPress={e => this.keyPressed(e)}
           />
           <i
-            style={{ color: "#44c372", fontSize: "x-large", marginLeft: 15 }}
+            style={{ color: "#44c372", fontSize: "x-large", margin: "7px 15px 0px" }}
             onClick={this.submitMessage}
             className="fa fa-paper-plane">
           </i>

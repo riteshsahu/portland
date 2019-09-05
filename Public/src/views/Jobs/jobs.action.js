@@ -2,7 +2,6 @@ import { JobDetail } from './jobs.constants'
 import { API_ROOT, URI, StringFormat } from '../../config/config';
 
 export const getAllJob=(id)=>{
-    console.log("---id----",id);
     return (dispatch) => {
         fetch(StringFormat(API_ROOT + URI.GET_ALL_JOBS, id), {
             method: 'GET',
@@ -12,7 +11,6 @@ export const getAllJob=(id)=>{
         })
             .then(res => res.json())
             .then(data => {
-                console.log("-job-All-search list---", data)
                 dispatch({
                     type: JobDetail.JOB_LIST,
                     payload: data
@@ -44,7 +42,6 @@ export const deleteUserJob = (id) => {
         })
             .then(res => res.json())
             .then(data => {
-                console.log('---job delete from database---', data);
                 dispatch({
                     type: JobDetail.GET_SEARCH,
                     payload: true
@@ -67,7 +64,6 @@ export const updateJobDetails = (id, value) => {
         })
             .then(res => res.json())
             .then(data => {
-                console.log('---job updated---', data);
                 dispatch({
                     type: JobDetail.JOB_UPDATED,
                     payload: true
@@ -90,7 +86,6 @@ export const updateJobDetails = (id, value) => {
 }
 
 export const searchJobs = (data) => {
-    console.log('dadaaa--------------', data);
     let qq = API_ROOT.concat(`${URI.SEARCH_JOBS}?jobId=${data.jobId}&jobStatus=${data.jobStatus}&jobCreatedBy=${data.jobCreatedBy}`);
     console.log('query-----', qq)
     return (dispatch) => {

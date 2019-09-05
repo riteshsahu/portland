@@ -98,7 +98,7 @@ class Toolbar extends Component {
       <>
         <div className="toolbar">
           <div ><h3 className="jobtitle" >{this.props.JobTitle ? this.props.JobTitle : leftItems}</h3></div>
-          <h1 className="toolbar-title">{title}</h1>
+          {/* <h1 className="toolbar-title">{title}</h1> */}
           <div className="right-items" >
 
             <Label style={{ cursor: "pointer", marginTop: 4 }} onClick={this.handleParticipants}>

@@ -5,9 +5,9 @@ import './Messenger.css';
 export default class Messenger extends Component {
   render() {
     return (
-      <div className="layout"> 
+      // <div style={{width: "100%"}}> 
         <MessageList params={this.props.params} />
-      </div>
+      // </div>
          
     );
   }

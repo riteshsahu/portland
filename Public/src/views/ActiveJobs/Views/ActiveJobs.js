@@ -13,7 +13,10 @@ class ActiveJobs extends Component {
     }
     render() {
         return (
+            <div style={{ width: "100%",height: "100%", display: "flex", flexDirection: "column", flexWrap: "nowrap"}}>
                 <Messenger params={this.props.match.params}/>               
+
+            </div>
         )
     }
 }

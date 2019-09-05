@@ -16,15 +16,20 @@
 }
 
   .compose {
+    /* flex: 1;
+    display: flex; */
     padding: 10px;
-    display: inherit;
-    align-items: center;
+    /* display: inherit; */
+    /* align-items: center; */
     background: white;
-    border-top: 1px solid #eeeef1;
-    position: inherit;
+    /* border-top: 1px solid #eeeef1; */
+    position: absolute;
     /* width: 79%; */
     bottom: 0px;
+    height: 60px;
     overflow: hidden;
+    /* flex-shrink: 0; */
+    width: 83%;
   }
   
   @supports (backdrop-filter: blur(20px)) {

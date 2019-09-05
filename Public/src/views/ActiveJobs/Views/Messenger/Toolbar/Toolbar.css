@@ -1,11 +1,18 @@
 .toolbar {
-    display: flex;
-    align-items: center; 
+    /* display: flex;
+    flex: 1; */
+    /* align-items: center;  */
+    flex-shrink: 0;
     overflow: hidden;
     background-color: white;
     font-weight: 500;
     border-bottom: 1px solid #eeeef1;
-    position: inherit; 
+    position: absolute; 
+    height: 55px;
+    top: 55px;
+    width: 83%;
+    display: flex;
+    /* width: 100%; */
     /*  */
     /* top: 0px; */
   }
@@ -35,7 +42,7 @@
   .jobtitle {
     margin-left: 10px;
     color: #1F4E3A;
-
+    margin-top: 10px;
   }
   
   .right-items {
