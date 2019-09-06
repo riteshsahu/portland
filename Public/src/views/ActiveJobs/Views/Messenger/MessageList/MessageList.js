@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import socketIOClient from "socket.io-client";
-
 import './MessageList.css';
 import Messages from '../Message/Messages';
 import Toolbar from '../Toolbar/Toolbar';
@@ -52,9 +51,6 @@ class MessageList extends Component {
 
   componentDidUpdate(prevProps) {
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
-    // console.log(prevProps.ActiveJobDetail.JobId, "job id in props");
-    // console.log(this.props.params.id,"props wali id");
-    // if(prevProps.ActiveJobDetail.JobId)
     if (prevProps.ActiveJobDetail.JobId != this.props.params.id) {
       this.props.GetChatHistory(this.props.params.id);
     }
@@ -99,7 +95,6 @@ class MessageList extends Component {
         }
 
       })
-      // console.log("--messages list from props---", messages);
       this.setState({
         messages: messages,
       })
@@ -170,7 +165,6 @@ class MessageList extends Component {
 
 
   render() {
-    // console.log("Messages from API", this.props.chatHistory)
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
 
     return (
@@ -193,8 +187,8 @@ class MessageList extends Component {
             value={this.state.message}
             onKeyPress={e => this.keyPressed(e)}
           />
-          <i
-            style={{ color: "#44c372", fontSize: "x-large", margin: "7px 15px 0px" }}
+          <i   
+            style={{ color: "#44c372", fontSize: "x-large", flexDirection: "row-reverse", margin: "7px 15px 0px", width:"3%" }}
             onClick={this.submitMessage}
             className="fa fa-paper-plane">
           </i>

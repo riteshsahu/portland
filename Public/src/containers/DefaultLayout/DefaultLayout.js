@@ -81,6 +81,8 @@ class DefaultLayout extends Component {
       roleNavigation.items.push(activeJobs);
     }
     if (role === 2) { // Management
+      roleNavigation.items.push(user);
+      roleNavigation.items.push(jobs);
       roleNavigation.items.push(activeJobs);
     }
 

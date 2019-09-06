@@ -324,9 +324,16 @@ class JobService {
             db.getConnection().
                 then(conn => {
                     connection = conn;
-                    connection.query(`select J.jobId, J.jobTitle,J.createAt, J.jobDescription, J.jobCreatedBy, J.jobStatus, JU.userId from Job J
-                    LEFT JOIN JobUsers JU  ON J.jobId = JU.jobId
-                      WHERE  J.isActive = 1 AND JU.isActive = 1`, (err, results) => {
+                    connection.query(`select J.jobId, J.jobTitle,J.createAt, J.jobDescription, J.jobCreatedBy, J.jobStatus, JU.userId, U.role as createByRole from Job J
+                    LEFT JOIN JobUsers JU  ON J.jobId = JU.jobId JOIN User U ON J.createBy = U.userId
+                      WHERE  J.isActive = 1 AND JU.isActive = 1`
+                  
+                    
+                    
+                    // select J.jobId, J.jobTitle,J.createAt, J.jobDescription, J.jobCreatedBy, J.jobStatus, JU.userId from Job J
+                    // LEFT JOIN JobUsers JU  ON J.jobId = JU.jobId
+                    //   WHERE  J.isActive = 1 AND JU.isActive = 1`
+                      , (err, results) => {
                             db.releaseConnection(connection);
                             if (err) {
                                 reject(err)
@@ -354,7 +361,7 @@ class JobService {
 
                                             jobID.push(dt.jobId);
                                             finalResult.push({
-                                                jobId: dt.jobId, jobTitle: dt.jobTitle, createAt: dt.createAt,
+                                                jobId: dt.jobId, jobTitle: dt.jobTitle, createAt: dt.createAt, createByRole:dt.createByRole,
                                                 jobDescription: dt.jobDescription, jobCreatedBy: dt.jobCreatedBy, jobStatus: dt.jobStatus, userId: ids
                                             });
                                         } else {

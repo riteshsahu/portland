@@ -32,9 +32,16 @@ class CreateJob extends Component {
         const userDetails = JSON.parse(localStorage.getItem("userDetails"));
         let jobDetail = this.state.jobDetails; 
         if(!this.props.updateJob) {
-            jobDetail["jobUsers"].push(userDetails[0].userId);
+            if (userDetails[0].role != 1){
+                jobDetail["jobUsers"].push(userDetails[0].userId);
+            }
+            jobDetail["jobUsers"].push("1");
             let tag =[];
-            tag.push(userDetails[0].firstName +" "+ userDetails[0].lastName);
+            if (userDetails[0].role != 1){
+                tag.push(userDetails[0].firstName +" "+ userDetails[0].lastName);
+            }
+           
+            tag.push("Admin" +" "+ "Admin");
             this.setState({
                 jobDetails: jobDetail,
                 tags: tag

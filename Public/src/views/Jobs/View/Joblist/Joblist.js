@@ -55,17 +55,19 @@ class JobList extends Component {
 
     showJobList = () => {
         let result = [];
+        const userDetails = JSON.parse(localStorage.getItem("userDetails"));
         this.props.jobDetails.map((data, i) => {
+            console.log("data job list",data)
             let date= data.createAt.split("T");
             result.push(<tr>
                 <td>{data.jobId}</td>
                 <td>{data.jobTitle}</td>
                 <td>{date[0]}</td>
-                <td>{this.state.createByKey[data.jobCreatedBy]}</td>
+                <td>{this.state.createByKey[data.createByRole]}</td>
                 <td> <Badge color="warning">{this.state.statusKey[data.jobStatus]}</Badge></td>
                 <td>
                     <i style={{ color: "green", padding: "0px 5px" }} onClick={e => { this.props.updateJob(data) }} className="cui-pencil icons font-xl"></i>
-                    <i style={{ color: "red", padding: "0px 5px" }} onClick={e => { this.toggleSmall(i, data.jobId) }} className="cui-trash icons font-xl"></i>
+                    {userDetails[0].role == 1 ? <i style={{ color: "red", padding: "0px 5px" }} onClick={e => { this.toggleSmall(i, data.jobId) }} className="cui-trash icons font-xl"></i> : null }
                 </td>
             </tr>)
         })

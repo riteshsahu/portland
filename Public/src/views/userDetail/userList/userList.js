@@ -60,6 +60,8 @@ class UserList extends Component {
 
     showUserList = () => {
         let result = [];
+        const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+
         if (this.props.userDetails.length > 0) {
             this.props.userDetails.map((data, i) => {
                 result.push(<tr>
@@ -73,7 +75,7 @@ class UserList extends Component {
                     </td>
                     <td>
                         <i style={{ color: "green", padding: "0px 5px" }} onClick={e => { this.props.updateUser(data) }} className="cui-pencil icons font-xl"></i>
-                        <i style={{ color: "red", padding: "0px 5px" }} onClick={e => { this.toggleSmall(data.userId) }} className="cui-trash icons font-xl"></i>
+                     {userDetails[0].role == 1 ? <i style={{ color: "red", padding: "0px 5px" }} onClick={e => { this.toggleSmall(data.userId) }} className="cui-trash icons font-xl"></i> : null}   
                     </td>
                 </tr>)
             })

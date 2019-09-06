@@ -16,8 +16,8 @@
 }
 
   .compose {
-    /* flex: 1;
-    display: flex; */
+    /* flex: 1; */
+    display: flex;
     padding: 10px;
     /* display: inherit; */
     /* align-items: center; */

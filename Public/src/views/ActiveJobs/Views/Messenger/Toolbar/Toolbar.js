@@ -35,8 +35,8 @@ class Toolbar extends Component {
   componentWillReceiveProps = (nextProps) => {
     // console.log(nextProps.JobId,"jobId for this job"),
     // console.log("Value in props",nextProps)
-    console.log("this.state.selectedJobId",this.state.selectedJobId);
-    console.log("nextProps.JobId",nextProps.JobId);
+    // console.log("this.state.selectedJobId",this.state.selectedJobId);
+    // console.log("nextProps.JobId",nextProps.JobId);
     if (this.state.selectedJobId !== nextProps.JobId) {
       this.props.GetJobParticipants(nextProps.JobId);
       this.setState({
@@ -130,12 +130,12 @@ class Toolbar extends Component {
             {(this.props.ParticipantsDetails.length > 0) && this.props.ParticipantsDetails.map((data, i) =>
               <>
                 <Row key={i} style={{ padding: "5 0px" }} >
-                  <Col style={{ padding: "0 30px" }} xs="12" md="6" lg="6">
+                  <Col style={{ padding: "0 30px" }} xs="6" sm="6" md="6" lg="6">
                      <Label style={{ marginBottom: 0 }}> {this.state.KeyRole[data.role]+ "-" + data.firstName} </Label> <br />
                     {/* <Label style={{ marginBottom: 0 }}> {data.firstName} {data.lastName}</Label> <br />
                     <Label style={{ color: "grey", fontSize: 12, marginBottom: 0 }}> {data.email}</Label> */}
                   </Col>
-                  <Col xs="12" md="6" lg="6" >
+                  <Col xs="6" sm="6" md="6" lg="6" >
                     <Button style={{ marginTop: 5, marginBottom: 5 }} color="success">Private Chat</Button>
                   </Col>
                 </Row>
