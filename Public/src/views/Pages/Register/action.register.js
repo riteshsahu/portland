@@ -6,7 +6,6 @@ import { Register } from './constants.register'
 
 export const saveRegistrationDetails = (values) => {
     return (dispatch) => {
-        console.log("values in save Registration", values);
         fetch(API_ROOT + URI.CREATE_USER, {
             method: 'POST',
             headers: {
@@ -25,7 +24,6 @@ export const saveRegistrationDetails = (values) => {
                     dispatch({ type: Register.USER_REGISTERED })
                 }
 
-                console.log(data, "data in api");
             })
             .catch(err => {
                 console.log(err);

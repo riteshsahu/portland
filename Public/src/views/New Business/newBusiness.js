@@ -184,10 +184,8 @@ class NewBusiness extends Component {
                         updated_by: null,
                         isActive: 1
                     }
-                    console.log("this state", this.state)
 
                     axios.post(API_ROOT + URI.ADD_NEWBUSINESS, data).then(data => {
-                        console.log("data of BUSINESS FORM api", data)
                     }).catch(err => {
                         console.log(err);
                     })
@@ -203,7 +201,6 @@ class NewBusiness extends Component {
                             isActive: 1
                         }
                         axios.post(API_ROOT + URI.ADD_BRANCHES, branchData).then(data => {
-                            console.log("data of BRANCH api", data)
                         }).catch(err => {
                             console.log(err);
                         })

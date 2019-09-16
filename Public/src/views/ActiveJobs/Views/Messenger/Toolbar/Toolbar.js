@@ -33,10 +33,6 @@ class Toolbar extends Component {
   }
 
   componentWillReceiveProps = (nextProps) => {
-    // console.log(nextProps.JobId,"jobId for this job"),
-    // console.log("Value in props",nextProps)
-    // console.log("this.state.selectedJobId",this.state.selectedJobId);
-    // console.log("nextProps.JobId",nextProps.JobId);
     if (this.state.selectedJobId !== nextProps.JobId) {
       this.props.GetJobParticipants(nextProps.JobId);
       this.setState({
@@ -81,7 +77,6 @@ class Toolbar extends Component {
 
   handleSumbit = () => {
     this.togglePrimary();
-    console.log("answer", this.state.answer);
     this.props.handleClientAnswer();
   }
 
@@ -91,8 +86,6 @@ class Toolbar extends Component {
     }
   }
   render() {
-    // console.log("Participants",this.props.ParticipantsDetails);
-    // console.log("job Title of this job", this.state.jobTitle)
     const { title, leftItems, rightItems } = this.props;
     return (
       <>

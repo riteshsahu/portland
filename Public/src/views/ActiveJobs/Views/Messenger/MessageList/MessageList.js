@@ -28,8 +28,8 @@ class MessageList extends Component {
     };
   }
 
-  // ws = socketIOClient(window.location.hostname);
-  ws = socketIOClient('http://localhost:5000')
+  ws = socketIOClient(window.location.hostname);
+  // ws = socketIOClient('http://localhost:5000')
 
   componentDidMount() {
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
@@ -43,7 +43,6 @@ class MessageList extends Component {
     this.ws.emit('subscribe', subscribe);
 
     this.ws.on("response", evt => {
-      // console.log('evt', evt)
       if ((USER_DETAILS[0].role !== 6) || (USER_DETAILS[0].role === 6 && evt.isVisibleToClient)) {
         const message = evt;
         this.addMessage(message)
@@ -122,7 +121,7 @@ class MessageList extends Component {
 
   }
 
-   toggleEmojiPicker = () =>  {
+  toggleEmojiPicker = () => {
     this.setState({
       showEmojiPicker: !this.state.showEmojiPicker,
     });
@@ -130,12 +129,12 @@ class MessageList extends Component {
 
   addEmoji = (emoji) => {
     const { newMessage } = this.state;
-      const text = `${newMessage}${emoji.native}`;
+    const text = `${newMessage}${emoji.native}`;
 
-      this.setState({
-        newMessage: text,
-        showEmojiPicker: false,
-      });
+    this.setState({
+      newMessage: text,
+      showEmojiPicker: false,
+    });
   }
 
   keyPressed = (event) => {
@@ -185,10 +184,9 @@ class MessageList extends Component {
 
   render() {
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
-console.log("state of messageList component", this.state)
     return (
       <div >
-        
+
         <Toolbar
           leftItems="Job Title"
           rightItems="Participants"
@@ -196,11 +194,11 @@ console.log("state of messageList component", this.state)
           handleAnswerInput={this.handleAnswerInput}
           userRole={USER_DETAILS[0].role}
         />
-        
+
         <Messages messages={this.state.messages} />
 
         <div className="compose">
-          
+
           <textarea
             rows={1}
             className="compose-input"
@@ -209,24 +207,17 @@ console.log("state of messageList component", this.state)
             value={this.state.message}
             onKeyPress={e => this.keyPressed(e)}
           />
-          
+
           <i style={{ color: "yellow", fontSize: "x-large", flexDirection: "row-reverse", marginTop: "7px", marginLeft: "3px" }}
-            className="fa  fa-smile-o" onClick={this.toggleEmojiPicker}></i>
-         
-          {/* <span>
-            <Picker onSelect={this.addEmoji} />
-          </span> */}
+            className="fa fa-smile-o" onClick={this.toggleEmojiPicker}></i>
           <i style={{ color: "grey", fontSize: "x-large", flexDirection: "row-reverse", marginTop: "7px", marginLeft: "3px" }}
             className="fa fa-paperclip"></i>
-          <i
-            style={{ color: "#44c372", fontSize: "x-large", flexDirection: "row-reverse", margin: "7px 15px 0px", width: "3%" }}
-            onClick={this.submitMessage}
-            className="fa fa-paper-plane">
-          </i>
+          <i style={{ color: "#44c372", fontSize: "x-large", flexDirection: "row-reverse", margin: "7px 15px 0px", width: "3%" }}
+            onClick={this.submitMessage} className="fa fa-paper-plane"></i>
         </div>
-        {this.state.showEmojiPicker ? ( <div className="toggle-emoji">
-  <Picker  set="emojione" onSelect={this.addEmoji} />
-</div>) : null}
+        {this.state.showEmojiPicker ? (
+        <div className="toggle-emoji"><Picker set="emojione" onSelect={this.addEmoji} /> </div>
+        ) : null}
       </div>
     );
   }

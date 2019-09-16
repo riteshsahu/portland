@@ -33,9 +33,7 @@ class JobList extends Component {
         const user = JSON.parse(userDetails);
         this.props.getAllJob(user[0].userId);
         this.props.GetUserJobs(user[0].userId);
-        
-        console.log('---getting All jobs----');
-    }
+            }
 
     toggleSmall(i, jobId) {
         this.setState({
@@ -49,7 +47,6 @@ class JobList extends Component {
         this.setState({
             small: !this.state.small,
         });
-        console.log("----jobId---",this.state.jobId);
         // this.props.deleteJob(this.state.deleteIndex);
         this.props.deleteUserJob(this.state.jobId);
     }
@@ -58,7 +55,6 @@ class JobList extends Component {
         let result = [];
         const userDetails = JSON.parse(localStorage.getItem("userDetails"));
         this.props.jobDetails.map((data, i) => {
-            console.log("data job list",data)
             let date= data.createAt.split("T");
             result.push(<tr>
                 <td>{data.jobId}</td>

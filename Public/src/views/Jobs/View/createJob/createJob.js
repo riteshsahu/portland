@@ -27,7 +27,6 @@ class CreateJob extends Component {
     }
 
     componentDidMount() {
-        console.log('state----', this.state)
         this.props.GetUserList();
         const userDetails = JSON.parse(localStorage.getItem("userDetails"));
         let jobDetail = this.state.jobDetails; 
@@ -89,7 +88,6 @@ class CreateJob extends Component {
         })
     }
     handleSumbit = () => {
-        console.log("inside submit",)
         const userDetails = localStorage.getItem("userDetails");
         const user = JSON.parse(userDetails);
         let data = {
@@ -127,7 +125,6 @@ class CreateJob extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log('next props-----', nextProps);
         if (nextProps.updatedDetails.jobId && !this.state.isUpdateMode) {
             let tagsArr = [];
             nextProps.updatedDetails.userId.map(dt => {
@@ -184,7 +181,6 @@ class CreateJob extends Component {
             const inputLength = inputValue.length
 
             let suggestions =[];
-            // console.log(self, "USERLIST")
              if(self.userList.length > 0) { 
                 suggestions=  self.userList.filter((state) => {
                  return state.name.toLowerCase().slice(0, inputLength) === inputValue

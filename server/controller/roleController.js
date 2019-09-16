@@ -6,7 +6,6 @@ class RoleController {
                 let data = req.body;
                 RoleService.assignRole(data).then(result => {
                         res.json(result);
-                        console.log(result)
                 }).catch(err => {
                         res.status(500)
                         res.json(err)

@@ -44,7 +44,6 @@ class UserList extends Component {
     }
 
     toggleModel(i) {
-        console.log("button clicked")
         this.setState({
             selectedIndex: i,
             toggle1: !this.state.toggle1,
@@ -83,7 +82,6 @@ class UserList extends Component {
         return result
     }
     render() {
-        console.log("selected index", this.state.selectedIndex)
         return (
             <>
                 <Row>

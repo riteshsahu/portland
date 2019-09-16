@@ -63,7 +63,6 @@ class CreateUser extends Component {
             isUpdated: !this.state.isUpdated
         })
 
-        console.log("===update data====",);
         const userDetails = localStorage.getItem("userDetails");
         const user = JSON.parse(userDetails);
         let data = {
@@ -80,8 +79,7 @@ class CreateUser extends Component {
     }
 
     render() {
-        console.log("updated or not", this.state.isUpdated);
-        console.log("state", this.props.updatedDetails)
+   
         if (this.props.updatedDetails.email && !this.state.isUpdated) {
             this.setState({
                 userDetails: this.props.updatedDetails,

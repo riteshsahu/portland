@@ -6,7 +6,6 @@ class UserController {
                 let data = req.body;
                 UserService.addUser(data).then(result => {
                         res.json(result);
-                        console.log(result)
                 }).catch(err => {
                         res.status(500)
                         res.json(err)
@@ -19,7 +18,6 @@ class UserController {
         static getUsers(req, res) {
                 UserService.getUsers(req.query).then(result => {
                         res.json(result);
-                        // console.log(result)
                 }).catch(err => {
                         res.status(500)
                         res.json(err)
@@ -32,7 +30,6 @@ class UserController {
                 let id = req.params.id;
                 UserService.editUser(id, data).then(result => {
                         res.json(result);
-                        console.log(result)
                 }).catch(err => {
                         console.log(err)
                         res.status(500)
@@ -46,7 +43,6 @@ class UserController {
                 let id = req.params.id;
                 UserService.deleteUser(id).then(result => {
                         res.json(result);
-                        console.log(result)
                 }).catch(err => {
                         console.log(err)
                         res.status(500)

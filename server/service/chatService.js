@@ -47,7 +47,6 @@ class ChatService {
                     })
                 })
                 .catch(err => {
-                    console.log('error 1----', err);
                     db.releaseConnection(connection);
                     reject(err);
                 })
@@ -97,7 +96,6 @@ class ChatService {
                                     rejJobUser(err);
                                     reject(err);
                                 } else {
-                                    console.log('result of job user', result);
                                     isSubscribedArray = result;
                                     db.commitTransaction(connection);
                                     resJobUser(result)
@@ -120,7 +118,6 @@ class ChatService {
                                     rejMessageRescipient(err);
                                     reject(err);
                                 } else {
-                                    console.log('result of message user', result);
                                     db.commitTransaction(connection);
                                     resMessageRecipient(result);
                                 }
@@ -141,7 +138,6 @@ class ChatService {
                                     let message = {};
                                     if (data && data.length > 0) {
                                         message = new Message(data[0]);
-                                        console.log('message---', message)
                                     }
                                     db.commitTransaction(connection);
                                     db.releaseConnection(connection);
@@ -152,33 +148,12 @@ class ChatService {
                     })
                 })
                 .catch(err => {
-                    console.log('error 1----', err);
                     db.releaseConnection(connection);
                     reject(err);
                 })
         });
     }
 
-    // static messageById(id, connection) {
-    //     return new Promise((resolve, reject) => {
-    //         // var connection;
-    //         // db.getConnection().then((conn) => {
-    //         //     connection = conn;
-    //             connection.query('select * from Message where id = ? ', [id], (err, data) => {
-    //                 if (err) {
-    //                     reject(err);
-    //                 } else {
-    //                     let message = {};
-    //                     if (data && data.length > 0) {
-    //                         message = new Message(data[0]);
-    //                         console.log('message---', message)
-    //                     }
-    //                     resolve(message);
-    //                 }
-    //             })
-    //        // })
-    //     })
-    // }
 
     static getMessageHistory(id) {
         var connection;
@@ -193,7 +168,6 @@ class ChatService {
                             if(err) {
                                 reject(err)
                             } else {
-                                // console.log("results",results)
                                 resolve(results);
                             }
                         })

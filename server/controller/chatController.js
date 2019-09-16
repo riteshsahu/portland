@@ -5,7 +5,6 @@ class ChatController {
         let id = req.params.id
         ChatService.getMessageHistory(id).then(result => {
             res.json(result);
-            // console.log(result)
         }).catch(err => {
             res.status(500)
             res.json(err)

@@ -42,7 +42,6 @@ class AppSlideBar extends Component {
   }
   
   handleClick(e) {
-    // console.log(e);
     e.preventDefault();
     e.currentTarget.parentElement.classList.toggle('open');
   }
@@ -135,7 +134,6 @@ class AppSlideBar extends Component {
   }
 
   clickCalled=(e)=>{
-      // console.log("Event",e)
     this.props.SelectedJob(e.id,e.name);
     let createCustomerUrl = localStorage.getItem('urlPath');
     if(createCustomerUrl && createCustomerUrl.indexOf('createCustomer') > -1 ){
@@ -199,7 +197,6 @@ class AppSlideBar extends Component {
 
   render() {
     const { className, children, navConfig, ...attributes } = this.props;
-// console.log(navConfig.items)
     delete attributes.isOpen
     delete attributes.staticContext
     delete attributes.Tag

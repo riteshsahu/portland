@@ -44,9 +44,7 @@ export const GetUserList = () => {
 }
 
 export const searchUser = (data) => {
-    console.log('dadaaa--------------', data)
     let qq = API_ROOT.concat(`${URI.GET_USER_BY_SEARCH}?firstName=${data.firstName}&lastName=${data.lastName}&email=${data.email}&role=${data.role}`);
-    console.log('query-----', qq)
     return (dispatch) => {
         fetch(qq, {
             method: 'GET',
@@ -56,7 +54,6 @@ export const searchUser = (data) => {
         })
             .then(res => res.json())
             .then(data => {
-                console.log("---search list---", data)
                 dispatch({
                     type: UserDetail.GET_USER_LIST,
                     payload: data

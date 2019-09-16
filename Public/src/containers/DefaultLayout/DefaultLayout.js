@@ -52,7 +52,6 @@ class DefaultLayout extends Component {
   componentDidMount= () => {
     const userDetails = localStorage.getItem("userDetails");
     const user= JSON.parse(userDetails) ;
-    // console.log(user);
     this.props.GetUserJobs(user[0].userId);
   }
   signOut(e) {

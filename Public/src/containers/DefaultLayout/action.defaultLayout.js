@@ -11,7 +11,6 @@ export const GetUserJobs = (id) => {
         })
             .then(res => res.json())
             .then(data => {
-                // console.log(data,"data of api");
                 dispatch({
                     type: LayoutDetail.GET_JOBS_INFO,
                     payload: data

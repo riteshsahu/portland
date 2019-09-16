@@ -18,14 +18,11 @@ keyPressed=(event) =>  {
 }
 
 submitMessage=(value) => {
-console.log("hello world msg submitted")
 this.setState({
   message: value
 })
 }
-  render() {
-    console.log("this.state.message",this.state.message)
-   
+  render() {   
     return (
       <div className="compose">
         <input

@@ -29,8 +29,6 @@ class UserSearch extends Component {
     }
     
     searchUser =() => {
-        // console.log(this.state.searchDetails)
-        // this.props.searchUser(this.state.searchDetails);
         this.setState({
             searchPermission: true
         })
@@ -38,7 +36,6 @@ class UserSearch extends Component {
 
     render() {
         if(this.state.searchPermission || this.props.saerchPermission){
-             console.log(this.state.searchDetails)
         this.props.searchUser(this.state.searchDetails);
             this.setState({
                 searchPermission: false

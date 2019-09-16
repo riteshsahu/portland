@@ -99,7 +99,6 @@ class NewBranch extends Component {
     }
 
     handleCard = () => {
-        console.log("state data", this.state);
         let result = [];
         if (this.state.branchData.length) {
             this.state.branchData.map((data, index) => {
@@ -231,9 +230,6 @@ class NewBranch extends Component {
                 })}
                 enableReinitialize={true}
                 onSubmit={(fields, { resetForm }) => {
-                    console.log("country", this.state.country);
-                    console.log("state", this.state.state);
-                    console.log("fields", fields);
                     fields["country"] = this.state.country;
                     fields["state"] = this.state.state;
                     fields["countryCode"] = this.state.countryCode;
@@ -256,7 +252,6 @@ class NewBranch extends Component {
                     })
                     this.props.saveBranchData(value);
                     this.props.handleCard();
-                    console.log("value", value);
                     resetForm({});
                 }}
 
@@ -370,7 +365,6 @@ class NewBranch extends Component {
                             </Form>
                         </CardBody>}
                         {this.state.branchData.length > 0 ? this.handleCard() : null}
-                        {console.log("state me data", this.state)}
                     </Card>
                 )}
             />

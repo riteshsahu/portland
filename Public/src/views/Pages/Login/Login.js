@@ -19,7 +19,6 @@ class Login extends Component {
   }
   componentDidMount = () => {
     const userDetils = JSON.parse(localStorage.getItem('userDetails'));
-    console.log("--local storage-user--", userDetils);
   }
   userDetails = () => {
     this.setState({
@@ -29,12 +28,10 @@ class Login extends Component {
 
   render() {
     const userDetils = JSON.parse(localStorage.getItem('userDetails'));
-    console.log("--local storage-user--", userDetils);
 
     if (userDetils) {
       return <Redirect push to='/userProfile' />
     }
-    console.log("value in reducer", this.props.userDetail)
     if (this.state.getAccess) {
       return <Redirect push to='/userDetail' />
     }

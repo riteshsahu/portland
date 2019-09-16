@@ -37,12 +37,10 @@ class JobSearch extends Component {
         //     jobStatus : this.state.jobSearch.jobStatus,
         //     jobCreatedBy : this.state.jobSearch.jobCreatedBy,
         // };
-        // console.log('--data----',data);
         // this.props.searchJobs(data);
     }
 
     render() {
-        console.log("--createJob---",this.state.jobSearch);
             if(this.state.searchPersmission || this.props.saerchPermission){
                 let data= {
                     jobId : this.state.jobSearch.job,

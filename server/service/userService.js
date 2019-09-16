@@ -35,7 +35,6 @@ class UserService {
         let email = query.email;
         let role = query.role;
 
-        console.log('---query----',query);
         // let roleKey = "";
         // if (role == "Management") {
         //     roleKey = 2;
@@ -90,7 +89,6 @@ class UserService {
                                 if (err) {
                                     db.rollbackTransaction(connection);
                                     db.releaseConnection(connection);
-                                    console.log("--error---", err);
                                     reject(err);
                                 } else {
                                     res();
@@ -115,7 +113,6 @@ class UserService {
                             if (err) {
                                 db.rollbackTransaction(connection);
                                 db.releaseConnection(connection);
-                                console.log("--error---", err);
                                 reject(err)
                             } else {
                                 db.commitTransaction(connection);
@@ -161,7 +158,6 @@ class UserService {
         var salt = bcrypt.genSaltSync(saltRounds);
         var hash = bcrypt.hashSync(data.password, salt);
         data.password = hash;
-        console.log("---hash paswro---", data);
         var connection;
         return new Promise((resolve, reject) => {
             db.getConnection().
@@ -196,14 +192,11 @@ class UserService {
                     connection.query(`INSERT INTO User SET ?`, [data], (err, result) => {
                         db.releaseConnection(connection);
                         if (err) {
-                            console.log("error  of api", err.code)
                             if (err.code == "ER_DUP_ENTRY") {
                                 resolve("USER_ALREADY_REGISTERED")
-                                console.log("dublicate errror----");
                             }
                             reject(err)
                         } else {
-                            console.log("--user Created----");
                             resolve("USER_CREATED");
                         }
                     })

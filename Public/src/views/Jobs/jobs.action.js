@@ -87,7 +87,6 @@ export const updateJobDetails = (id, value) => {
 
 export const searchJobs = (data) => {
     let qq = API_ROOT.concat(`${URI.SEARCH_JOBS}?jobId=${data.jobId}&jobStatus=${data.jobStatus}&jobCreatedBy=${data.jobCreatedBy}`);
-    console.log('query-----', qq)
     return (dispatch) => {
         fetch(qq, {
             method: 'GET',
@@ -97,7 +96,6 @@ export const searchJobs = (data) => {
         })
             .then(res => res.json())
             .then(data => {
-                console.log("-job--search list---", data)
                 dispatch({
                     type: JobDetail.JOB_LIST,
                     payload: data
@@ -119,7 +117,6 @@ export const CreateJobHandler = () => {
 }
 
 export const CreateNewJob = (value) => {
-    console.log("action called")
     return (dispatch) => {
         fetch(API_ROOT + URI.CREATE_JOB, {
             method: 'POST',
@@ -134,7 +131,6 @@ export const CreateNewJob = (value) => {
                     type: JobDetail.JOB_CREATE_COMPLETED,
                     payload: true
                 })
-                console.log("----job created----",data);
                 setTimeout(() => {
                     dispatch({
                         type: JobDetail.JOB_CREATE_COMPLETED,

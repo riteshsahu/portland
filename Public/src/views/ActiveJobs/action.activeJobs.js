@@ -54,7 +54,6 @@ export const GetChatHistory = (id) => {
         })
             .then(res => res.json())
             .then(data => {
-                // console.log(data,"data of api");
                 dispatch({
                     type: ActiveJobDetail.GET_CHAT_HISTORY,
                     payload: data,

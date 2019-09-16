@@ -118,7 +118,6 @@ function getSuggestions(value) {
 }
 
 function getSuggestionValue(suggestion) {
-    console.log(suggestion)
     return suggestion.name;
 }
 
@@ -205,7 +204,6 @@ class AssignRole extends Component {
         };
 
         if (this.props.updatedDetails && !this.state.isUpdated) {
-            console.log("updatedDetails", this.props.updatedDetails)
             this.setState({
                 updatedName: this.props.updatedDetails.name,
                 email: this.props.updatedDetails.email,

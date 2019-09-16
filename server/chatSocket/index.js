@@ -13,11 +13,10 @@ function socketConnection (io) {
             chatService.subscribeUser(data)
             .then(results => {
                 console.log('joining room', data.room);
-                //console.log('results---1', results);
                 client.join(data.room);
             })
             .catch(err => {
-                console.log('error---', err)
+                console.log('error', err)
             })
             //client.join(data.room);
         });
@@ -26,7 +25,7 @@ function socketConnection (io) {
             console.log('sending room post', data.room);
             chatService.messageUpdate(data)
             .then(result => {
-                console.log('final results-----', result)
+                console.log('final results', result)
                 client.broadcast.to(data.room).emit('response', {
                     message: data.message,
                     author: data.author,
@@ -39,11 +38,11 @@ function socketConnection (io) {
         });
 
         client.on('disconnect', (error) => { 
-            console.log("disconnected----", error) 
+            console.log("disconnected", error) 
         });
         
         client.on('error', error => {
-            console.log('error---', error)
+            console.log('error', error)
         })
     });
 }

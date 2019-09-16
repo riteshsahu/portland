@@ -3,7 +3,6 @@ import {Login} from '../Login/constants.login'
 
 export const login = (values) => {
     return (dispatch) => {
-        console.log("values in login", values);
         fetch(API_ROOT + URI.LOGIN_USER, {
             method: 'POST',
             headers: {
@@ -13,7 +12,6 @@ export const login = (values) => {
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data, "data in api");
                 if(data== "INVALID_USER"){
                     dispatch({
                         type: Login.AUTH_ERROR,
