@@ -6,6 +6,13 @@
     display: flex;
     justify-content: flex-end;
     margin-bottom: 5px;
+    flex-direction: row;
+    flex-wrap: "wrap";
+    /* min-height: min-content; */
+    height: auto;
+    flex: 1;
+    max-height: fit-content;
+    min-height: fit-content;
   }
   
   .message.from-me .message-body {

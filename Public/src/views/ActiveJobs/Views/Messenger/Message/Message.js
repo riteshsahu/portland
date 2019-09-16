@@ -1,5 +1,6 @@
 import React from 'react';
 import './Message.css';
+import { Label } from 'reactstrap';
 
 class Message extends React.Component {
   render() {
@@ -12,7 +13,12 @@ class Message extends React.Component {
           { this.props.username }
         </div>
         <div className='message-body'>
-          { this.props.message }
+          <Label>
+          
+            { this.props.message }
+            </Label>
+          
+         
         </div>
       </div>
     );

@@ -26,7 +26,9 @@ class MessageList extends Component {
         6: "Client"
       }
     };
+
   }
+  triggerInputFileContract = () => this.fileInputContract.click();
 
   ws = socketIOClient(window.location.hostname);
   // ws = socketIOClient('http://localhost:5000')
@@ -104,8 +106,8 @@ class MessageList extends Component {
     }
   }
 
-  isValidMessage = () => {
-    return this.state.message.trim()
+  isValidMessage = (value) => {
+    return this.state.message.trim() || value.trim() 
   }
 
 
@@ -153,22 +155,22 @@ class MessageList extends Component {
     })
   }
 
-
-  submitMessage = () => {
+  submitMessage = (value) => {
+    console.log("value of answer", value)
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
 
     let tempArr = this.state.messages;
-    if (this.isValidMessage()) {
+    // if (this.isValidMessage(value)) {
       tempArr.push({
         author: USER_DETAILS[0].firstName,
-        message: this.state.message,
+        message: value || this.state.message,
         fromMe: true,
         timestamp: new Date().getTime()
       });
       const message = {
         isVisibleToClient: this.state.isVisibleToClient,
         userId: USER_DETAILS[0].userId,
-        message: this.state.message,
+        message: value || this.state.message,
         room: window.location.href.split('/').pop(),
         author: USER_DETAILS[0].firstName
       }
@@ -178,7 +180,7 @@ class MessageList extends Component {
         message: "",
         isVisibleToClient: 0
       });
-    }
+    // }
   }
 
 
@@ -190,8 +192,7 @@ class MessageList extends Component {
         <Toolbar
           leftItems="Job Title"
           rightItems="Participants"
-          handleClientAnswer={this.submitMessage}
-          handleAnswerInput={this.handleAnswerInput}
+          handleClientAnswer={(value) => this.submitMessage(value)}
           userRole={USER_DETAILS[0].role}
         />
 
@@ -207,16 +208,19 @@ class MessageList extends Component {
             value={this.state.message}
             onKeyPress={e => this.keyPressed(e)}
           />
+          <input style={{ display: "none" }}
+            ref={fileInputContract => this.fileInputContract = fileInputContract}
+            type="file" accept="application/pdf" id="fileInputContract" onChange={this.handleContractFile} />
 
           <i style={{ color: "yellow", fontSize: "x-large", flexDirection: "row-reverse", marginTop: "7px", marginLeft: "3px" }}
             className="fa fa-smile-o" onClick={this.toggleEmojiPicker}></i>
           <i style={{ color: "grey", fontSize: "x-large", flexDirection: "row-reverse", marginTop: "7px", marginLeft: "3px" }}
-            className="fa fa-paperclip"></i>
+            onClick={this.triggerInputFileContract} className="fa fa-paperclip"></i>
           <i style={{ color: "#44c372", fontSize: "x-large", flexDirection: "row-reverse", margin: "7px 15px 0px", width: "3%" }}
-            onClick={this.submitMessage} className="fa fa-paper-plane"></i>
+            onClick={()=>{this.submitMessage()}} className="fa fa-paper-plane"></i>
         </div>
         {this.state.showEmojiPicker ? (
-        <div className="toggle-emoji"><Picker set="emojione" onSelect={this.addEmoji} /> </div>
+          <div className="toggle-emoji"><Picker set="emojione" onSelect={this.addEmoji} /> </div>
         ) : null}
       </div>
     );

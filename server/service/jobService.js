@@ -398,7 +398,7 @@ class JobService {
                 then(conn => {
                     connection = conn;
                     connection.query(`select J.jobId, J.jobTitle,J.createAt, J.jobDescription, J.jobCreatedBy, J.jobStatus, JU.userId from JobUsers 
-                    JU LEFT JOIN Job J ON J.jobId = JU.jobId WHERE J.isActive = 1 AND JU.isActive = 1 AND JU.userId=?`, [id], (err, results) => {
+                    JU LEFT JOIN Job J ON J.jobId = JU.jobId WHERE J.isActive = 1 AND JU.isActive = 1 AND JU.userId=? `, [id], (err, results) => {
                             db.releaseConnection(connection);
                             if (err) {
                                 console.log("error", err)

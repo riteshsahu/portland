@@ -60,7 +60,7 @@ class Toolbar extends Component {
     this.setState({
       answer: e.target.value
     })
-    this.props.handleAnswerInput(e.target.value);
+    //this.props.handleAnswerInput(e.target.value);
   }
 
   toggleModel() {
@@ -77,7 +77,7 @@ class Toolbar extends Component {
 
   handleSumbit = () => {
     this.togglePrimary();
-    this.props.handleClientAnswer();
+    this.props.handleClientAnswer(this.state.answer);
   }
 
   keyPressed = (event) => {
