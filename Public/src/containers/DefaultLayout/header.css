@@ -4,19 +4,17 @@
 }
 
 .dashboardIcon:focus{
-    /* border-radius: none !important; */
     outline: 0px auto -webkit-focus-ring-color !important
 
 }
 
-
-
-/* hoverDD */
-/* .hoverDD:hover{
-    color: white;
-    background: white;
-}  */
 .hoverDD:hover{
     color: #fff !important;
     background: transparent !important;
+}
+
+.scroll {
+    height: 150px ;
+    overflow: scroll!important;
+    overflow-x: hidden !important;
 }

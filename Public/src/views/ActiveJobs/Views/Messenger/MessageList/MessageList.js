@@ -5,6 +5,8 @@ import './MessageList.css';
 import Messages from '../Message/Messages';
 import Toolbar from '../Toolbar/Toolbar';
 import { GetChatHistory } from '../../../action.activeJobs';
+import 'emoji-mart/css/emoji-mart.css';
+import { Picker } from 'emoji-mart';
 
 class MessageList extends Component {
   constructor(props) {
@@ -13,6 +15,8 @@ class MessageList extends Component {
       message: "",
       messages: [],
       isVisibleToClient: 0,
+      showEmojiPicker: false,
+      newMessage: '',
       KeyRole: {
         1: "Admin",
         2: "Management",
@@ -24,8 +28,8 @@ class MessageList extends Component {
     };
   }
 
-  ws = socketIOClient(window.location.hostname);
-  // ws = socketIOClient('http://localhost:5000')
+  // ws = socketIOClient(window.location.hostname);
+  ws = socketIOClient('http://localhost:5000')
 
   componentDidMount() {
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
@@ -87,7 +91,7 @@ class MessageList extends Component {
             // isVisibleToClient: data.isVisibleToClient,
             // room: window.location.href.split('/').pop(),
             // userId: data.createBy,
-            author: this.state.KeyRole[data.role]+ "-" + data.firstName,
+            author: this.state.KeyRole[data.role] + "-" + data.firstName,
             fromMe: fromMe,
             message: data.message,
             timestamp: new Date().getTime()
@@ -118,6 +122,21 @@ class MessageList extends Component {
 
   }
 
+   toggleEmojiPicker = () =>  {
+    this.setState({
+      showEmojiPicker: !this.state.showEmojiPicker,
+    });
+  }
+
+  addEmoji = (emoji) => {
+    const { newMessage } = this.state;
+      const text = `${newMessage}${emoji.native}`;
+
+      this.setState({
+        newMessage: text,
+        showEmojiPicker: false,
+      });
+  }
 
   keyPressed = (event) => {
     if (event.key === "Enter") {
@@ -166,9 +185,10 @@ class MessageList extends Component {
 
   render() {
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
-
+console.log("state of messageList component", this.state)
     return (
       <div >
+        
         <Toolbar
           leftItems="Job Title"
           rightItems="Participants"
@@ -176,23 +196,37 @@ class MessageList extends Component {
           handleAnswerInput={this.handleAnswerInput}
           userRole={USER_DETAILS[0].role}
         />
+        
         <Messages messages={this.state.messages} />
 
         <div className="compose">
-          <input
-            type="text"
+          
+          <textarea
+            rows={1}
             className="compose-input"
             placeholder="Type a message"
             onChange={e => { this.setState({ message: e.target.value }) }}
             value={this.state.message}
             onKeyPress={e => this.keyPressed(e)}
           />
-          <i   
-            style={{ color: "#44c372", fontSize: "x-large", flexDirection: "row-reverse", margin: "7px 15px 0px", width:"3%" }}
+          
+          <i style={{ color: "yellow", fontSize: "x-large", flexDirection: "row-reverse", marginTop: "7px", marginLeft: "3px" }}
+            className="fa  fa-smile-o" onClick={this.toggleEmojiPicker}></i>
+         
+          {/* <span>
+            <Picker onSelect={this.addEmoji} />
+          </span> */}
+          <i style={{ color: "grey", fontSize: "x-large", flexDirection: "row-reverse", marginTop: "7px", marginLeft: "3px" }}
+            className="fa fa-paperclip"></i>
+          <i
+            style={{ color: "#44c372", fontSize: "x-large", flexDirection: "row-reverse", margin: "7px 15px 0px", width: "3%" }}
             onClick={this.submitMessage}
             className="fa fa-paper-plane">
           </i>
         </div>
+        {this.state.showEmojiPicker ? ( <div className="toggle-emoji">
+  <Picker  set="emojione" onSelect={this.addEmoji} />
+</div>) : null}
       </div>
     );
   }

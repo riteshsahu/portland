@@ -3,7 +3,7 @@ export default {
 
   
     {
-         name: 'User',
+         name: 'Users',
         url: '/userDetail',
         icon: 'icon-user',
      

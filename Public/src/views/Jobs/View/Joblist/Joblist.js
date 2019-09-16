@@ -3,6 +3,7 @@ import { Badge, Modal, ModalBody, ModalFooter, Button, Col, Pagination, Paginati
 import { connect } from "react-redux";
 import { deleteJob, updateJob, deleteUserJob, getAllJob } from '../../jobs.action';
 import {GetUserJobs} from '../../../../containers/DefaultLayout/action.defaultLayout';
+import '../../jobs.css';
 class JobList extends Component {
     constructor(props) {
         super(props);
@@ -66,8 +67,8 @@ class JobList extends Component {
                 <td>{this.state.createByKey[data.createByRole]}</td>
                 <td> <Badge color="warning">{this.state.statusKey[data.jobStatus]}</Badge></td>
                 <td>
-                    <i style={{ color: "green", padding: "0px 5px" }} onClick={e => { this.props.updateJob(data) }} className="cui-pencil icons font-xl"></i>
-                    {userDetails[0].role == 1 ? <i style={{ color: "red", padding: "0px 5px" }} onClick={e => { this.toggleSmall(i, data.jobId) }} className="cui-trash icons font-xl"></i> : null }
+                    <i onClick={e => { this.props.updateJob(data) }} className="cui-pencil icons font-xl editButton"></i>
+                    {userDetails[0].role == 1 ? <i onClick={e => { this.toggleSmall(i, data.jobId) }} className="cui-trash icons font-xl deleteButton"></i> : null }
                 </td>
             </tr>)
         })

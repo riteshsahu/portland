@@ -55,8 +55,8 @@ const Modals = React.lazy(() => import('./views/Notifications/Modals'));
 const Colors = React.lazy(() => import('./views/Theme/Colors'));
 const Typography = React.lazy(() => import('./views/Theme/Typography'));
 const Widgets = React.lazy(() => import('./views/Widgets/Widgets'));
-const Users = React.lazy(() => import('./views/Users/Users'));
-const User = React.lazy(() => import('./views/Users/User'));
+// const Users = React.lazy(() => import('./views/Users/Users'));
+// const User = React.lazy(() => import('./views/Users/User'));
 const Chat = React.lazy(() => import('./views/Chat/Chat'));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
@@ -72,7 +72,7 @@ const routes = [
   { path: '/newbusiness', name: 'New Business', component: NewBussiness },
 
   
-  { path: '/userDetail', name: 'User', component: userDetail },
+  { path: '/userDetail', name: 'Users', component: userDetail },
   { path: '/jobs', name: 'Jobs', component: Jobs },
   { path: '/roles', name: 'Roles', component: Roles },
   { path: '/userProfile', exact: true, name: 'UserProfile', component: UserProfile },
@@ -132,8 +132,8 @@ const routes = [
   { path: '/notifications/modals', name: 'Modals', component: Modals },
   { path: '/widgets', name: 'Widgets', component: Widgets },
   { path: '/charts', name: 'Charts', component: Charts },
-  { path: '/users', exact: true,  name: 'Users', component: Users },
-  { path: '/users/:id', exact: true, name: 'User Details', component: User },
+  // { path: '/users', exact: true,  name: 'Users', component: Users },
+  // { path: '/users/:id', exact: true, name: 'User Details', component: User },
 ];
 
 export default routes;

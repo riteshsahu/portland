@@ -71,17 +71,17 @@ class DefaultLayout extends Component {
       items: []
     }
 
-    let user = navigation.items.find(item => { return (item.name === 'User') });
+    let users = navigation.items.find(item => { return (item.name === 'Users') });
     let jobs = navigation.items.find(item => { return (item.name === 'Jobs') });
     let activeJobs = navigation.items.find(item => { return (item.name === 'Active Jobs') });
 
     if (role === 1) { //  Admin
-      roleNavigation.items.push(user);
+      roleNavigation.items.push(users);
       roleNavigation.items.push(jobs);
       roleNavigation.items.push(activeJobs);
     }
     if (role === 2) { // Management
-      roleNavigation.items.push(user);
+      roleNavigation.items.push(users);
       roleNavigation.items.push(jobs);
       roleNavigation.items.push(activeJobs);
     }
