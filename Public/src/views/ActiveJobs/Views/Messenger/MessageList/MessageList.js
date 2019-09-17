@@ -156,7 +156,6 @@ class MessageList extends Component {
   }
 
   submitMessage = (value) => {
-    console.log("value of answer", value)
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
 
     let tempArr = this.state.messages;
