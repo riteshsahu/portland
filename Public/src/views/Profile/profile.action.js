@@ -16,16 +16,17 @@ export const updateUserProfile = (id, values) => {
         })
             .then(res => res.json())
             .then(data => {
+                localStorage.setItem("userDetails",JSON.stringify(data));
                 dispatch({
                     type: ProfileDetail.UPDATE_USER_PROFILE,
-                    payload: data
+                    payload: 2
                 })
                 setTimeout(()=>{
                     dispatch({
-                        type: ProfileDetail.USER_UPDTAED,
-                        payload: false
+                        type: ProfileDetail.UPDATE_USER_PROFILE,
+                        payload: 1
                     })
-                },1500)
+                },2000)
             })
             .catch(err => {
                 console.log(err);

@@ -13,8 +13,20 @@ class UserController {
 
                 })
         }
+        
 
+        static updateUserProfile(req, res) {
+                let data = req.body;
+                UserService.updateUserProfile(data).then(result => {
+                        res.json(result);
+                }).catch(err => {
+                        res.status(500)
+                        res.json(err)
+                        console.log(err)
 
+                })
+        }
+        
         static getUsers(req, res) {
                 UserService.getUsers(req.query).then(result => {
                         res.json(result);

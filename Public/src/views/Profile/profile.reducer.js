@@ -2,7 +2,7 @@
 import { ProfileDetail } from './profile.constants';
 
 const initialState = {
-    ProfileUpdated: ''
+    ProfileUpdated: 1
 }
 
 
@@ -15,7 +15,6 @@ function ProfileReducer(state = initialState, action) {
                 ...state,
                 ProfileUpdated: action.payload
             }
-
         default:
             return state;
 

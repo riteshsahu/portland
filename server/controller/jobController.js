@@ -75,6 +75,33 @@ class JobController {
         })
     }
 
+    
+    static getUserCompletedJobs(req,res) {
+        let id=req.params.id;
+        console.log("--id--",id);
+        JobService.getUserCompletedJobs(id).then(result => {
+            res.json(result);
+        }).catch(err => {
+            console.log(err)
+            res.status(500)
+            res.json(err)
+           
+        })
+    }
+    static getUserLatestJobs(req,res) {
+        let id=req.params.id;
+        console.log("--id--",id);
+        JobService.getUserLatestJobs(id).then(result => {
+            res.json(result);
+        }).catch(err => {
+            console.log(err)
+            res.status(500)
+            res.json(err)
+           
+        })
+    }
+    
+
     static getJobParticipantsInfo(req,res) {
         let id=req.params.id;
         console.log("----ID----",id);

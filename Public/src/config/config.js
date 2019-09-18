@@ -20,9 +20,11 @@ export const URI = {
     DELETE_JOB:"job/{0}",
     GET_ALL_JOBS: "job/{0}",
     GET_USER_JOBS: "job/userJobs/{0}",
+    GET_USER_LATEST_JOBS: "job/userRecentJobs/{0}",
+    GET_USER_COMPLETED_JOBS: "job/userCompletedJobs/{0}",
     GET_JOB_PARTICIPANTS:"job/userInfo/{0}",
-    GET_CHAT_HISTORY: "chat/{0}"
-    
+    GET_CHAT_HISTORY: "chat/{0}",
+    UPDATE_USER_PROFILE: "user/updateProfile/{0}"
 }
 
 export const StringFormat = function() {

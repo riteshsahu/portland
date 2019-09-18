@@ -163,7 +163,7 @@ class ChatService {
                     connection = conn;
                     connection.query(` SELECT DISTINCT MR.recipientGroupId, M.id, M.message, U.role,M.createBy,M.createAt,M.isVisibleToClient, U.firstName, U.lastName 
                     FROM MessageRecipient MR JOIN Message M ON MR.messageId = M.id 
-                    JOIN User U ON U.userId = M.creatorId WHERE MR.recipientGroupId= ? ORDER BY M.createAt ASC`, [id],(err, results) => {
+                    JOIN User U ON U.userId = M.creatorId WHERE U.isActive= 1 AND MR.recipientGroupId= ? ORDER BY M.createAt ASC`, [id],(err, results) => {
                             db.releaseConnection(connection);
                             if(err) {
                                 reject(err)

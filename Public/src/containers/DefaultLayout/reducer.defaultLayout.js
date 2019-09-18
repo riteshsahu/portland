@@ -2,7 +2,9 @@
 import { LayoutDetail } from './constants.defaultLayout';
 
 const initialState = {
-    JobDetails : ''
+    JobDetails: '',
+    DeletedJobDetails: '',
+    RecentJobDetails: ''
 }
 
 
@@ -13,7 +15,19 @@ function LayoutReducer(state = initialState, action) {
         case LayoutDetail.GET_JOBS_INFO:
             return {
                 ...state,
-               JobDetails : action.payload
+                JobDetails: action.payload
+            }
+
+        case LayoutDetail.GET_COMPLETED_JOBS_INFO:
+            return {
+                ...state,
+                DeletedJobDetails: action.payload
+            }
+            
+        case LayoutDetail.GET_LATEST_JOBS_INFO:
+            return {
+                ...state,
+                RecentJobDetails: action.payload
             }
 
         default:

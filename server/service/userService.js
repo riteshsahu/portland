@@ -153,7 +153,111 @@ class UserService {
         });
 
     }
+    
+    static updateUserProfile(data) {
+        // var salt = bcrypt.genSaltSync(saltRounds);
+        // var oldPasswordHash = bcrypt.hashSync(data.oldPassword, salt);
+        // var newPasswordHash = bcrypt.hashSync(data.newPassword, salt);
+        // data.oldPassword = oldPasswordHash;
+        // data.newPassword= newPasswordHash
+        // console.log("data reached there",data);
+        var connection;
+        // console.log("--data--", data);
+        return new Promise((resolve, reject) => {
+            db.getConnection()
+                .then((conn) => {
+                    connection = conn;
+                    return db.beginTransaction(connection);
+                }).then(() => {
+                    return new Promise((res, rej) => {
+                        connection.query(`SELECT * FROM user  WHERE userId =? AND isActive = 1 `, [data.userId], (err, result) => {
+                            if (err) {
+                                db.rollbackTransaction(connection);
+                                db.releaseConnection(connection);
+                                console.log(err);
+                                reject(err)
+                            } else {
+                                res(result[0].password);
+                            }
+                        }) 
+                    })
+                })
+                .then((password) => {
+                    data["password"] = password;
+                    return new Promise((res, rej) => {
+                            connection.query(`UPDATE user SET isActive = 0, updatedBy= ?  WHERE userId =? AND isActive = 1 AND email = ? `, [data.updatedBy,data.userId, data.email], (err, result) => {
+                                if (err) {
+                                    db.rollbackTransaction(connection);
+                                    db.releaseConnection(connection);
+                                    console.log(err);
+                                    reject(err)
+                                } else {
+                                    res();
+                                    // if (result.affectedRows != 0 && result.changedRows != 0) {
+                                    //     res("PASSWORD_MATCHED");
+                                    // } else {
+                                    //     db.rollbackTransaction(connection);
+                                    //     db.releaseConnection(connection);
+                                    //     console.log("--password not matched---");
+                                    //     resolve("PASSWORD_NOT_MATCHED");
+                                    // }
+                                }
+                            })
+                        })
+                })
+                .then(() => {
+                    return new Promise((resSelect, rejSelect) => {
+                        connection.query(`INSERT INTO user SET ?  `, [data], (err, result) => {
+                            if (err) {
+                                console.log(err);
+                                db.rollbackTransaction(connection);
+                                db.releaseConnection(connection);
+                                reject(err)
+                            } else {
+                                db.commitTransaction(connection);
+                                console.log("--Resolve From  Update Password--");
+                                resSelect();
+    
+                            }
+                        })
+                    })
+                   
+                }).then(()=> {
+                        connection.query(`SELECT * FROM user  WHERE userId =? AND isActive = 1 `, [data.userId], (err, result) => {
+                            if (err) {
+                                db.rollbackTransaction(connection);
+                                db.releaseConnection(connection);
+                                console.log(err);
+                                reject(err)
+                            } else {
+                               
+                                db.releaseConnection(connection);
+                                resolve(result);
+                            }
+                        }) 
+                    })
+            
+                .catch(err => {
+                    console.log(err);
+                    reject(err);
+                })
+        });
 
+    }
+
+    static getUserId() {
+        return new Promise((resolve, reject) => {
+            var length = 20;
+            var result = '';
+            var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            var charactersLength = characters.length;
+            for (var i = 0; i < length; i++) {
+                result += characters.charAt(Math.floor(Math.random() * charactersLength));
+            }
+            resolve(result);
+        })
+    }
+    
     static addUser(data) {
         var salt = bcrypt.genSaltSync(saltRounds);
         var hash = bcrypt.hashSync(data.password, salt);
@@ -165,7 +269,6 @@ class UserService {
                     connection = conn;
                     return new Promise((res, rej) => {
                         connection.query(`Select email from User `, (err, result) => {
-                            // db.releaseConnection(connection);
                             if (err) {
                                 db.releaseConnection(connection);
                                 reject(err);
@@ -186,7 +289,12 @@ class UserService {
                             }
                         })
                     })
-                }).then(() => {
+                })
+                .then(()=>{
+                    return UserService.getUserId();
+                })
+                .then((uniqueId) => {
+                    data["userId"] = uniqueId;
                     data = db.addAttributesForNew(data, data.userId);
                     delete data.userId;
                     connection.query(`INSERT INTO User SET ?`, [data], (err, result) => {
@@ -218,7 +326,7 @@ class UserService {
             db.getConnection().
                 then(conn => {
                     connection = conn;
-                    connection.query('SELECT * FROM `User` WHERE email = ?', [email],
+                    connection.query('SELECT * FROM `User` WHERE email = ? AND isActive= 1', [email],
                         function (error, rows) {
                             db.releaseConnection(connection);
                             if (error) {

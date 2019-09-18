@@ -9,6 +9,7 @@ userRoutes.put('/:id', userController.editUser);
 userRoutes.delete('/:id', userController.deleteUser);
 userRoutes.post('/auth', userController.authUser);
 userRoutes.get('/userList', userController.getUserList);
+userRoutes.put('/updateProfile/:id',userController.updateUserProfile);
 
 
 module.exports =  userRoutes;

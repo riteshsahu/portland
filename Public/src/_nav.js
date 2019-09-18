@@ -20,6 +20,11 @@ export default {
         icon: 'fa fa-briefcase',
       },
       {
+        name: 'Archived Jobs',
+        url: '/archivedJobs',
+        icon: 'fa fa-briefcase',
+      },
+      {
         name: 'Chats',
         url: '/chats',
         icon: 'fa fa-tasks'

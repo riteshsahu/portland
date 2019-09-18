@@ -7,7 +7,7 @@ import Toolbar from '../Toolbar/Toolbar';
 import { GetChatHistory } from '../../../action.activeJobs';
 import 'emoji-mart/css/emoji-mart.css';
 import { Picker } from 'emoji-mart';
-import { GetUserJobs} from '../../../../../containers/DefaultLayout/action.defaultLayout';
+import { Alert } from 'reactstrap';
 
 class MessageList extends Component {
   constructor(props) {
@@ -31,8 +31,8 @@ class MessageList extends Component {
   }
   triggerInputFileContract = () => this.fileInputContract.click();
 
-  ws = socketIOClient(window.location.hostname);
-  // ws = socketIOClient('http://localhost:5000')
+  // ws = socketIOClient(window.location.hostname);
+  ws = socketIOClient('http://localhost:5000')
 
   componentDidMount() {
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
@@ -108,7 +108,7 @@ class MessageList extends Component {
   }
 
   isValidMessage = (value) => {
-    return this.state.message.trim() || value.trim() 
+    return this.state.message.trim() || value.trim()
   }
 
 
@@ -158,29 +158,28 @@ class MessageList extends Component {
 
   submitMessage = (value) => {
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
-    this.props.GetUserJobs(USER_DETAILS[0].userId);
 
     let tempArr = this.state.messages;
     // if (this.isValidMessage(value)) {
-      tempArr.push({
-        author: USER_DETAILS[0].firstName,
-        message: value || this.state.message,
-        fromMe: true,
-        timestamp: new Date().getTime()
-      });
-      const message = {
-        isVisibleToClient: this.state.isVisibleToClient,
-        userId: USER_DETAILS[0].userId,
-        message: value || this.state.message,
-        room: window.location.href.split('/').pop(),
-        author: USER_DETAILS[0].firstName
-      }
-      this.ws.emit('send message', message)
-      this.setState({
-        messages: tempArr,
-        message: "",
-        isVisibleToClient: 0
-      });
+    tempArr.push({
+      author: USER_DETAILS[0].firstName,
+      message: value || this.state.message,
+      fromMe: true,
+      timestamp: new Date().getTime()
+    });
+    const message = {
+      isVisibleToClient: this.state.isVisibleToClient,
+      userId: USER_DETAILS[0].userId,
+      message: value || this.state.message,
+      room: window.location.href.split('/').pop(),
+      author: USER_DETAILS[0].firstName
+    }
+    this.ws.emit('send message', message)
+    this.setState({
+      messages: tempArr,
+      message: "",
+      isVisibleToClient: 0
+    });
     // }
   }
 
@@ -200,8 +199,9 @@ class MessageList extends Component {
         <Messages messages={this.state.messages} />
 
         <div className="compose">
-
-          <textarea
+          <Alert className="deleteAlert" color="danger">This Chat Has Been Deleted By Admin</Alert>
+        </div>
+        {/* <textarea
             rows={1}
             className="compose-input"
             placeholder="Type a message"
@@ -222,7 +222,7 @@ class MessageList extends Component {
         </div>
         {this.state.showEmojiPicker ? (
           <div className="toggle-emoji"><Picker set="emojione" onSelect={this.addEmoji} /> </div>
-        ) : null}
+        ) : null} */}
       </div>
     );
   }
@@ -237,8 +237,7 @@ const mapStateToProps = state => {
 }
 function mapDispatchToProps(dispatch) {
   return {
-    GetChatHistory: (id) => dispatch(GetChatHistory(id)),
-    GetUserJobs: (id) => dispatch(GetUserJobs(id))
+    GetChatHistory: (id) => dispatch(GetChatHistory(id))
   };
 }
 

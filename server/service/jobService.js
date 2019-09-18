@@ -286,7 +286,7 @@ class JobService {
                 then(conn => {
                     connection = conn;
                     return new Promise((res, rej) => {
-                        connection.query('update Job SET isActive = 0  WHERE jobId = ? ', [id], (err, results) => {
+                        connection.query('update Job SET isActive = 0, jobStatus = 2  WHERE jobId = ? AND isActive = 1 ', [id], (err, results) => {
                             // db.releaseConnection(connection);
                             if (err) {
                                 db.releaseConnection(connection);
@@ -317,6 +317,7 @@ class JobService {
         });
     }
 
+    
 
     static getAllJob(id) {
         var connection;
@@ -391,14 +392,116 @@ class JobService {
         });
     }
 
+    static filterRecentJob(result){
+        function isExist(id, jobArr) {
+            if (jobArr.length > 0) {
+                let keyIndex, count = 0;
+                jobArr.map((dt, index) => {
+                    if (dt.jobId == id) {
+                        count = count + 1;
+                        keyIndex = index;
+                    }
+                })
+                if (count > 0) {
+                    return keyIndex;
+                } else {
+                    return "NOT_EXIST"
+                }
+            } else {
+                return "NOT_EXIST"
+            }
+        }
+        let jobList = [];
+        if (result.length > 0) {
+
+            result.map((dt, i) => {
+                if (isExist(dt.jobId, jobList) == "NOT_EXIST") {
+                    jobList.push({
+                        jobTitle: dt.jobTitle,
+                        jobId: dt.jobId,
+                    })
+                } else {
+                   
+                }
+            })
+            return jobList;
+        }
+        else {
+            return result;
+        }
+    }
+
     static getUserJobs(id) {
         var connection;
         return new Promise((resolve, reject) => {
             db.getConnection().
                 then(conn => {
                     connection = conn;
+                    // connection.query(`select J.jobId, J.jobTitle,J.createAt, J.jobDescription, J.jobCreatedBy, J.jobStatus, JU.userId from JobUsers 
+                    // JU LEFT JOIN Job J ON J.jobId = JU.jobId WHERE J.isActive = 1 AND JU.isActive = 1 AND J.jobStatus = 1 AND JU.userId=? `, [id], (err, results) => {
+                           
+                    connection.query(`select DISTINCT J.jobId, J.jobTitle, message.createAt, J.jobDescription, J.jobCreatedBy, J.jobStatus, JU.userId
+                    from JobUsers JU LEFT JOIN Job J ON J.jobId = JU.jobId 
+                   LEFT JOIN messagerecipient ON J.jobId = messagerecipient.recipientGroupId
+                     LEFT JOIN message ON messagerecipient.messageId = message.id 
+                   WHERE J.isActive = 1 AND JU.isActive = 1 AND J.jobStatus = 1 AND JU.userId=?  ORDER BY message.createAt DESC`,[id],(err,results) => {
+
+     
+                        db.releaseConnection(connection);
+                            if (err) {
+                                console.log("error", err)
+                                reject(err)
+                            } else {
+                                console.log("res", results);
+                                
+                                resolve(JobService.filterRecentJob(results));
+                            }
+                        });
+                })
+                .catch(err => {
+                    console.log("---err--", err);
+                    db.releaseConnection(connection);
+                    reject(err);
+                })
+        })
+    }
+
+
+    static getUserCompletedJobs(id) {
+        var connection;
+        return new Promise((resolve, reject) => {
+            db.getConnection().
+                then(conn => {
+                    connection = conn;
                     connection.query(`select J.jobId, J.jobTitle,J.createAt, J.jobDescription, J.jobCreatedBy, J.jobStatus, JU.userId from JobUsers 
-                    JU LEFT JOIN Job J ON J.jobId = JU.jobId WHERE J.isActive = 1 AND JU.isActive = 1 AND JU.userId=? `, [id], (err, results) => {
+                    JU LEFT JOIN Job J ON J.jobId = JU.jobId WHERE J.isActive = 0 AND JU.isActive = 0 AND J.jobStatus = 2 AND JU.userId=? `, [id], (err, results) => {
+                            db.releaseConnection(connection);
+                            if (err) {
+                                console.log("error", err)
+                                reject(err)
+                            } else {
+                                console.log("res", results)
+                                resolve(results);
+                            }
+                        });
+                })
+                .catch(err => {
+                    console.log("---err--", err);
+                    db.releaseConnection(connection);
+                    reject(err);
+                })
+        })
+    }
+
+    static getUserLatestJobs(id) {
+        var connection;
+        return new Promise((resolve, reject) => {
+            db.getConnection().
+                then(conn => {
+                    connection = conn;
+                    connection.query(`SELECT DISTINCT job.jobId, message.id, message.createAt FROM job LEFT JOIN 
+                    messagerecipient ON job.jobId = messagerecipient.recipientGroupId LEFT JOIN
+                     message ON messagerecipient.messageId = message.id WHERE job.isActive = 1 ORDER BY message.createAt DESC`, [id], (err, results) => {
                             db.releaseConnection(connection);
                             if (err) {
                                 console.log("error", err)

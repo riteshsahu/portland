@@ -2,7 +2,7 @@ import React, { Component, Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { Container } from 'reactstrap';
 import { connect } from "react-redux";
-import {GetUserJobs} from './action.defaultLayout';
+import {GetUserJobs,GetUserCompletedJobs,GetUserLatestJobs} from './action.defaultLayout';
 import AppSlidebar from './AppSideBar';
 
 import {
@@ -46,6 +46,20 @@ class DefaultLayout extends Component {
     if(arrRes.length> 0){
       navigation.items[2]["children"]= arrRes;
     }
+
+    let arrCompRes = [] ;
+    nextProps.DeletedJobDetails && nextProps.DeletedJobDetails.map((data) => {
+      arrCompRes.push({
+      id: data.jobId,
+      name: data.jobTitle,
+      url: "/archivedJobs/"+data.jobId,
+      icon: "fa fa-briefcase"
+    });
+   
+    }) 
+    if(arrCompRes.length> 0){
+      navigation.items[3]["children"]= arrCompRes;
+    }
    
   }
 
@@ -53,6 +67,8 @@ class DefaultLayout extends Component {
     const userDetails = localStorage.getItem("userDetails");
     const user= JSON.parse(userDetails) ;
     this.props.GetUserJobs(user[0].userId);
+    // this.props.GetUserLatestJobs(user[0].userId);
+    this.props.GetUserCompletedJobs(user[0].userId);
   }
   signOut(e) {
     e.preventDefault()
@@ -72,12 +88,14 @@ class DefaultLayout extends Component {
 
     let users = navigation.items.find(item => { return (item.name === 'Users') });
     let jobs = navigation.items.find(item => { return (item.name === 'Jobs') });
-    let activeJobs = navigation.items.find(item => { return (item.name === 'Active Jobs') });
+    let activeJobs = navigation.items.find(item => { return (item.name === 'Active Jobs')});
+    let archivedJobs = navigation.items.find(item => {return(item.name === 'Archived Jobs')});
 
     if (role === 1) { //  Admin
       roleNavigation.items.push(users);
       roleNavigation.items.push(jobs);
       roleNavigation.items.push(activeJobs);
+      roleNavigation.items.push(archivedJobs);
     }
     if (role === 2) { // Management
       roleNavigation.items.push(users);
@@ -109,7 +127,6 @@ class DefaultLayout extends Component {
 
     const userDetails = localStorage.getItem("userDetails");
     const user= JSON.parse(userDetails) ;
-  
     let roleNavigation = this.getNavigationForRoles(user[0].role, navigation)
     return (
       <div className="app">
@@ -169,13 +186,17 @@ class DefaultLayout extends Component {
 
 const mapStateToProps = state => {
   return {
-    JobDetails: state.LayoutDetail.JobDetails
+    JobDetails: state.LayoutDetail.JobDetails,
+    DeletedJobDetails: state.LayoutDetail.DeletedJobDetails,
+    RecentJobDetails: state.LayoutDetail.RecentJobDetails
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    GetUserJobs: (id) => dispatch(GetUserJobs(id))
+    GetUserJobs: (id) => dispatch(GetUserJobs(id)),
+    GetUserLatestJobs: (id) => dispatch(GetUserLatestJobs(id)),
+    GetUserCompletedJobs: (id) => dispatch(GetUserCompletedJobs(id))
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(DefaultLayout);
