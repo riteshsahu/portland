@@ -114,7 +114,7 @@ class AppSlideBar extends Component {
     return (
       <li key={key} className={this.activeRoute(item.url, this.props)} >
         <a className="nav-link nav-dropdown-toggle hoverDD"  href="#" onClick={this.handleClick}><i className={classIcon} />{item.name}{this.navBadge(item.badge)}</a>
-        <ul className="nav-dropdown-items scroll">
+        <ul className="nav-dropdown-items scroll fontStyle ">
           {this.navList(item.children)}
         </ul>
       </li>);
@@ -158,7 +158,7 @@ class AppSlideBar extends Component {
     const itemBadge = this.navBadge(item.badge)
     const attributes = item.attributes || {}
     return (
-      <NavItem style={{backgroundColor: "#1F4E3A"}} key={key} className={classes.item} onClick={e=> {this.clickCalled(item)}} >
+      <NavItem id={item.id} style={{backgroundColor: "#1F4E3A"}} key={key} className={classes.item} onClick={e=> {this.clickCalled(item)}} >
         { attributes.disabled ?
             <RsNavLink  style={{backgroundColor: "#1F4E3A"}} href={""} className={classes.link} {...attributes}>
               {itemIcon}{item.name}{itemBadge}
@@ -223,8 +223,7 @@ AppSlideBar.defaultProps = defaultProps;
 
 const mapStateToProps = state => {
   return {
-    // customerProfile: state.customer.customerProfile,
-    // selectedIndex: state.customer.selectedIndex
+   
   };
 }
 
@@ -236,4 +235,3 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps, mapDispatchToProps)(AppSlideBar);
 
 
-// export default AppSlideBar;

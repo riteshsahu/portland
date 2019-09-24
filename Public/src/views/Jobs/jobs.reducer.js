@@ -61,13 +61,11 @@ function JobReducer(state = initialState, action) {
             return {
                 ...state,
                 userList: action.payload
-
             }
 
         case JobDetail.CREATE_NEW_JOB:
             return {
                 ...state,
-                // jobDetails: [...state.jobDetails, action.payload]
                 createJob: action.payload
             }
 
@@ -79,6 +77,7 @@ function JobReducer(state = initialState, action) {
                 ...state,
                 jobDetails: updatedJobs
             }
+            
         default:
             return state;
     }

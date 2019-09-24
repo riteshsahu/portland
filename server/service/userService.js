@@ -5,21 +5,36 @@ const saltRounds = 10;
 
 class UserService {
 
-    static getUserList() {
+    static getUserList(offset) {
         var connection;
         return new Promise((resolve, reject) => {
-            db.getConnection().
-                then(conn => {
-                    connection = conn;
-                    connection.query('Select * from User WHERE isActive = 1', (err, results) => {
+            db.getConnection().then(conn => {
+                connection = conn;
+                return new Promise((res, rej) => {
+                connection.query('SELECT COUNT(*) as COUNT FROM user WHERE isActive=1', (err, results) => {
+                    if (err) {
+                        db.releaseConnection(connection);
+                        rej(err)
+                    } else {
+                        res(results[0].COUNT);
+                    }
+                })
+            }).then(count => {
+                    connection.query('Select * from User WHERE isActive = 1 LIMIT ?,10',[offset], (err, results) => {
                         db.releaseConnection(connection);
                         if (err) {
                             reject(err)
                         } else {
-                            resolve(results);
+                            let finalRes={
+                                "count" : count,
+                                "result" : results
+                            };
+
+                            resolve(finalRes);
                         }
                     })
                 })
+            })
                 .catch(err => {
                     db.releaseConnection(connection);
                     reject(err);
@@ -28,6 +43,27 @@ class UserService {
 
     }
 
+
+    static getUserForSuggestions() {
+        var connection;
+        return new Promise((resolve, reject) => {
+            db.getConnection().then(conn => {
+                connection = conn;
+                    connection.query('Select * from User WHERE isActive = 1 ', (err, results) => {
+                        db.releaseConnection(connection);
+                        if (err) {
+                            reject(err)
+                        } else {
+                            resolve(results);
+                        }
+                    })
+                })
+            })
+                .catch(err => {
+                    db.releaseConnection(connection);
+                    reject(err);
+                })
+    }
 
     static getUsers(query) {
         let firstName = query.firstName;
@@ -155,14 +191,7 @@ class UserService {
     }
     
     static updateUserProfile(data) {
-        // var salt = bcrypt.genSaltSync(saltRounds);
-        // var oldPasswordHash = bcrypt.hashSync(data.oldPassword, salt);
-        // var newPasswordHash = bcrypt.hashSync(data.newPassword, salt);
-        // data.oldPassword = oldPasswordHash;
-        // data.newPassword= newPasswordHash
-        // console.log("data reached there",data);
         var connection;
-        // console.log("--data--", data);
         return new Promise((resolve, reject) => {
             db.getConnection()
                 .then((conn) => {
@@ -193,14 +222,6 @@ class UserService {
                                     reject(err)
                                 } else {
                                     res();
-                                    // if (result.affectedRows != 0 && result.changedRows != 0) {
-                                    //     res("PASSWORD_MATCHED");
-                                    // } else {
-                                    //     db.rollbackTransaction(connection);
-                                    //     db.releaseConnection(connection);
-                                    //     console.log("--password not matched---");
-                                    //     resolve("PASSWORD_NOT_MATCHED");
-                                    // }
                                 }
                             })
                         })
@@ -215,7 +236,6 @@ class UserService {
                                 reject(err)
                             } else {
                                 db.commitTransaction(connection);
-                                console.log("--Resolve From  Update Password--");
                                 resSelect();
     
                             }
@@ -355,6 +375,77 @@ class UserService {
         });
     }
 
+    
+    static forgotPassword(data) {
+        var salt = bcrypt.genSaltSync(saltRounds);
+        var newPasswordHash = bcrypt.hashSync(data.newPassword, salt);
+        var connection , userdata ="";
+        var email = data.email;
+        return new Promise((resolve, reject) => {
+            db.getConnection().
+                then(conn => {
+                    connection = conn;
+                    db.beginTransaction(connection);
+                }).then(()=>{
+                    
+                    return new Promise((res,rej) => {
+                    connection.query('SELECT * FROM `User` WHERE email = ? AND isActive= 1', [email],
+                        function (error, rows) {
+                            if (error) {
+                                db.rollbackTransaction(connection);
+                                db.releaseConnection(connection);
+                                reject(error);
+                            }
+                            else {
+                                if (rows && rows.length > 0) {
+                                        res(rows[0]);
+                                    }
+                                 else {
+                                    let err = "INVALID_EMAIL";
+                                    db.rollbackTransaction(connection);
+                                    db.releaseConnection(connection);
+                                    resolve(err);
+                                }
+                            }
+                        });
+                    })
+                }) .then((userResult) => {
+                    userdata = userResult
+                    userdata["password"] = newPasswordHash;
+                    delete userdata["userRecordId"];
+                    return new Promise((res, rej) => {
+                            connection.query(`UPDATE user SET isActive = 0  WHERE isActive = 1 AND email = ? `, [data.email], (err, result) => {
+                                if (err) {
+                                    db.rollbackTransaction(connection);
+                                    db.releaseConnection(connection);
+                                    console.log(err);
+                                    reject(err)
+                                } else {
+                                    res(result);
+                                }
+                            })
+                        })
+                    })
+                    .then(() => {
+                        connection.query(`INSERT INTO User SET ?`, [userdata], (err, result) => {
+                            if (err) {
+                                db.rollbackTransaction(connection);
+                                db.releaseConnection(connection);
+                                reject(err)
+                            } else {
+                                db.commitTransaction(connection);
+                                db.releaseConnection(connection);
+                                resolve("PASSWORD_UPDATED");
+                            }
+                        })
+                    })
+                .catch(err => {
+                    db.rollbackTransaction(connection);
+                    db.releaseConnection(connection);
+                    reject(err);
+                })
+        });
+    }
 }
 
 module.exports = UserService;

@@ -10,9 +10,15 @@ class UserProfile extends Component {
             firstName: '',
             lastName: '',
             email: '',
-            // oldPassword: '',
-            // NewPassword: '',
-            // ConfirmPassword: '',
+            role: '',
+            keyRole: {
+                1 : "Admin",
+                2 : "Management",
+                3 : "Internal Employee",
+                4 : "External Employee",
+                5 : "Designer",
+                6 : "Client"
+            }
         }
     }
 
@@ -22,7 +28,8 @@ class UserProfile extends Component {
         this.setState({
             firstName: user[0].firstName,
             lastName: user[0].lastName,
-            email: user[0].email
+            email: user[0].email,
+            role: this.state.keyRole[user[0].role]
         })
     }
 
@@ -44,22 +51,6 @@ class UserProfile extends Component {
         })
     }
 
-    // handleChangeOldPassword = (e) => {
-    //     this.setState({
-    //         oldPassword: e.target.value
-    //     })
-    // }
-    // handleChangeNewPassword = (e) => {
-    //     this.setState({
-    //         NewPassword: e.target.value
-    //     })
-    // }
-    // handleChangeConfirmPassword = (e) => {
-    //     this.setState({
-    //         ConfirmPassword: e.target.value
-    //     })
-    // }
-
     handleSubmit = () => {
         const userDetails = localStorage.getItem("userDetails");
         const user = JSON.parse(userDetails);
@@ -70,7 +61,8 @@ class UserProfile extends Component {
             email: this.state.email,
             updatedBy: user[0].userId,
             role: user[0].role,
-            status: user[0].status
+            status: user[0].status,
+            createAt: user[0].createAt
         }
 
         this.props.updateUserProfile(user[0].userId, data);
@@ -139,55 +131,21 @@ class UserProfile extends Component {
                                                 <Col lg="2">
                                                 </Col>
                                             </Row>
-
-                                            {/* <Row style={{ paddingTop: 10, paddingBottom: 10 }} >
+                                            <Row style={{ paddingTop: 10, paddingBottom: 10 }} >
                                                 <Col lg="2">
                                                 </Col>
                                                 <Col xs="12" md="6" lg="3">
-                                                    <Label>Old Password:-</Label>
+                                                    <Label>Role:-</Label>
                                                 </Col>
                                                 <Col xs="12" md="6" lg="5">
-                                                    <Input type="password"
-                                                        onChange={this.handleChangeOldPassword}
-                                                        placeholder="Old Password"
+                                                    <Input type="text"
+                                                        placeholder="Role"
+                                                        value={this.state.role} readOnly
                                                     />
                                                 </Col>
                                                 <Col lg="2">
                                                 </Col>
                                             </Row>
-
-                                            <Row style={{ paddingTop: 10, paddingBottom: 10 }} >
-                                                <Col lg="2">
-                                                </Col>
-                                                <Col xs="12" md="6" lg="3">
-                                                    <Label>New Password:-</Label>
-                                                </Col>
-                                                <Col xs="12" md="6" lg="5">
-                                                    <Input type="password"
-                                                        onChange={this.handleChangeNewPassword}
-                                                        placeholder="New Password"
-                                                    />
-                                                </Col>
-                                                <Col lg="2">
-                                                </Col>
-                                            </Row>
-
-
-                                            <Row style={{ paddingTop: 10, paddingBottom: 10 }} >
-                                                <Col lg="2">
-                                                </Col>
-                                                <Col xs="12" md="6" lg="3">
-                                                    <Label>Confirm Password:-</Label>
-                                                </Col>
-                                                <Col xs="12" md="6" lg="5">
-                                                    <Input type="password"
-                                                        onChange={this.handleChangeConfirmPassword}
-                                                        placeholder="Confirm Password"
-                                                    />
-                                                </Col>
-                                                <Col lg="2">
-                                                </Col>
-                                            </Row> */}
                                              {(this.props.ProfileUpdated === 2) ?
                                             <Row>
                                                 <Col lg="2">

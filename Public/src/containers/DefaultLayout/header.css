@@ -7,14 +7,71 @@
     outline: 0px auto -webkit-focus-ring-color !important
 
 }
+.fontStyle {
+  font-size: medium !important;
+}
 
 .hoverDD:hover{
     color: #fff !important;
     background: transparent !important;
+   
 }
 
 .scroll {
-    height: 150px ;
-    overflow: scroll!important;
+    height: 140px !important ;
+    overflow-y: auto!important;
     overflow-x: hidden !important;
+    /* min-height: 48px !important; */
+    /* height: 140px !important; */
+    /* max-height: 140px  ; */
+
+   
+    /* height: 140px;
+    overflow: auto !important;
+    overflow-x: hidden !important; */
+
+    /* overflow-y:auto;
+    height:auto;
+    max-height:200px;
+    border:1px solid black;
+    width:300px; */
+}
+
+.font {
+  font-size: larger;
+    font-weight: 500;
+}
+
+.activeJobList {
+    height: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: absolute;
+    top: 47px;
+    width: 250px;
+    max-height: 548px;
+}
+.item {
+  white-space: pre-wrap !important;
+}
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey; 
+  border-radius: 10px;
+}
+ 
+
+::-webkit-scrollbar-thumb {
+  background: grey; 
+  border-radius: 10px;
+}
+
+
+::-webkit-scrollbar-thumb:hover {
+  background: gray; 
 }

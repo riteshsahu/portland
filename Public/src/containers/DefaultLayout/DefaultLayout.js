@@ -101,25 +101,29 @@ class DefaultLayout extends Component {
       roleNavigation.items.push(users);
       roleNavigation.items.push(jobs);
       roleNavigation.items.push(activeJobs);
+      roleNavigation.items.push(archivedJobs);
     }
 
     if (role === 3) { // Internal Employee 
       roleNavigation.items.push(activeJobs);
+      roleNavigation.items.push(archivedJobs);
       // roleNavigation.items.push(gic);
     }
 
     if(role === 4) { // External employee
       roleNavigation.items.push(activeJobs);
+      roleNavigation.items.push(archivedJobs);
     }
 
     if(role === 5) { // contractor
       roleNavigation.items.push(activeJobs);
+      roleNavigation.items.push(archivedJobs);
     }
 
     if(role === 6) { // Client
       roleNavigation.items.push(activeJobs);
+      roleNavigation.items.push(archivedJobs);
     }
-
     return roleNavigation;
   }
   
@@ -130,13 +134,13 @@ class DefaultLayout extends Component {
     let roleNavigation = this.getNavigationForRoles(user[0].role, navigation)
     return (
       <div className="app">
-        <AppHeader fixed>
+        <AppHeader fixed  >
           <Suspense fallback={this.loading()}>
-            <DefaultHeader onLogout={e => this.signOut(e)} handleProfile ={e => this.manageProfile(e)} />
+            <DefaultHeader history={this.props.history} onLogout={e => this.signOut(e)} handleProfile ={e => this.manageProfile(e)} />
           </Suspense>
         </AppHeader>
         <div className="app-body">
-          <AppSidebar fixed display="lg" style={{backgroundColor: "#1F4E3A"}}>
+          <AppSidebar fixed display="lg" style={{backgroundColor: "#1F4E3A",fontSize: "large"}}>
             <AppSidebarHeader />
             <AppSidebarForm />
             <Suspense>

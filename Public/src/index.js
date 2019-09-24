@@ -21,8 +21,6 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const createStoreWithMiddleware = composeEnhancers(applyMiddleware(thunk, logger))(createStore);
 const store = createStoreWithMiddleware(reducers);
 
-const hist = createBrowserHistory();
-
 ReactDOM.render(
     <Provider store={store}  >
         <App />

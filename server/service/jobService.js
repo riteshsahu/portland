@@ -1,11 +1,8 @@
 const db = require('../util/db');
-// const bcrypt = require('bcrypt');
-// const saltRounds = 10;
 
 class JobService {
 
     static createJob(data) {
-        console.log('--datat---', data);
         var connection;
         return new Promise((resolve, reject) => {
             db.getConnection().
@@ -41,7 +38,6 @@ class JobService {
                             arr[7] = null;
                             return arr;
                         })
-                        console.log('job users-----', jobUsers);
                         connection.query('INSERT INTO JobUsers ( jobId, userId, isActive, isSubscribed, createAt, updatedAt, createBy, updatedBy) VALUES ? ',
                             [jobUsers],
                             (err, results) => {
@@ -136,7 +132,6 @@ class JobService {
                         if (resSResponse.isDelete.length > 0) {
                             connection.query(' Update JobUsers SET isActive = 0, updatedAt =?, updatedBy= ?  WHERE jobId = ? AND userId in ?  ',
                                 [new Date(), data.updatedBy, jobId, [resSResponse.isDelete]],
-                                // [deleteArr],
                                 (err, results) => {
                                     if (err) {
                                         db.rollbackTransaction(connection);
@@ -213,7 +208,6 @@ class JobService {
         let jobStatus = query.jobStatus;
         let jobCreatedBy = query.jobCreatedBy;
         // let role = query.role;
-        console.log('---query----', query);
         var connection;
         return new Promise((resolve, reject) => {
             db.getConnection().
@@ -226,7 +220,6 @@ class JobService {
                             if (err) {
                                 reject(err)
                             } else {
-                                // console.log("---result-----", results);
                                 function isJobExist(oldId, id) {
                                     let count = 0;
                                     oldId.map(dt => {
@@ -266,9 +259,6 @@ class JobService {
                                     db.releaseConnection(connection);
                                     resolve(results);
                                 }
-
-
-
                             }
                         })
                 })
@@ -287,25 +277,23 @@ class JobService {
                     connection = conn;
                     return new Promise((res, rej) => {
                         connection.query('update Job SET isActive = 0, jobStatus = 2  WHERE jobId = ? AND isActive = 1 ', [id], (err, results) => {
-                            // db.releaseConnection(connection);
                             if (err) {
                                 db.releaseConnection(connection);
                                 reject(err)
                             } else {
                                 res();
-                                // resolve(results);
                             }
                         })
                     })
                 })
                 .then(() => {
-                    // connection = conn;
                     connection.query('update JobUsers SET isActive = 0  WHERE jobId = ? ', [id], (err, results) => {
                         if (err) {
                             db.releaseConnection(connection);
                             reject(err)
                         } else {
                             db.releaseConnection(connection);
+                            db.commitTransaction(connection);
                             resolve(results);
                         }
                     })
@@ -377,15 +365,10 @@ class JobService {
                                 } else {
                                     resolve(results);
                                 }
-
-
-                                // console.log("---list---",results);
-                                // resolve(results);
                             }
                         })
                 })
                 .catch(err => {
-                    console.log("---err--", err);
                     db.releaseConnection(connection);
                     reject(err);
                 })
@@ -449,17 +432,13 @@ class JobService {
      
                         db.releaseConnection(connection);
                             if (err) {
-                                console.log("error", err)
                                 reject(err)
                             } else {
-                                console.log("res", results);
-                                
                                 resolve(JobService.filterRecentJob(results));
                             }
                         });
                 })
                 .catch(err => {
-                    console.log("---err--", err);
                     db.releaseConnection(connection);
                     reject(err);
                 })
@@ -477,16 +456,13 @@ class JobService {
                     JU LEFT JOIN Job J ON J.jobId = JU.jobId WHERE J.isActive = 0 AND JU.isActive = 0 AND J.jobStatus = 2 AND JU.userId=? `, [id], (err, results) => {
                             db.releaseConnection(connection);
                             if (err) {
-                                console.log("error", err)
                                 reject(err)
                             } else {
-                                console.log("res", results)
                                 resolve(results);
                             }
                         });
                 })
                 .catch(err => {
-                    console.log("---err--", err);
                     db.releaseConnection(connection);
                     reject(err);
                 })
@@ -504,16 +480,13 @@ class JobService {
                      message ON messagerecipient.messageId = message.id WHERE job.isActive = 1 ORDER BY message.createAt DESC`, [id], (err, results) => {
                             db.releaseConnection(connection);
                             if (err) {
-                                console.log("error", err)
                                 reject(err)
                             } else {
-                                console.log("res", results)
                                 resolve(results);
                             }
                         });
                 })
                 .catch(err => {
-                    console.log("---err--", err);
                     db.releaseConnection(connection);
                     reject(err);
                 })
@@ -528,19 +501,16 @@ class JobService {
                     connection = conn;
                         connection.query(`SELECT JU.jobId,U.firstName,U.lastName,U.email,U.role From User U
                         INNER JOIN JobUsers JU ON U.userId = JU.userID and U.isActive=1
-                        where JU.jobId = ?  and U.status = 1 and JU.isActive = 1`, [id], (err, results) => {
+                        where JU.jobId = ?  and U.status = 1 `, [id], (err, results) => {
                              db.releaseConnection(connection);
                             if (err) {
-                                console.log("error", err)
                                 reject(err)
                             } else {
-                                console.log("Result of participant api", results)
                                 resolve(results);
                             }
                         });
                 })
                 .catch(err => {
-                    console.log("---err--", err);
                     db.releaseConnection(connection);
                     reject(err);
                 })

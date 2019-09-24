@@ -73,14 +73,34 @@ class UserController {
                 })
         }
 
-        static getUserList(req, res) {
-                UserService.getUserList().then(result => {
+        static forgotPassword(req, res) {
+                let data = req.body;
+                UserService.forgotPassword(data).then(result => {
                         res.json(result);
                 }).catch(err => {
                         res.status(500)
                         res.json(err)
                 })
         }
+        
+        static getUserList(req, res) {
+                let offset = JSON.parse( req.params.offset);
+                UserService.getUserList(offset).then(result => {
+                        res.json(result);
+                }).catch(err => {
+                        res.status(500)
+                        res.json(err)
+                })
+        }
+        static getUserForSuggestions(req, res) {
+                UserService.getUserForSuggestions().then(result => {
+                        res.json(result);
+                }).catch(err => {
+                        res.status(500)
+                        res.json(err)
+                })
+        }
+        
 
 }
 

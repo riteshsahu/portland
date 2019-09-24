@@ -90,7 +90,7 @@ class Toolbar extends Component {
     return (
       <>
         <div className="toolbar">
-          <div ><h3 className="jobtitle" >{this.props.JobTitle ? this.props.JobTitle : leftItems}</h3></div>
+          <div ><h3 className="jobtitle" >{this.state.jobTitle ? this.state.jobTitle : leftItems}</h3></div>
           {/* <h1 className="toolbar-title">{title}</h1> */}
           <div className="right-items" >
 
@@ -102,7 +102,7 @@ class Toolbar extends Component {
               }
               {rightItems}
             </Label>
-            { this.props.userRole != 6
+            {/* { this.props.userRole != 6
               ?
               <Button  style={{background: "#ff8f00", color: "white"}}
               onClick={this.handleAnswer} 
@@ -111,7 +111,7 @@ class Toolbar extends Component {
               Answer
             </Button> 
             : null
-            }
+            } */}
             
           </div>
         </div>

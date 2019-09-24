@@ -164,7 +164,6 @@ class AssignRole extends Component {
     }
 
     onChange = (event, { newValue, method }) => {
-        console.log(event);
         this.setState({
             value: newValue
         });

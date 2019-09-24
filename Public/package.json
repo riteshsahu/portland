@@ -39,6 +39,7 @@
     "react-dom": "^16.8.5",
     "react-facebook": "^8.0.4",
     "react-multistep": "^3.6.6",
+    "react-reactstrap-pagination": "^1.0.6",
     "react-redux": "^7.0.3",
     "react-router": "^5.0.0",
     "react-router-config": "^4.4.0-beta.8",

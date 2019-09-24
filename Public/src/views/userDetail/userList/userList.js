@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Badge, Modal, ModalBody, ModalFooter, Button, Col, Pagination,Label, PaginationItem, PaginationLink, Row, Table } from 'reactstrap';
 import { connect } from "react-redux";
 import { deleteUserData, updateUser, GetUserList } from '../userDetail.action';
+import '../user.css';
+import PaginationComponent  from 'react-reactstrap-pagination';
 
 class UserList extends Component {
     constructor(props) {
@@ -18,7 +20,9 @@ class UserList extends Component {
             small: false,
             deleteIndex: '',
             toggle1: false,
-            selectedIndex: ''
+            selectedIndex: '',
+            offset: 0,
+            selectedPage: 1,
         }
         this.toggleSmall = this.toggleSmall.bind(this);
         this.toggleModel = this.toggleModel.bind(this);
@@ -27,12 +31,12 @@ class UserList extends Component {
 
 
     componentDidMount = () => {
-        this.props.GetUserList();
+        this.props.GetUserList(this.state.offset);
     }
 
     componentWillReceiveProps = () => {
         if (this.props.userDeleted) {
-            this.props.GetUserList();
+            this.props.GetUserList(this.state.offset);
 
         }
     }
@@ -57,6 +61,13 @@ class UserList extends Component {
         this.props.deleteUserData(this.state.deleteIndex);
     }
 
+    handleSelected = (selectedPage) => {
+        this.setState({ selectedPage: selectedPage });
+        let offset= (selectedPage - 1) * 10;
+        this.props.GetUserList(offset);
+    }
+         
+
     showUserList = () => {
         let result = [];
         const userDetails = JSON.parse(localStorage.getItem("userDetails"));
@@ -73,8 +84,8 @@ class UserList extends Component {
                         <Badge color="success">Active</Badge>
                     </td>
                     <td>
-                        <i style={{ color: "green", padding: "0px 5px" }} onClick={e => { this.props.updateUser(data) }} className="cui-pencil icons font-xl"></i>
-                     {userDetails[0].role == 1 ? <i style={{ color: "red", padding: "0px 5px" }} onClick={e => { this.toggleSmall(data.userId) }} className="cui-trash icons font-xl"></i> : null}   
+                        <i onClick={e => { this.props.updateUser(data) }} className="cui-pencil icons editButton font-xl"></i>
+                     {userDetails[0].role == 1 ? <i  onClick={e => { this.toggleSmall(data.userId) }} className="cui-trash icons deleteButton font-xl"></i> : null}   
                     </td>
                 </tr>)
             })
@@ -102,18 +113,11 @@ class UserList extends Component {
                                 {this.showUserList()}
                             </tbody>
                         </Table>
-                        <nav>
-                            <Pagination style={{ marginLeft: "35%" }}>
-                                <PaginationItem><PaginationLink previous tag="button">Prev</PaginationLink></PaginationItem>
-                                <PaginationItem active>
-                                    <PaginationLink tag="button">1</PaginationLink>
-                                </PaginationItem>
-                                <PaginationItem><PaginationLink tag="button">2</PaginationLink></PaginationItem>
-                                <PaginationItem><PaginationLink tag="button">3</PaginationLink></PaginationItem>
-                                <PaginationItem><PaginationLink tag="button">4</PaginationLink></PaginationItem>
-                                <PaginationItem><PaginationLink next tag="button">Next</PaginationLink></PaginationItem>
-                            </Pagination>
-                        </nav>
+                        <div style={{marginLeft: "30%",marginTop: "20px"}}>
+                        <PaginationComponent totalItems={this.props.count} pageSize={10} 
+                        onSelect={this.handleSelected}
+                        activePage={this.state.selectedPage} />
+                        </div>
                     </Col>
                 </Row>
                 <Row>
@@ -182,7 +186,8 @@ class UserList extends Component {
 const mapStateToProps = state => {
     return {
         userDetails: state.userDetail.userDetails,
-        userDeleted: state.userDetail.userDeleted
+        userDeleted: state.userDetail.userDeleted,
+        count: state.userDetail.count
     };
 }
 
@@ -190,7 +195,7 @@ function mapDispatchToProps(dispatch) {
     return {
         deleteUserData: (value) => dispatch(deleteUserData(value)),
         updateUser: (value) => dispatch(updateUser(value)),
-        GetUserList: () => dispatch(GetUserList())
+        GetUserList: (offset) => dispatch(GetUserList(offset))
     };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(UserList);

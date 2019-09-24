@@ -22,7 +22,6 @@ const Roles =  React.lazy(() => import('./views/Roles/Views/Roles'));
 const UserProfile =React.lazy(() => import ('./views/Profile/Profile'));
 const ActiveJobs =React.lazy(() => import ('./views/ActiveJobs/Views/ActiveJobs'));
 const ArchivedJobs = React.lazy(()=> import('./views/ArchivedJobs/Views/ArchivedJobs'));
-
 const Breadcrumbs = React.lazy(() => import('./views/Base/Breadcrumbs'));
 const Cards = React.lazy(() => import('./views/Base/Cards'));
 const Carousels = React.lazy(() => import('./views/Base/Carousels'));

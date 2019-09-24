@@ -9,6 +9,7 @@ const loading = () => <div className="animated fadeIn pt-3 text-center">Loading.
 const DefaultLayout = React.lazy(() => import('./containers/DefaultLayout'));
 
 // Pages
+const ForgetPassword= React.lazy(() => import('./views/Pages/Forget Password/forgetPassword'));
 const Login = React.lazy(() => import('./views/Pages/Login'));
 const Register = React.lazy(() => import('./views/Pages/Register'));
 const Page404 = React.lazy(() => import('./views/Pages/Page404'));
@@ -27,6 +28,7 @@ class App extends Component {
               <Route exact path="/register" name="Register Page" render={props => <Register {...props}/>} />
               <Route exact path="/404" name="Page 404" render={props => <Page404 {...props}/>} />
               <Route exact path="/500" name="Page 500" render={props => <Page500 {...props}/>} />
+              <Route path="/forgetPassword" name= "Forgot Password" render={props => <ForgetPassword {...props} />} />
               <Route path="/" name="Home" render={props => <DefaultLayout {...props}/>} />
             </Switch>
           </React.Suspense>

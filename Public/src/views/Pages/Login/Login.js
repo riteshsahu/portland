@@ -17,13 +17,15 @@ class Login extends Component {
       password: ""
     }
   }
-  componentDidMount = () => {
-    const userDetils = JSON.parse(localStorage.getItem('userDetails'));
-  }
+ 
   userDetails = () => {
     this.setState({
       getAccess: true
     })
+  }
+
+  handleForgetPassword = () => {
+    this.props.history.push('/forgetPassword')
   }
 
   render() {
@@ -106,7 +108,7 @@ class Login extends Component {
                                 <Button color="primary" className="px-4" onClick={this.handleLogin} >Login</Button>
                               </Col>
                               <Col xs="6" className="text-right">
-                                <Button style={{ fontSize: "smaller" }} color="link" className="px-0">Forgot password?</Button>
+                                <Button style={{ fontSize: "smaller" }} onClick={() => this.handleForgetPassword()} color="link" className="px-0">Forgot password?</Button>
                               </Col>
                             </Row>
                           </Form>

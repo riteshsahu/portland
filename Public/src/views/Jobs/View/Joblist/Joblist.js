@@ -1,9 +1,12 @@
+
 import React, { Component } from 'react';
 import { Badge, Modal, ModalBody, ModalFooter, Button, Col, Pagination, PaginationItem, PaginationLink, Row, Table } from 'reactstrap';
 import { connect } from "react-redux";
 import { deleteJob, updateJob, deleteUserJob, getAllJob } from '../../jobs.action';
 import {GetUserJobs} from '../../../../containers/DefaultLayout/action.defaultLayout';
 import '../../jobs.css';
+import PaginationComponent  from 'react-reactstrap-pagination';
+
 class JobList extends Component {
     constructor(props) {
         super(props);
@@ -54,7 +57,8 @@ class JobList extends Component {
     showJobList = () => {
         let result = [];
         const userDetails = JSON.parse(localStorage.getItem("userDetails"));
-        this.props.jobDetails.map((data, i) => {
+       if( this.props.jobDetails && this.props.jobDetails.length > 0){
+            this.props.jobDetails.map((data, i) => {
             let date= data.createAt.split("T");
             result.push(<tr>
                 <td>{data.jobId}</td>
@@ -68,6 +72,7 @@ class JobList extends Component {
                 </td>
             </tr>)
         })
+    }
         return result
     }
     render() {
@@ -80,7 +85,7 @@ class JobList extends Component {
                                 <tr>
                                     <th>Job ID</th>
                                     <th>Job</th>
-                                    <th> Created Date</th>
+                                    <th>Created Date</th>
                                     <th>Created By</th>
                                     <th>Status</th>
                                     <th>Action</th>
@@ -90,7 +95,11 @@ class JobList extends Component {
                                 {this.showJobList()}
                             </tbody>
                         </Table>
-                        <nav>
+                        {/* <div style={{marginLeft: "30%",marginTop: "20px"}}>
+                        <PaginationComponent totalItems={50} pageSize={5} onSelect={this.handleSelected} />
+                        </div> */}
+
+                        {/* <nav>
                             <Pagination style={{ marginLeft: "35%" }}>
                                 <PaginationItem><PaginationLink previous tag="button">Prev</PaginationLink></PaginationItem>
                                 <PaginationItem active>
@@ -101,7 +110,7 @@ class JobList extends Component {
                                 <PaginationItem><PaginationLink tag="button">4</PaginationLink></PaginationItem>
                                 <PaginationItem><PaginationLink next tag="button">Next</PaginationLink></PaginationItem>
                             </Pagination>
-                        </nav>
+                        </nav> */}
                     </Col>
                 </Row>
                 <Row>
@@ -138,3 +147,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(JobList);
+

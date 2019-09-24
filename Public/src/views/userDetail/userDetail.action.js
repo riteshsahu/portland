@@ -11,9 +11,9 @@ export const CreateUserHandler = () => {
     }
 }
 
-export const GetUserList = () => {
+export const getUserSuggestions=()=>{
     return (dispatch) => {
-        fetch(API_ROOT + URI.GET_USERLIST, {
+        fetch(API_ROOT + URI.USERLIST_SUGGESTIONS, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -22,7 +22,7 @@ export const GetUserList = () => {
             .then(res => res.json())
             .then(data => {
                 dispatch({
-                    type: UserDetail.GET_USER_LIST,
+                    type: UserDetail.USER_SUGGESTIONS,
                     payload: data
                 })
                 if(data.length>0) {
@@ -35,6 +35,38 @@ export const GetUserList = () => {
                         payload: result
                     })
                 }
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+}
+
+export const GetUserList = (offset) => {
+    return (dispatch) => {
+        fetch (StringFormat(API_ROOT + URI.GET_USERLIST,offset ),{
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log("data in userlist",data)
+                dispatch({
+                    type: UserDetail.GET_USER_LIST,
+                    payload: data
+                })
+                // if(data.result.length>0) {
+                //     let result = []
+                //     data.result.map((user) => {
+                //         result.push({name: user.firstName + " " + user.lastName, id: user.userId })
+                //     })
+                //     dispatch({
+                //         type: JobDetail.SAVE_USER_LIST,
+                //         payload: result
+                //     })
+                // }
                
             })
             .catch(err => {

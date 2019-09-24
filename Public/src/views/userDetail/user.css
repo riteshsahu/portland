@@ -1,6 +1,4 @@
-.header{
-    /* display: flex; */
-}
+
 
 .header input{
     width: 25%;
@@ -15,3 +13,21 @@ margin-top: 0px !important;
     margin-left: 5px;
     padding: 0px 5px;
 }
+
+.editButton {
+    color: green;
+    padding: 0px 5px
+  }
+
+  .editButton:hover {
+    cursor: pointer;
+  }
+  
+  .deleteButton {
+    color: red;
+    padding: 0px 5px;
+  }
+  
+  .deleteButton:hover {
+    cursor: pointer;
+  }

@@ -52,7 +52,6 @@ class JobController {
 
     static getAllJob(req, res) {
         let id = req.params.id;
-        console.log("--id--all-",id);
         JobService.getAllJob(id).then(result => {
             res.json(result);
         }).catch(err => {

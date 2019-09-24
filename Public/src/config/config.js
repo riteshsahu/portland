@@ -1,14 +1,16 @@
-export const API_ROOT = 'https://portland-web.herokuapp.com/api/';
-// export const API_ROOT = 'http://localhost:5000/api/';
+// export const API_ROOT = 'https://portland-web.herokuapp.com/api/';
+export const API_ROOT = 'http://localhost:5000/api/';
  
 
 export const URI = {
     CREATE_USER: 'user',
     GET_USER_BY_SEARCH: 'user',
-    GET_USERLIST: 'user/userList',
+    GET_USERLIST: 'user/userList/{0}',
     DELETE_USER: 'user/{0}',
     LOGIN_USER: 'user/auth',
+    FORGOT_PASSWORD: 'user/auth/forgotPassword',
     UPDATE_USER: 'user/{0}',
+    USERLIST_SUGGESTIONS:'user/userSuggestion',
     GET_COUNTRY: 'country',
     GET_STATES: 'state',
     ADD_NEWBUSINESS: 'businessForm',

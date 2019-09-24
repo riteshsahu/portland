@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react';
 import { Button, Col, Alert, Label, Input, Row } from 'reactstrap';
 import { connect } from "react-redux";
@@ -5,7 +6,7 @@ import { CreateNewJob, updateJobDetails } from '../../jobs.action';
 import TagsInput from 'react-tagsinput'
 import '../../jobs.css';
 import Autosuggest from 'react-autosuggest';
-import { GetUserList } from '../../../userDetail/userDetail.action';
+import { GetUserList, getUserSuggestions } from '../../../userDetail/userDetail.action';
 class CreateJob extends Component {
     constructor(props) {
         super(props);
@@ -27,7 +28,9 @@ class CreateJob extends Component {
     }
 
     componentDidMount() {
-        this.props.GetUserList();
+        
+        // this.props.GetUserList(0);
+        this.props.getUserSuggestions();
         const userDetails = JSON.parse(localStorage.getItem("userDetails"));
         let jobDetail = this.state.jobDetails; 
         if(!this.props.updateJob) {
@@ -88,6 +91,12 @@ class CreateJob extends Component {
         })
     }
     handleSumbit = () => {
+        let temp =  this.state.jobDetails.jobUsers;
+        let isExist = temp.findIndex(el=> el === 1)
+        if (isExist== -1){
+            temp.push(1)
+        }
+        
         const userDetails = localStorage.getItem("userDetails");
         const user = JSON.parse(userDetails);
         let data = {
@@ -96,8 +105,8 @@ class CreateJob extends Component {
             "jobDescription": this.state.jobDetails.jobDescription,
             "jobCreatedBy": user[0].userId,
             "jobStatus": this.state.jobDetails.jobStatus,
-            "isActive": 1, // FIX
-            "jobUsers": this.state.jobDetails.jobUsers,
+            "isActive": 1, 
+            "jobUsers": temp,
             "createAt": new Date(),
             "createBy": user[0].userId,
         }
@@ -105,6 +114,11 @@ class CreateJob extends Component {
     }
 
     updateJob = () => {
+        let temp =  this.state.jobDetails.jobUsers;
+        let isExist = temp.findIndex(el=> el === 1)
+        if (isExist== -1){
+            temp.push(1)
+        }
         const userDetails = localStorage.getItem("userDetails");
         const user = JSON.parse(userDetails);
         let data = {
@@ -116,7 +130,7 @@ class CreateJob extends Component {
             "createAt": new Date(),
             "updatedAt": new Date(),
             "updatedBy": user[0].userId,
-            "jobUsers": this.state.jobDetails.jobUsers
+            "jobUsers": temp
         };
         this.props.updateJobDetails(this.props.updatedDetails.jobId, data);
         this.setState({
@@ -127,13 +141,15 @@ class CreateJob extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.updatedDetails.jobId && !this.state.isUpdateMode) {
             let tagsArr = [];
-            nextProps.updatedDetails.userId.map(dt => {
+            if(nextProps.updatedDetails.userId && nextProps.updatedDetails.userId.length > 0){
+                nextProps.updatedDetails.userId.map(dt => {
                 nextProps.userList.findIndex(stData => {
-                    if (stData.id === dt) {
+                    if (stData.id == dt) {
                         tagsArr.push(stData.name);
                     }
                 })
             });
+        }
             this.setState(prevState => ({
                 ...prevState,
                 jobDetails: {
@@ -147,28 +163,13 @@ class CreateJob extends Component {
                 isUpdateMode: true,
                 tags: tagsArr
             }))
-
-            // let temp = this.state.jobDetails;
-            // temp["jobTitle"] = this.props.updatedDetails.jobTitle;
-            // temp["jobDescription"] = this.props.updatedDetails.jobDescription;
-            // temp["jobCreatedBy"] = this.props.updatedDetails.jobCreatedBy;
-            // temp["jobStatus"] = this.props.updatedDetails.jobStatus;
-            // temp["jobUsers"] = tagsArr;
-            // this.setState({
-            //     tags: tagsArr,
-            //     jobDetails: temp,
-            //     isUpdateMode: true
-            // })
         }
-
-
     }
 
 
     render() {
         const self= this.props
         function autocompleteRenderInput({ addTag, ...props }) {
-   
             const handleOnChange = (e, { newValue, method }) => {
                 if (method === 'enter') {
                     e.preventDefault()
@@ -230,7 +231,8 @@ class CreateJob extends Component {
                         <Label> Job Title:-  </Label>
                     </Col>
                     <Col xs="5" md="4" lg="4">
-                        <Input type="text" id="jobTitle" value={this.state.jobDetails.jobTitle} onChange={this.handleJobChange} placeholder="Job" />
+                        <Input type="text" id="jobTitle" value={this.state.jobDetails.jobTitle} 
+                        onChange={this.handleJobChange} placeholder="Job" />
                     </Col>
                     <Col xs="12" md="3" lg="3">
                     </Col>
@@ -242,31 +244,13 @@ class CreateJob extends Component {
                         <Label> Job Description:-  </Label>
                     </Col>
                     <Col xs="5" md="4" lg="4">
-                        <Input type="text" id="jobDescription" value={this.state.jobDetails.jobDescription} onChange={this.handleJobChange} placeholder="Job Description" />
+                        <Input type="text" id="jobDescription" value={this.state.jobDetails.jobDescription} 
+                        onChange={this.handleJobChange} placeholder="Job Description" />
                     </Col>
                     <Col xs="12" md="3" lg="3">
                     </Col>
                 </Row>
-                {/* <Row style={{ marginTop: 5 }}>
-                    <Col xs="12" md="3" lg="3">
-                    </Col>
-                    <Col xs="5" md="2" lg="2">
-                        <Label> Created By:- </Label>
-                    </Col>
-                    <Col xs="5" md="4" lg="4">
-                        <Input id="jobCreatedBy" type="select" onChange={this.handleJobChange}>
-                            <option selected disabled >--- Select Role-----</option>
-                            <option value="1" selected={this.state.jobDetails.jobCreatedBy === 1 ? true : false} >Admin</option>
-                            <option value="2" selected={this.state.jobDetails.jobCreatedBy === 2 ? true : false} >Management</option>
-                            <option value="3" selected={this.state.jobDetails.jobCreatedBy === 3 ? true : false} >Internal Employee</option>
-                            <option value="4" selected={this.state.jobDetails.jobCreatedBy === 4 ? true : false} >External Employee</option>
-                            <option value="5" selected={this.state.jobDetails.jobCreatedBy === 5 ? true : false} >Designer</option>
-                            <option value="6" selected={this.state.jobDetails.jobCreatedBy === 6 ? true : false} >Client</option>
-                        </Input>
-                    </Col>
-                    <Col xs="12" md="3" lg="3">
-                    </Col>
-                </Row> */}
+            
                 <Row style={{ marginTop: 5 }}>
                     <Col xs="12" md="3" lg="3">
                     </Col>
@@ -302,7 +286,7 @@ class CreateJob extends Component {
                         <Col xs="12" md="3" lg="3">
                         </Col>
                         <Col xs="12" md="6" lg="6">
-                            <Button disabled={this.state.isSubmitted}  style={{ float: "right",background: "#ff8f00", color: "white" }} onClick={this.handleSumbit}>Create</Button>
+                            <Button disabled={this.state.isSubmitted}  style={{ float: "right",background: "#ff8f00", color: "white" }} onClick={this.updateJob}>Update</Button>
                         </Col>
                         <Col xs="12" md="3" lg="3">
                         </Col>
@@ -312,7 +296,7 @@ class CreateJob extends Component {
                         <Col xs="12" md="3" lg="3">
                         </Col>
                         <Col xs="12" md="6" lg="6">
-                            <Button disabled={this.state.isSubmitted} color="success" style={{ float: "right" }} onClick={this.handleSumbit}>Create</Button>
+                            <Button disabled={this.state.isSubmitted}  style={{ float: "right",background: "#ff8f00", color: "white" }} onClick={this.handleSumbit}>Create</Button>
                         </Col>
                         <Col xs="12" md="3" lg="3">
                         </Col>
@@ -365,7 +349,8 @@ function mapDispatchToProps(dispatch) {
     return {
         CreateNewJob: (data) => dispatch(CreateNewJob(data)),
         updateJobDetails: (id, data) => dispatch(updateJobDetails(id, data)),
-        GetUserList: () => dispatch(GetUserList())
+        // GetUserList: (offset) => dispatch(GetUserList(offset)),
+        getUserSuggestions: () => dispatch(getUserSuggestions())
     };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(CreateJob);

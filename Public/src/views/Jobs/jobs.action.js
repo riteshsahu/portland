@@ -22,6 +22,10 @@ export const getAllJob=(id)=>{
     }
 }
 
+
+
+
+
 export const getSearchOFF = () => {
     return (dispatch) => {
         dispatch({
@@ -65,14 +69,14 @@ export const updateJobDetails = (id, value) => {
             .then(res => res.json())
             .then(data => {
                 dispatch({
-                    type: JobDetail.JOB_UPDATED,
+                    type: JobDetail.UPDATE_JOB,
                     payload: true
                 });
                 setTimeout(() => {
-                    dispatch({
-                        type: JobDetail.JOB_UPDATED,
-                        payload: false
-                    });
+                    // dispatch({
+                    //     type: JobDetail.JOB_UPDATED,
+                    //     payload: false
+                    // });
                     dispatch({
                         type: JobDetail.CREATE_JOB
                     });

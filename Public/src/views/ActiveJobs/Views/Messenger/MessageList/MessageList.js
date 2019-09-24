@@ -31,8 +31,8 @@ class MessageList extends Component {
   }
   triggerInputFileContract = () => this.fileInputContract.click();
 
-  ws = socketIOClient(window.location.hostname);
-  // ws = socketIOClient('http://localhost:5000')
+  // ws = socketIOClient(window.location.hostname);
+  ws = socketIOClient('http://localhost:5000')
 
   componentDidMount() {
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
@@ -161,7 +161,7 @@ class MessageList extends Component {
     this.props.GetUserJobs(USER_DETAILS[0].userId);
 
     let tempArr = this.state.messages;
-    // if (this.isValidMessage(value)) {
+    if (this.isValidMessage(value)) {
       tempArr.push({
         author: USER_DETAILS[0].firstName,
         message: value || this.state.message,
@@ -181,7 +181,7 @@ class MessageList extends Component {
         message: "",
         isVisibleToClient: 0
       });
-    // }
+    }
   }
 
 

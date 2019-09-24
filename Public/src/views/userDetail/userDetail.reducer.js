@@ -9,6 +9,8 @@ const initialState = {
     updatedDetails: {},
     userDetails: {},
     userUpdated: false,
+    count: '',
+    userSuggestions: ''
 }
 
 
@@ -56,10 +58,17 @@ function UserReducer(state = initialState, action) {
         case UserDetail.GET_USER_LIST:
             return {
                 ...state,
-                userDetails: action.payload
+                userDetails: action.payload.result,
+                count: action.payload.count
             }
 
+            case UserDetail.USER_SUGGESTIONS:
+            return {
+                ...state,
+                userSuggestions: action.payload,
+            }
 
+            
         default:
             return state;
 
