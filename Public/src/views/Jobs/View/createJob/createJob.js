@@ -94,7 +94,18 @@ class CreateJob extends Component {
         let temp =  this.state.jobDetails.jobUsers;
         let isExist = temp.findIndex(el=> el === 1)
         if (isExist== -1){
-            temp.push(1)
+            temp.push("1")
+        }
+        let count = 0, index;
+        temp.map((data, i) => {
+           if(data === "1") {
+               count= count+1;
+               index = i 
+           }
+        })
+        let finalArr = temp;
+        if (count> 1) {
+           temp = finalArr.filter((res,i) => i !== index)
         }
         
         const userDetails = localStorage.getItem("userDetails");
@@ -259,7 +270,7 @@ class CreateJob extends Component {
                     </Col>
                     <Col xs="5" md="4" lg="4">
                         <Input id="jobStatus" type="select" onChange={this.handleJobChange}>
-                            <option selected disabled >--- Select Status-----</option>
+                            <option selected disabled >Select Status</option>
                             <option value="1" selected={this.state.jobDetails.jobStatus === 1 ? true : false} >Pending</option>
                             <option value="2" selected={this.state.jobDetails.jobStatus === 2 ? true : false} >Completed</option>
                         </Input>

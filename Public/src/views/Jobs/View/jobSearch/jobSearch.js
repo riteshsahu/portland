@@ -67,12 +67,12 @@ class JobSearch extends Component {
                         <>
                             <Input type="number" id="job" placeholder="Job ID" onChange={this.handleJobSearch} />
                             <Input style={{ marginLeft: 10 }} id="jobStatus" type="select" onChange={this.handleJobSearch} >
-                                <option selected disabled >-- Select Job Status</option>
+                                <option selected disabled >Select Job Status</option>
                                 <option value="1">Pending</option>
                                 <option value="2">Completed</option>
                             </Input>
                             <Input style={{ marginLeft: 10 }} id="jobCreatedBy" type="select" onChange={this.handleJobSearch} >
-                                <option selected disabled >-- Select Job Creator</option>
+                                <option selected disabled >Select Job Creator</option>
                                 <option value="1">Admin</option>
                                 <option value="2">Management</option>
                                 <option value="3">Internal Employee</option>

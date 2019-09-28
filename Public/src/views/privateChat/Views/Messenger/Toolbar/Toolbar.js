@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import './Toolbar.css';
-import { Modal, ModalBody, ModalHeader, ModalFooter, Button, Col, Label, Row, Input, Badge } from 'reactstrap';
-import { GetJobParticipants, createNewPrivateChatRoom, getPrivateChatDetails } from '../../../action.activeJobs';
+import { Modal, ModalBody, ModalHeader, ModalFooter, Button,Badge, Col, Label, Row, Input } from 'reactstrap';
+import { GetJobParticipants,createNewPrivateChatRoom } from '../../../action.activeJobs';
 
 class Toolbar extends Component {
   constructor(props) {
@@ -29,9 +29,7 @@ class Toolbar extends Component {
   }
 
   componentDidMount = () => {
-    var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
     this.props.GetJobParticipants(this.props.JobId);
-    this.props.getPrivateChatDetails(this.props.params.id, USER_DETAILS[0].userId)
   }
 
   componentWillReceiveProps = (nextProps) => {
@@ -62,6 +60,7 @@ class Toolbar extends Component {
     this.setState({
       answer: e.target.value
     })
+    //this.props.handleAnswerInput(e.target.value);
   }
 
   toggleModel() {
@@ -87,95 +86,48 @@ class Toolbar extends Component {
     }
   }
 
-  getUniqueId = () => {
-    var length = 13;
-    var result = '';
-    var characters = '0123456789';
-    var charactersLength = characters.length;
-    for (var i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    return (result);
-  }
-
-  handlePrivateChat = (data) => {
+  handlePrivateChat=(data) => {
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
-    let uniquePrivateChatId = this.getUniqueId();
-    let cName = USER_DETAILS[0].firstName + " " + data.firstName + " " + "Chat"
-    let values = {
+    let uniquePrivateChatId= Date.now();
+    let values= {
       privateChatId: uniquePrivateChatId,
-      jobId: data.jobId,
-      privateChatFor: data.userId,
-      createAt: new Date(),
-      createBy: USER_DETAILS[0].userId,
-      chatName: cName
+      jobId:data.jobId,
+      privateChatFor:data.userId,
+      createAt:new Date(),
+      createBy: USER_DETAILS[0].userId
     }
     this.props.createNewPrivateChatRoom(values);
-    this.props.history.push("/privateChat/" + uniquePrivateChatId)
-
+    this.props.history.push("/privateChat/"+uniquePrivateChatId)
   }
-
-  routePrivateChat = (privateChatId) => {
-    this.props.history.push('/privateChat/' + privateChatId)
-  }
-
-  isCharCreated = (id) => {
-    let count = 0;
-    if (this.props.privateChatData && this.props.privateChatData.length > 0) {
-      this.props.privateChatData.map(dt => {
-        if (dt.createBy == id || dt.privateChatFor == id) {
-          count = count + 1;
-        }
-      })
-    }
-
-    if (!count) {
-      return false
-    }
-    return true;
-  }
-
-  PrivateChatBadgeHandler = () => {
-    if (this.props.privateChatData && this.props.privateChatData.length > 0) {
-      return this.props.privateChatData.map((dt, i) =>
-        (this.props.params.id == dt.jobId) ?
-          <Badge onClick={()=>this.routePrivateChat(dt.privateChatId)} style={{ borderRadius: "20px", margin: "10px" }} color="warning"><Label style={{ marginTop: "8px" }}>{dt.chatName}</Label></Badge>
-          : null
-      )
-    }
-  }
-
   render() {
     const { title, leftItems, rightItems } = this.props;
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
     return (
       <>
         <div className="toolbar">
-          <div ><h3 className="jobtitle" >{this.state.jobTitle ? this.state.jobTitle : leftItems}</h3></div>
-          {this.PrivateChatBadgeHandler()}
-          {/* <Badge style={{borderRadius: "20px",margin: "10px"}} color="warning"><Label style={{marginTop: "8px"}}>{this.props.privateChatData.length>0 ? this.props.privateChatData[0].chatName: ""}</Label></Badge> */}
-
+          <div ><h3 className="jobtitle" >{leftItems}</h3></div>
           {/* <h1 className="toolbar-title">{title}</h1> */}
           <div className="right-items" >
-            <Label style={{ cursor: "pointer", marginTop: 4 }} onClick={this.handleParticipants}>
-              {<i
-                style={{ marginTop: 5, marginRight: 5, marginLeft: 5 }}
-                className="fa fa-users">
-              </i>
+          {/* <Badge style={{borderRadius: "20px"}} color="warning"><Label style={{marginTop: "8px"}}>Admin Client Chat</Label></Badge> */}
+            {/* <Label style={{ cursor: "pointer", marginTop: 4 }} onClick={this.handleParticipants}>
+              { <i
+                  style={{ marginTop: 5, marginRight: 5, marginLeft: 5 }} 
+                  className="fa fa-users">
+                </i>
               }
               {rightItems}
-            </Label>
-            {this.props.userRole != 6
+            </Label> */}
+            {/* { this.props.userRole != 6
               ?
-              <Button style={{ background: "#ff8f00", color: "white" }}
-                onClick={this.handleAnswer}
-
-              >
-                Answer
-            </Button>
-              : null
-            }
-
+              <Button  style={{background: "#ff8f00", color: "white"}}
+              onClick={this.handleAnswer} 
+              
+            >
+              Answer
+            </Button> 
+            : null
+            } */}
+            
           </div>
         </div>
         {/*  */}
@@ -184,21 +136,18 @@ class Toolbar extends Component {
           className={'modal-sm ' + this.props.className}>
           <ModalHeader>Participants</ModalHeader>
           <ModalBody style={{ padding: 0 }}>
-
             {(this.props.ParticipantsDetails.length > 0) && this.props.ParticipantsDetails.map((data, i) =>
-
+           
               <>
                 <Row key={i} style={{ padding: "5 0px" }} >
                   <Col style={{ padding: "0 30px" }} xs="6" sm="6" md="6" lg="6">
-                    <Label style={{ marginBottom: 0, height: 45 }}> {this.state.KeyRole[data.role] + "-" + data.firstName} </Label> <br />
+                     <Label style={{ marginBottom: 0,height:45 }}> {this.state.KeyRole[data.role]+ "-" + data.firstName} </Label> <br />
                   </Col>
                   <Col xs="6" sm="6" md="6" lg="6" >
-                    {!(data.userId == USER_DETAILS[0].userId) &&
-                      <Button
-                        disabled={this.isCharCreated(data.userId)}
-                        style={{ marginTop: 5, marginBottom: 5 }} onClick={() => { this.handlePrivateChat(data) }} color="success">Private Chat</Button>
+                   { !(data.userId==USER_DETAILS[0].userId) &&
+                    <Button style={{ marginTop: 5, marginBottom: 5 }} onClick={()=>{this.handlePrivateChat(data)}}  color="success">Private Chat</Button>
                     }
-                  </Col>
+                    </Col>
                 </Row>
                 <hr style={{ marginTop: 0, marginBottom: 0 }} />
               </>
@@ -239,15 +188,13 @@ const mapStateToProps = state => {
     JobId: state.ActiveJobDetail.JobId,
     JobTitle: state.ActiveJobDetail.JobTitle,
     ParticipantsDetails: state.ActiveJobDetail.ParticipantsDetails,
-    privateChatData: state.ActiveJobDetail.privateChatData
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     GetJobParticipants: (id) => dispatch(GetJobParticipants(id)),
-    createNewPrivateChatRoom: (data) => dispatch(createNewPrivateChatRoom(data)),
-    getPrivateChatDetails: (jobId, userId) => dispatch(getPrivateChatDetails(jobId, userId))
+    createNewPrivateChatRoom: (data) => dispatch(createNewPrivateChatRoom(data))
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Toolbar);

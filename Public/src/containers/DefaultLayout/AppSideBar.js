@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import 'react-perfect-scrollbar/dist/css/styles.css';
-import {SelectedJob} from '../../views/ActiveJobs/action.activeJobs';
+// import {SelectedJob} from '../../views/ActiveJobs/action.activeJobs';
 import './header.css';
 
 const propTypes = {
@@ -134,7 +134,7 @@ class AppSlideBar extends Component {
   }
 
   clickCalled=(e)=>{
-    this.props.SelectedJob(e.id,e.name);
+    // this.props.SelectedJob(e.id,e.name);
     let createCustomerUrl = localStorage.getItem('urlPath');
     if(createCustomerUrl && createCustomerUrl.indexOf('createCustomer') > -1 ){
       const r = window.confirm("Do you really want to leave this page,your data will be lost."); 
@@ -229,7 +229,7 @@ const mapStateToProps = state => {
 
 function mapDispatchToProps(dispatch) {
   return {
-    SelectedJob:(id,name)=> dispatch(SelectedJob(id,name))
+    // SelectedJob:(id,name)=> dispatch(SelectedJob(id,name))
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(AppSlideBar);

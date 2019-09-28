@@ -9,9 +9,9 @@ const WebSocket = require('socket.io')(server);
 const cors = require('cors');
 
 
-
 const apiRoutes = require('./server/routes');
 const socket = require('./server/chatSocket');
+const webpush = require('web-push');
 
 app.use(cors());
 app.use(bodyParser.json({limit: '100mb'}));
@@ -22,6 +22,12 @@ app.use(express.static(path.join(__dirname, 'Public/build')));
 
 //const wss = new WebSocket.Server({ server });
 socket(WebSocket);
+
+// webpush.setVapidDetails(
+//   'mailto:myuserid@email.com',
+//   vapidKeys.publicKey,
+//   vapidKeys.privateKey
+// )
 
 
 //production mode

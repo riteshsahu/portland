@@ -32,34 +32,34 @@ class DefaultLayout extends Component {
 
 
   componentWillReceiveProps = (nextProps) => {
-    let arrRes = [] ;
-    nextProps.JobDetails && nextProps.JobDetails.map((data) => {
+    // let arrRes = [] ;
+    // nextProps.JobDetails && nextProps.JobDetails.map((data) => {
      
-    arrRes.push({
-      id: data.jobId,
-      name: data.jobTitle,
-      url: "/activeJobs/"+data.jobId,
-      icon: "fa fa-briefcase"
-    });
+    // arrRes.push({
+    //   id: data.jobId,
+    //   name: data.jobTitle,
+    //   url: "/activeJobs/"+data.jobId,
+    //   icon: "fa fa-briefcase"
+    // });
    
-    }) 
-    if(arrRes.length> 0){
-      navigation.items[2]["children"]= arrRes;
-    }
+    // }) 
+    // if(arrRes.length> 0){
+    //   navigation.items[2]["children"]= arrRes;
+    // }
 
-    let arrCompRes = [] ;
-    nextProps.DeletedJobDetails && nextProps.DeletedJobDetails.map((data) => {
-      arrCompRes.push({
-      id: data.jobId,
-      name: data.jobTitle,
-      url: "/archivedJobs/"+data.jobId,
-      icon: "fa fa-briefcase"
-    });
+    // let arrCompRes = [] ;
+    // nextProps.DeletedJobDetails && nextProps.DeletedJobDetails.map((data) => {
+    //   arrCompRes.push({
+    //   id: data.jobId,
+    //   name: data.jobTitle,
+    //   url: "/archivedJobs/"+data.jobId,
+    //   icon: "fa fa-briefcase"
+    // });
    
-    }) 
-    if(arrCompRes.length> 0){
-      navigation.items[3]["children"]= arrCompRes;
-    }
+    // }) 
+    // if(arrCompRes.length> 0){
+    //   navigation.items[3]["children"]= arrCompRes;
+    // }
    
   }
 
@@ -88,41 +88,41 @@ class DefaultLayout extends Component {
 
     let users = navigation.items.find(item => { return (item.name === 'Users') });
     let jobs = navigation.items.find(item => { return (item.name === 'Jobs') });
-    let activeJobs = navigation.items.find(item => { return (item.name === 'Active Jobs')});
-    let archivedJobs = navigation.items.find(item => {return(item.name === 'Archived Jobs')});
+    // let activeJobs = navigation.items.find(item => { return (item.name === 'Active Jobs')});
+    // let archivedJobs = navigation.items.find(item => {return(item.name === 'Archived Jobs')});
 
     if (role === 1) { //  Admin
       roleNavigation.items.push(users);
       roleNavigation.items.push(jobs);
-      roleNavigation.items.push(activeJobs);
-      roleNavigation.items.push(archivedJobs);
+      // roleNavigation.items.push(activeJobs);
+      // roleNavigation.items.push(archivedJobs);
     }
     if (role === 2) { // Management
       roleNavigation.items.push(users);
       roleNavigation.items.push(jobs);
-      roleNavigation.items.push(activeJobs);
-      roleNavigation.items.push(archivedJobs);
+      // roleNavigation.items.push(activeJobs);
+      // roleNavigation.items.push(archivedJobs);
     }
 
     if (role === 3) { // Internal Employee 
-      roleNavigation.items.push(activeJobs);
-      roleNavigation.items.push(archivedJobs);
+      // roleNavigation.items.push(activeJobs);
+      // roleNavigation.items.push(archivedJobs);
       // roleNavigation.items.push(gic);
     }
 
     if(role === 4) { // External employee
-      roleNavigation.items.push(activeJobs);
-      roleNavigation.items.push(archivedJobs);
+      // roleNavigation.items.push(activeJobs);
+      // roleNavigation.items.push(archivedJobs);
     }
 
     if(role === 5) { // contractor
-      roleNavigation.items.push(activeJobs);
-      roleNavigation.items.push(archivedJobs);
+      // roleNavigation.items.push(activeJobs);
+      // roleNavigation.items.push(archivedJobs);
     }
 
     if(role === 6) { // Client
-      roleNavigation.items.push(activeJobs);
-      roleNavigation.items.push(archivedJobs);
+      // roleNavigation.items.push(activeJobs);
+      // roleNavigation.items.push(archivedJobs);
     }
     return roleNavigation;
   }

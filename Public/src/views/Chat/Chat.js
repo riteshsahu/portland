@@ -20,7 +20,7 @@ class Chat extends Component {
 
     this.ws.onmessage = evt => {
       // on receiving a message, add it to the list of messages
-      console.log('evt', evt)
+      // console.log('evt', evt)
       const message = JSON.parse(evt.data)
       this.addMessage(message)
     }

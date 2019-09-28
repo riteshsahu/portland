@@ -10,6 +10,14 @@ const chatService = require('../service/chatService');
 function socketConnection (io) {
     io.on('connection', client => {
         client.on('subscribe', function(data) {
+            if (data.privateChat == true) {
+                chatService.subscribePrivateUser(data)
+                .then(results => {
+                    console.log('joining room', data.room);
+                    client.join(data.room);
+                })
+            }
+            else
             chatService.subscribeUser(data)
             .then(results => {
                 console.log('joining room', data.room);
@@ -23,9 +31,16 @@ function socketConnection (io) {
 
         client.on('send message', function(data) {
             console.log('sending room post', data.room);
+            
+            if (data.privateChat == true) {
+                chatService.privateMessageUpdate(data)
+                .then(results => {
+                    client.join(data.room);
+                })
+            }
+            else
             chatService.messageUpdate(data)
             .then(result => {
-                console.log('final results', result)
                 client.broadcast.to(data.room).emit('response', {
                     message: data.message,
                     author: data.author,

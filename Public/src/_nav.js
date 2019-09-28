@@ -14,18 +14,18 @@ export default {
         icon: 'fa fa-tasks',
        
       },
-      {
-        name: 'Active Jobs',
-        url: '/activeJobs',
-        icon: 'fa fa-briefcase',
-        id: 'active-jobs'
-      },
-      {
-        name: 'Archived Jobs',
-        url: '/archivedJobs',
-        icon: 'fa fa-briefcase',
-        id: 'archived-jobs'
-      },
+      // {
+      //   name: 'Active Jobs',
+      //   url: '/activeJobs',
+      //   icon: 'fa fa-briefcase',
+      //   id: 'active-jobs'
+      // },
+      // {
+      //   name: 'Archived Jobs',
+      //   url: '/archivedJobs',
+      //   icon: 'fa fa-briefcase',
+      //   id: 'archived-jobs'
+      // },
       {
         name: 'Chats',
         url: '/chats',

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import Messenger from './Messenger/Messenger';
 
-class ActiveJobs extends Component {
+class PrivateChat extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -30,5 +30,5 @@ function mapDispatchToProps(dispatch) {
     return {
     };
 }
-export default connect(mapStateToProps, mapDispatchToProps)(ActiveJobs);
+export default connect(mapStateToProps, mapDispatchToProps)(PrivateChat);
 

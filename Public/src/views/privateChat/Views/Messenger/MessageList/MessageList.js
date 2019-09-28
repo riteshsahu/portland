@@ -38,10 +38,20 @@ class MessageList extends Component {
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
     var JobId = this.props.params.id;
     this.props.GetChatHistory(JobId);
-
+    let privateChatId = this.props.params.id;
+    let jobId ="";
+    if (this.props.privateChatData && this.props.privateChatData.length> 0) {
+      this.props.privateChatData.map(dt=>{
+          if(dt.privateChatId == privateChatId ){
+            jobId = dt.jobId
+          }
+      })
+    }
     let subscribe = {
       room: window.location.href.split('/').pop(),
-      userId: USER_DETAILS[0].userId
+      userId: USER_DETAILS[0].userId,
+      privateChat: true,
+      jobId: jobId
     }
     this.ws.emit('subscribe', subscribe);
 
@@ -173,7 +183,8 @@ class MessageList extends Component {
         userId: USER_DETAILS[0].userId,
         message: value || this.state.message,
         room: window.location.href.split('/').pop(),
-        author: USER_DETAILS[0].firstName
+        author: USER_DETAILS[0].firstName,
+        privateChat: true
       }
       this.ws.emit('send message', message)
       this.setState({
@@ -191,8 +202,7 @@ class MessageList extends Component {
       <div >
 
         <Toolbar
-          params={this.props.params}
-          leftItems="Job Title"
+          leftItems="Private Chat"
           rightItems="Participants"
           handleClientAnswer={(value) => this.submitMessage(value)}
           userRole={USER_DETAILS[0].role}
@@ -234,7 +244,8 @@ const mapStateToProps = state => {
   return {
     ActiveJobDetail: state.ActiveJobDetail,
     chatHistory: state.ActiveJobDetail.chatHistory,
-    isChatUpdated: state.ActiveJobDetail.isChatUpdated
+    isChatUpdated: state.ActiveJobDetail.isChatUpdated,
+    privateChatData: state.ActiveJobDetail.privateChatData
   };
 }
 function mapDispatchToProps(dispatch) {

@@ -36,31 +36,8 @@ export const createNewPrivateChatRoom = (data) => {
         }
   }
 
-  export const getPrivateChatDetails = (jobId,userId) => {
-    return (dispatch) => {
-      
-        fetch ( StringFormat(API_ROOT + URI.GET_PRIVATE_CHAT_DATA,jobId,userId), {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(res => {
-                return res.json()})
-            
-            .then(data => {
-                dispatch({
-                    type: ActiveJobDetail.GET_PRIVATE_CHAT_DATA,
-                    payload: data
-                })
-            })
-            .catch(err => {
-                console.log(err);
-            })
-    }
-}
 
-  
+
 export const GetJobParticipants = (id) => {
     return (dispatch) => {
         fetch ( StringFormat(API_ROOT + URI.GET_JOB_PARTICIPANTS,id), {

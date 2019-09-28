@@ -5,7 +5,7 @@ import {  AppHeaderDropdown, AppSidebarToggler } from '@coreui/react';
 import user from '../../assets/img/brand/user.png';
 import './header.css';
 import { connect } from "react-redux";
-import {SelectedJob} from '../../views/ActiveJobs/action.activeJobs';
+import {SelectedJob,getPrivateChatDetails} from '../../views/ActiveJobs/action.activeJobs';
 
 const propTypes = {
   children: PropTypes.node,
@@ -33,7 +33,9 @@ componentDidUpdate=() => {
 
 }
 handleOnClick=(id,title) => {
+  var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
   this.props.SelectedJob(id,title);
+  this.props.getPrivateChatDetails(id,USER_DETAILS[0].userId)
   this.props.history.push("/activeJobs/"+ id)
 }
 activeJobList=() => {
@@ -82,10 +84,10 @@ handleSearch=(e) => {
   })
 
   if (e.target.value) {
-    let str= e.target.value.toString()
+    let str= e.target.value.toLowerCase().toString()
     let temp = this.state.stateJobDetails;
     let searchedArr = temp.filter(res=>{
-      if(res.jobTitle.includes(str)){
+      if(res.jobTitle.toLowerCase().includes(str)){
         return true;
        }else{
          return false;
@@ -119,7 +121,7 @@ handleSearch=(e) => {
           </NavItem>
           </DropdownToggle>
         <DropdownMenu className= "activeJobList" >
-        <DropdownItem onClick="disabled"><Input type="text" placeholder="Search" onChange={(e)=> this.handleSearch(e)}/></DropdownItem>
+        <DropdownItem onClick={"disabled"}><Input type="text" placeholder="Search" onChange={(e)=> this.handleSearch(e)}/></DropdownItem>
           {this.activeJobList()}
           </DropdownMenu>
           </AppHeaderDropdown>
@@ -196,7 +198,8 @@ const mapStateToProps = state => {
 
 function mapDispatchToProps(dispatch) {
   return {
-    SelectedJob:(id,name)=> dispatch(SelectedJob(id,name))
+    SelectedJob:(id,name)=> dispatch(SelectedJob(id,name)),
+    getPrivateChatDetails:(jobId,userId) => dispatch(getPrivateChatDetails(jobId,userId))
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(DefaultHeader);

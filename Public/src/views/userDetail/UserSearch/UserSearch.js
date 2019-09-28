@@ -46,9 +46,12 @@ class UserSearch extends Component {
         return (
             <Row className="header">
                 <Col style={{ display: "flex" }} xs="12" md="10" lg="10">
-                    {this.props.createUser &&
+                    {this.props.createUser && 
                         <Label>Create New User</Label>
                     }
+                    {/* {this.props.userUpdated &&
+                        <Label style={{ marginTop: "10px" }}>Update User</Label>
+                    } */}
                     {!this.props.createUser &&
                         <>
                         <Input  style= {{width: "25%"}}id="role" type="select" onChange={this.handleSearchChange}>
@@ -85,7 +88,7 @@ class UserSearch extends Component {
 const mapStateToProps = state => {
     return {
         createUser: state.userDetail.createUser,
-        saerchPermission: state.jobDetail.saerchPermission
+        saerchPermission: state.jobDetail.saerchPermission,
     };
 }
 

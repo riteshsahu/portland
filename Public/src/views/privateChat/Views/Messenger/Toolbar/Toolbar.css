@@ -1,0 +1,68 @@
+.toolbar {
+    /* display: flex;
+    flex: 1; */
+    /* align-items: center;  */
+    flex-shrink: 0;
+    overflow: hidden;
+    background-color: white;
+    font-weight: 500;
+    border-bottom: 1px solid #eeeef1;
+    position: absolute; 
+    height: 55px;
+    top: 55px;
+    display: flex;
+    width: 85%;
+    margin-left: -30px;
+    /* width: 100%; */
+    /*  */
+    /* top: 0px; */
+  }
+  
+  @supports (backdrop-filter: blur(20px)) {
+    .toolbar {
+      border: none;
+      background-color: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(20px);
+    }
+  }
+  
+  .toolbar-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 800;
+  }
+  
+  .left-items {
+    flex: 1;
+    padding: 10px;
+    display: flex;
+    background: aqua;
+    
+  }
+
+  .jobtitle {
+    margin-left: 10px;
+    color: #1F4E3A;
+    margin-top: 10px;
+  }
+  
+  .right-items {
+    /* flex-direction: row-reverse; */
+    flex: 1;
+    padding: 10px;
+    display: flex;
+    /* cursor: pointer; */
+  }
+  
+  .left-items .toolbar-button {
+    margin-right: 20px;
+  }
+  
+  .right-items .toolbar-button {
+    margin-left: 20px;
+  }
+  
+  .left-items .toolbar-button:last-child,
+  .right-items .toolbar-button:last-child {
+    margin: 0;
+  }

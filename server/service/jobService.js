@@ -65,6 +65,96 @@ class JobService {
         });
     }
 
+
+
+
+
+    static createPrivateChat(data) {
+        var connection;
+        return new Promise((resolve, reject) => {
+            db.getConnection().
+                then(conn => {
+                    connection = conn;
+                    return db.beginTransaction(conn);
+                }).then(() => {
+                    return new Promise((res, rej) => {
+                        connection.query('INSERT INTO private_chat (privateChatId,jobId,privateChatFor,createAt,createBy,chatName) VALUES(?, ?, ?, ?, ?,?)',
+                            [data.privateChatId, data.jobId, data.privateChatFor, data.createAt, data.createBy,data.chatName],
+                            (err, results) => {                                                                                 
+                                if (err) {
+                                    db.rollbackTransaction(connection);
+                                    db.releaseConnection(connection);
+                                    reject(err)
+                                } else {
+                                    db.commitTransaction(connection);
+                                    resolve("CREATED");
+                                }
+                            })
+                    })
+                })
+                // .then((results) => {
+                //     if(data.jobUsers.length > 0) {
+                //         let jobUsers = data.jobUsers.map(dt => {
+                //             let arr = [];
+                //             arr[0] = data.jobId;
+                //             arr[1] = dt;
+                //             arr[2] = data.isActive;
+                //             arr[3] = 0;
+                //             arr[4] = new Date()
+                //             arr[5] = null
+                //             arr[6] = data.createBy,
+                //             arr[7] = null;
+                //             return arr;
+                //         })
+                //         connection.query('INSERT INTO JobUsers ( jobId, userId, isActive, isSubscribed, createAt, updatedAt, createBy, updatedBy) VALUES ? ',
+                //             [jobUsers],
+                //             (err, results) => {
+                //                 if (err) {
+                //                     db.rollbackTransaction(connection);
+                //                     db.releaseConnection(connection);
+                //                     reject(err)
+                //                 } else {
+                //                     db.commitTransaction(connection);
+                //                     db.releaseConnection(connection);
+                //                     resolve(results);
+                //                 }
+                //             }
+                //         )
+                //     } else {
+                //         db.releaseConnection(connection);
+                //         resolve(results)
+                //     }
+                    
+                // })
+                .catch(err => {
+                    db.releaseConnection(connection);
+                    reject(err);
+                })
+        });
+    }
+
+    static getPrivateChatData(jobId,userId) {
+        var connection;
+        return new Promise((resolve,reject) => {
+            db.getConnection().then(conn => {
+                connection = conn;
+                connection.query(`SELECT * FROM private_chat WHERE jobId=? AND (privateChatFor = ? OR createBy = ?)`, [jobId,userId,userId],(err,results) => {
+                    db.releaseConnection(connection);
+                    if(err) {
+                        reject(err)
+                    } 
+                    else {
+                        resolve(results);
+                    }
+                })
+            })
+            .catch(err => {
+                db.releaseConnection(connection);
+                reject(err);
+            })
+        })
+    }
+    
     static updateJob(jobId, data) {
         var connection;
         return new Promise((resolve, reject) => {
@@ -458,7 +548,7 @@ class JobService {
                             if (err) {
                                 reject(err)
                             } else {
-                                resolve(results);
+                                resolve(JobService.filterRecentJob(results));
                             }
                         });
                 })
@@ -499,7 +589,7 @@ class JobService {
             db.getConnection().
                 then(conn => {
                     connection = conn;
-                        connection.query(`SELECT JU.jobId,U.firstName,U.lastName,U.email,U.role From User U
+                        connection.query(`SELECT JU.jobId,U.userId,U.firstName,U.lastName,U.email,U.role From User U
                         INNER JOIN JobUsers JU ON U.userId = JU.userID and U.isActive=1
                         where JU.jobId = ?  and U.status = 1 `, [id], (err, results) => {
                              db.releaseConnection(connection);

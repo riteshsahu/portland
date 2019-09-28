@@ -22,6 +22,7 @@ const Roles =  React.lazy(() => import('./views/Roles/Views/Roles'));
 const UserProfile =React.lazy(() => import ('./views/Profile/Profile'));
 const ActiveJobs =React.lazy(() => import ('./views/ActiveJobs/Views/ActiveJobs'));
 const ArchivedJobs = React.lazy(()=> import('./views/ArchivedJobs/Views/ArchivedJobs'));
+const PrivateChat = React.lazy(() => import ('./views/privateChat/Views/ActiveJobs'));
 const Breadcrumbs = React.lazy(() => import('./views/Base/Breadcrumbs'));
 const Cards = React.lazy(() => import('./views/Base/Cards'));
 const Carousels = React.lazy(() => import('./views/Base/Carousels'));
@@ -78,6 +79,9 @@ const routes = [
   { path: '/userProfile', exact: true, name: 'UserProfile', component: UserProfile },
   { path: '/chats', name: 'Chat', component: Chat},
   { path: '/activeJobs/:id', exact: true, name: 'Active Jobs', component: ActiveJobs },
+
+  { path: '/privateChat/:id', exact: true, name: 'Private Chat', component: PrivateChat },
+  
   { path: '/archivedJobs/:id', exact: true, name: 'Archived Jobs', component: ArchivedJobs },
 
   

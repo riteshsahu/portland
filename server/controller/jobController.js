@@ -14,6 +14,19 @@ class JobController {
         })
     }
 
+    static createPrivateChat(req, res) {
+        let data = req.body;
+        JobService.createPrivateChat(data).then(result => {
+            res.json(result);
+            console.log(result)
+        }).catch(err => {
+            res.status(500)
+            res.json(err)
+            console.log(err)
+        })
+    }
+    
+
     static updateJob(req, res) {
         let id = req.params.id;
         let data = req.body;
@@ -110,6 +123,18 @@ class JobController {
             console.log(err)
             res.status(500)
             res.json(err)
+        })
+    }
+
+    static getPrivateChatData(req, res) {
+        let jobId = req.params.jobId;
+        let userId = req.params.userId;
+        JobService.getPrivateChatData(jobId,userId).then(result => {
+            res.json(result);
+        }).catch(err => {
+            res.status(500)
+            res.json(err)
+            console.log(err)
         })
     }
 

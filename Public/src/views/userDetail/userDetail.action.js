@@ -52,7 +52,6 @@ export const GetUserList = (offset) => {
         })
             .then(res => res.json())
             .then(data => {
-                console.log("data in userlist",data)
                 dispatch({
                     type: UserDetail.GET_USER_LIST,
                     payload: data

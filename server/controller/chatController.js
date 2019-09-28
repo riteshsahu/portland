@@ -11,6 +11,7 @@ class ChatController {
             console.log(err)
         })
     }
+
 }
 
 module.exports = ChatController;

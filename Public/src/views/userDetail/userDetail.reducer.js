@@ -28,7 +28,7 @@ function UserReducer(state = initialState, action) {
             return {
                 ...state,
                 updatedDetails: action.payload,
-                createUser: true
+                createUser: true,
             }
 
         case UserDetail.CREATE_USER:

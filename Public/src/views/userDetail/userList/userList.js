@@ -72,7 +72,7 @@ class UserList extends Component {
         let result = [];
         const userDetails = JSON.parse(localStorage.getItem("userDetails"));
 
-        if (this.props.userDetails.length > 0) {
+        if (this.props.userDetails && this.props.userDetails.length > 0) {
             this.props.userDetails.map((data, i) => {
                 result.push(<tr>
                     <td><a href="javascript:void(0)" onClick={e => { this.toggleModel(data.userId) }}>{data.firstName} </a></td>

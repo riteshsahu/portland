@@ -173,7 +173,7 @@ class UserService {
             db.getConnection().
                 then(conn => {
                     connection = conn;
-                    connection.query('delete from User  WHERE userId = ? ', [id], (err, results) => {
+                    connection.query('update user SET isActive = 0 WHERE userId = ? AND isActive = 1', [id], (err, results) => {
                         db.releaseConnection(connection);
                         if (err) {
                             reject(err)
@@ -316,7 +316,7 @@ class UserService {
                 .then((uniqueId) => {
                     data["userId"] = uniqueId;
                     data = db.addAttributesForNew(data, data.userId);
-                    delete data.userId;
+                    // delete data.userId;
                     connection.query(`INSERT INTO User SET ?`, [data], (err, result) => {
                         db.releaseConnection(connection);
                         if (err) {

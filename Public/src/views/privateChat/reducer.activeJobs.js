@@ -6,26 +6,25 @@ const initialState = {
     JobTitle: '',
     chatHistory: '',
     isChatUpdated: false,
-    isPrivateChatCreated: false,
-    privateChatData: []
+    isPrivateChatCreated: false
 }
 
 
 function ActiveJobReducer(state = initialState, action) {
 
     switch (action.type) {
-
+        
         case ActiveJobDetail.UPDATE_JOB_ID:
             return {
                 ...state,
                 JobId: action.payload,
             }
 
-        case ActiveJobDetail.CREATE_PRIVATE_CHAT:
+            case ActiveJobDetail.CREATE_PRIVATE_CHAT:
             return {
                 ...state,
                 isPrivateChatCreated: action.payload,
-            }
+            }  
 
         case ActiveJobDetail.GET_JOB_ID:
             return {
@@ -46,17 +45,13 @@ function ActiveJobReducer(state = initialState, action) {
                 chatHistory: action.payload,
                 isChatUpdated: action.isChatUpdated
             }
-        case ActiveJobDetail.GET_CHAT_HISTORY_UPDATE:
-            return {
-                ...state,
-                isChatUpdated: action.isChatUpdated
-            }
-        case ActiveJobDetail.GET_PRIVATE_CHAT_DATA:
-            return {
-                ...state,
-                privateChatData: action.payload
-            }
+            case ActiveJobDetail.GET_CHAT_HISTORY_UPDATE:
+                return {
+                    ...state,
+                    isChatUpdated: action.isChatUpdated
+                }
             
+
         default:
             return state;
 
