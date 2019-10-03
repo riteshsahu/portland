@@ -14,7 +14,7 @@ import React from 'react';
 
 // const Rating =  React.lazy(() => import('./views/Rating/rating'));
 // const DashboardNew= React.lazy(() => import('./views/Rating Dashboard/ratingDashboard'));
-const NewBussiness =  React.lazy(() => import('./views/New Business/newBusiness'));
+// const NewBussiness =  React.lazy(() => import('./views/New Business/newBusiness'));
 
 const userDetail =  React.lazy(() => import('./views/userDetail/userDetail.js'));
 const Jobs =  React.lazy(() => import('./views/Jobs/View/Jobs'));
@@ -70,7 +70,7 @@ const routes = [
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
   // { path: '/rating', name: 'Rating', component: Rating },
   // { path: '/ratingdashboard', name: 'Rating DashBoard', component: DashboardNew},
-  { path: '/newbusiness', name: 'New Business', component: NewBussiness },
+  // { path: '/newbusiness', name: 'New Business', component: NewBussiness },
 
   
   { path: '/userDetail', name: 'Users', component: userDetail },

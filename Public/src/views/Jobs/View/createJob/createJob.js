@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { Button, Col, Alert, Label, Input, Row } from 'reactstrap';
 import { connect } from "react-redux";
-import { CreateNewJob, updateJobDetails } from '../../jobs.action';
+import { createNewJob, updateJobDetails } from '../../jobs.action';
 import TagsInput from 'react-tagsinput'
 import '../../jobs.css';
 import Autosuggest from 'react-autosuggest';
@@ -121,7 +121,7 @@ class CreateJob extends Component {
             "createAt": new Date(),
             "createBy": user[0].userId,
         }
-          this.props.CreateNewJob(data);
+          this.props.createNewJob(data);
     }
 
     updateJob = () => {
@@ -151,14 +151,16 @@ class CreateJob extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.updatedDetails.jobId && !this.state.isUpdateMode) {
-            let tagsArr = [];
+             let tagsArr = [];
             if(nextProps.updatedDetails.userId && nextProps.updatedDetails.userId.length > 0){
-                nextProps.updatedDetails.userId.map(dt => {
+                tagsArr =  nextProps.updatedDetails.userId.map(dt => {
+                   let tagsPerson =[];
                 nextProps.userList.findIndex(stData => {
                     if (stData.id == dt) {
-                        tagsArr.push(stData.name);
+                        tagsPerson.push(stData.name);
                     }
                 })
+                return tagsPerson;
             });
         }
             this.setState(prevState => ({
@@ -358,7 +360,7 @@ const mapStateToProps = state => {
 
 function mapDispatchToProps(dispatch) {
     return {
-        CreateNewJob: (data) => dispatch(CreateNewJob(data)),
+        createNewJob: (data) => dispatch(createNewJob(data)),
         updateJobDetails: (id, data) => dispatch(updateJobDetails(id, data)),
         // GetUserList: (offset) => dispatch(GetUserList(offset)),
         getUserSuggestions: () => dispatch(getUserSuggestions())

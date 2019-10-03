@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import './Toolbar.css';
 import { Modal, ModalBody, ModalHeader, ModalFooter, Button, Col, Label, Row, Input, Badge } from 'reactstrap';
-import { GetJobParticipants, createNewPrivateChatRoom, getPrivateChatDetails } from '../../../action.activeJobs';
+import { getJobParticipants, createNewPrivateChatRoom, getPrivateChatDetails } from '../../../action.activeJobs';
 
 class Toolbar extends Component {
   constructor(props) {
@@ -30,13 +30,13 @@ class Toolbar extends Component {
 
   componentDidMount = () => {
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
-    this.props.GetJobParticipants(this.props.JobId);
+    this.props.getJobParticipants(this.props.JobId);
     this.props.getPrivateChatDetails(this.props.params.id, USER_DETAILS[0].userId)
   }
 
   componentWillReceiveProps = (nextProps) => {
     if (this.state.selectedJobId !== nextProps.JobId) {
-      this.props.GetJobParticipants(nextProps.JobId);
+      this.props.getJobParticipants(nextProps.JobId);
       this.setState({
         isJobIdUpdated: false,
         selectedJobId: nextProps.JobId,
@@ -119,7 +119,7 @@ class Toolbar extends Component {
     this.props.history.push('/privateChat/' + privateChatId)
   }
 
-  isCharCreated = (id) => {
+  isChatCreated = (id) => {
     let count = 0;
     if (this.props.privateChatData && this.props.privateChatData.length > 0) {
       this.props.privateChatData.map(dt => {
@@ -135,11 +135,11 @@ class Toolbar extends Component {
     return true;
   }
 
-  PrivateChatBadgeHandler = () => {
+  privateChatBadgeHandler = () => {
     if (this.props.privateChatData && this.props.privateChatData.length > 0) {
       return this.props.privateChatData.map((dt, i) =>
         (this.props.params.id == dt.jobId) ?
-          <Badge onClick={()=>this.routePrivateChat(dt.privateChatId)} style={{ borderRadius: "20px", margin: "10px" }} color="warning"><Label style={{ marginTop: "8px" }}>{dt.chatName}</Label></Badge>
+          <Badge onClick={()=>this.routePrivateChat(dt.privateChatId)} className="Badge"><Label className="BadgeLabel">{dt.chatName}</Label></Badge>
           : null
       )
     }
@@ -152,7 +152,7 @@ class Toolbar extends Component {
       <>
         <div className="toolbar">
           <div ><h3 className="jobtitle" >{this.state.jobTitle ? this.state.jobTitle : leftItems}</h3></div>
-          {this.PrivateChatBadgeHandler()}
+          {this.privateChatBadgeHandler()}
           {/* <Badge style={{borderRadius: "20px",margin: "10px"}} color="warning"><Label style={{marginTop: "8px"}}>{this.props.privateChatData.length>0 ? this.props.privateChatData[0].chatName: ""}</Label></Badge> */}
 
           {/* <h1 className="toolbar-title">{title}</h1> */}
@@ -195,7 +195,7 @@ class Toolbar extends Component {
                   <Col xs="6" sm="6" md="6" lg="6" >
                     {!(data.userId == USER_DETAILS[0].userId) &&
                       <Button
-                        disabled={this.isCharCreated(data.userId)}
+                        disabled={this.isChatCreated(data.userId)}
                         style={{ marginTop: 5, marginBottom: 5 }} onClick={() => { this.handlePrivateChat(data) }} color="success">Private Chat</Button>
                     }
                   </Col>
@@ -245,7 +245,7 @@ const mapStateToProps = state => {
 
 function mapDispatchToProps(dispatch) {
   return {
-    GetJobParticipants: (id) => dispatch(GetJobParticipants(id)),
+    getJobParticipants: (id) => dispatch(getJobParticipants(id)),
     createNewPrivateChatRoom: (data) => dispatch(createNewPrivateChatRoom(data)),
     getPrivateChatDetails: (jobId, userId) => dispatch(getPrivateChatDetails(jobId, userId))
   };

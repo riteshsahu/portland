@@ -75,7 +75,8 @@ class UserList extends Component {
         if (this.props.userDetails && this.props.userDetails.length > 0) {
             this.props.userDetails.map((data, i) => {
                 result.push(<tr>
-                    <td><a href="javascript:void(0)" onClick={e => { this.toggleModel(data.userId) }}>{data.firstName} </a></td>
+                    {/* <td><a href="javascript:void(0)" onClick={e => { this.toggleModel(data.userId) }}>{data.firstName} </a></td> */}
+                    <td>{data.firstName} </td>
                     <td>{data.lastName}</td>
                     <td>{data.email}</td>
                     <td>{data.createAt}</td>

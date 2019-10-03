@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, CardHeader, CardBody } from 'reactstrap';
+import { Card, CardHeader, CardBody, Row,Alert } from 'reactstrap';
 import UserList from './userList/userList';
 import UserSearch from './UserSearch/UserSearch';
 import CreateUser from './createUser/createUser';
@@ -18,6 +18,11 @@ class userDetail extends Component {
                     <CardHeader className="header" >
                         <UserSearch />
                     </CardHeader>
+                    {this.props.errorFrom === "USER_DETAILS" ?
+            <Row>
+                <Alert color= "danger">{this.props.errorName}</Alert>
+            </Row>
+              : null }
                     <CardBody >
                         {!this.props.createUser && <UserList />}
                         {this.props.createUser && <CreateUser />}
@@ -30,6 +35,8 @@ class userDetail extends Component {
 const mapStateToProps = state => {
     return {
         createUser: state.userDetail.createUser,
+        errorName: state.ProfileDetail.errorMessage.errorName,
+        errorFrom: state.ProfileDetail.errorMessage.errorFrom
     };
 }
 

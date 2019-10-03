@@ -64,7 +64,6 @@ class DB {
       }
       catch (error) {
         if (!DB.isReleased(connection)) { connection.release(); }
-        console.log(error);
         return reject(error);
       }
     });

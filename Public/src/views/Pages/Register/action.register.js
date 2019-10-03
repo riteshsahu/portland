@@ -26,7 +26,6 @@ export const saveRegistrationDetails = (values) => {
 
             })
             .catch(err => {
-                console.log(err);
             })
     }
 }

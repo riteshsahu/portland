@@ -260,6 +260,7 @@ class ChatService {
                     let records = [];
                     isSubscribedArray.map(value => {
                         records.push([value.privateChatFor, data.room, messageId, value.isSubscribed, new Date(), data.userId,0])
+                        records.push([ data.userId, data.room, messageId, value.isSubscribed, new Date(), data.userId,0])
                     })
                     return new Promise((resMessageRecipient, rejMessageRescipient) => {
                         connection.query('INSERT INTO MessageRecipient ( recipientId, recipientGroupId, messageId, isRead, createAt, createBy,isMainChat) VALUES ? ',

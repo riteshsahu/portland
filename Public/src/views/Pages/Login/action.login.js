@@ -10,22 +10,46 @@ export const login = (values) => {
             },
             body: JSON.stringify(values)
         })
-            .then(res => res.json())
+            .then(res => {
+                return res.json()
+            })
             .then(data => {
-                if (data === "INVALID_USER") {
+                if (data === "INVALID_PASSWORD") {
                     dispatch({
                         type: Login.AUTH_ERROR,
+                        payload: "Invalid Password"
                     })
                 }
-                else {
+                else if (data === "INVALID_EMAIL") {
+                    dispatch({
+                        type: Login.AUTH_ERROR,
+                        payload: "Invalid Email"
+                    })
+                } else {
                     dispatch({
                         type: Login.SAVE_LOGIN_DATA,
                         payload: data
                     })
                 }
+                setTimeout(() => {
+                    dispatch({
+                        type: Login.AUTH_ERROR,
+                        payload: ""
+                    })
+                }, 2000)
             })
             .catch(err => {
-                console.log(err);
+                dispatch({
+                    type: Login.AUTH_ERROR,
+                    payload: "Something Went Wrong"
+                })
+
+                setTimeout(() => {
+                    dispatch({
+                        type: Login.AUTH_ERROR,
+                        payload: ""
+                    })
+                }, 2000)
             })
     }
 }
@@ -54,7 +78,18 @@ export const forgotPassword = (values) => {
                 }
             })
             .catch(err => {
-                console.log(err);
+                dispatch({
+                    type: Login.AUTH_ERROR,
+                    payload: "Something Went Wrong"
+                })
+
+                setTimeout(() => {
+                    dispatch({
+                        type: Login.AUTH_ERROR,
+                        payload: ""
+                    })
+                }, 2000)
+              
             })
     }
 }

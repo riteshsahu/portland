@@ -6,11 +6,9 @@ class JobController {
         let data = req.body;
         JobService.createJob(data).then(result => {
             res.json(result);
-            console.log(result)
         }).catch(err => {
             res.status(500)
             res.json(err)
-            console.log(err)
         })
     }
 
@@ -18,11 +16,9 @@ class JobController {
         let data = req.body;
         JobService.createPrivateChat(data).then(result => {
             res.json(result);
-            console.log(result)
         }).catch(err => {
             res.status(500)
             res.json(err)
-            console.log(err)
         })
     }
     
@@ -32,22 +28,18 @@ class JobController {
         let data = req.body;
         JobService.updateJob(id, data).then(result => {
             res.json(result);
-            console.log(result)
         }).catch(err => {
             res.status(500)
             res.json(err)
-            console.log(err)
         })
     }
     
     static getJobs(req, res) {
         JobService.getJobs(req.query).then(result => {
             res.json(result);
-            // console.log(result)
         }).catch(err => {
             res.status(500)
             res.json(err)
-            console.log(err)
         })
     }
 
@@ -59,7 +51,6 @@ class JobController {
         }).catch(err => {
             res.status(500)
             res.json(err)
-            console.log(err)
         })
     }
 
@@ -70,17 +61,14 @@ class JobController {
         }).catch(err => {
             res.status(500)
             res.json(err)
-            console.log(err)
         })
     }
 
     static getUserJobs(req,res) {
         let id=req.params.id;
-        console.log("--id--",id);
         JobService.getUserJobs(id).then(result => {
             res.json(result);
         }).catch(err => {
-            console.log(err)
             res.status(500)
             res.json(err)
            
@@ -90,37 +78,20 @@ class JobController {
     
     static getUserCompletedJobs(req,res) {
         let id=req.params.id;
-        console.log("--id--",id);
         JobService.getUserCompletedJobs(id).then(result => {
             res.json(result);
         }).catch(err => {
-            console.log(err)
             res.status(500)
             res.json(err)
-           
-        })
-    }
-    static getUserLatestJobs(req,res) {
-        let id=req.params.id;
-        console.log("--id--",id);
-        JobService.getUserLatestJobs(id).then(result => {
-            res.json(result);
-        }).catch(err => {
-            console.log(err)
-            res.status(500)
-            res.json(err)
-           
         })
     }
     
 
     static getJobParticipantsInfo(req,res) {
         let id=req.params.id;
-        console.log("----ID----",id);
         JobService.getJobParticipantsInfo(id).then(result => {
             res.json(result);
         }).catch(err => {
-            console.log(err)
             res.status(500)
             res.json(err)
         })
@@ -134,7 +105,6 @@ class JobController {
         }).catch(err => {
             res.status(500)
             res.json(err)
-            console.log(err)
         })
     }
 

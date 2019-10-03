@@ -4,7 +4,7 @@ import socketIOClient from "socket.io-client";
 import './MessageList.css';
 import Messages from '../Message/Messages';
 import Toolbar from '../Toolbar/Toolbar';
-import { GetChatHistory } from '../../../action.activeJobs';
+import { getChatHistory } from '../../../action.activeJobs';
 import 'emoji-mart/css/emoji-mart.css';
 import { Picker } from 'emoji-mart';
 import { Alert } from 'reactstrap';
@@ -37,7 +37,7 @@ class MessageList extends Component {
   componentDidMount() {
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
     var JobId = this.props.params.id;
-    this.props.GetChatHistory(JobId);
+    this.props.getChatHistory(JobId);
 
     let subscribe = {
       room: window.location.href.split('/').pop(),
@@ -58,7 +58,7 @@ class MessageList extends Component {
   componentDidUpdate(prevProps) {
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
     if (prevProps.ActiveJobDetail.JobId != this.props.params.id) {
-      this.props.GetChatHistory(this.props.params.id);
+      this.props.getChatHistory(this.props.params.id);
     }
     let subscribe = {
       room: window.location.href.split('/').pop(),
@@ -237,7 +237,7 @@ const mapStateToProps = state => {
 }
 function mapDispatchToProps(dispatch) {
   return {
-    GetChatHistory: (id) => dispatch(GetChatHistory(id))
+    getChatHistory: (id) => dispatch(getChatHistory(id))
   };
 }
 

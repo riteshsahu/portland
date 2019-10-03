@@ -1,6 +1,7 @@
 import { UserDetail } from './userDetail.constants';
 import { JobDetail } from '../Jobs/jobs.constants';
 import { API_ROOT, URI, StringFormat } from '../../config/config';
+import {ProfileDetail} from '../../views/Profile/profile.constants';
 
 export const CreateUserHandler = () => {
     return (dispatch) => {
@@ -37,7 +38,11 @@ export const getUserSuggestions=()=>{
                 }
             })
             .catch(err => {
-                console.log(err);
+                dispatch({
+                    type: ProfileDetail.ERROR_HANDLER,
+                    errorFrom: UserDetail.ERROR_FROM,
+                    errorName: ProfileDetail.ERROR_NAME
+                })
             })
     }
 }
@@ -69,7 +74,11 @@ export const GetUserList = (offset) => {
                
             })
             .catch(err => {
-                console.log(err);
+                dispatch({
+                    type: ProfileDetail.ERROR_HANDLER,
+                    errorFrom: UserDetail.ERROR_FROM,
+                    errorName: ProfileDetail.ERROR_NAME
+                })
             })
     }
 }
@@ -91,7 +100,11 @@ export const searchUser = (data) => {
                 })
             })
             .catch(err => {
-                console.log(err);
+                dispatch({
+                    type: ProfileDetail.ERROR_HANDLER,
+                    errorFrom: UserDetail.ERROR_FROM,
+                    errorName: ProfileDetail.ERROR_NAME
+                })
             })
     }
 }
@@ -123,7 +136,11 @@ export const CreateNewUser = (values) => {
                 }
             })
             .catch(err => {
-                console.log(err);
+                dispatch({
+                    type: ProfileDetail.ERROR_HANDLER,
+                    errorFrom: UserDetail.ERROR_FROM,
+                    errorName: ProfileDetail.ERROR_NAME
+                })
             })
     }
 }
@@ -149,7 +166,11 @@ export const deleteUserData = (id) => {
                 })
             })
             .catch(err => {
-                console.log(err);
+                dispatch({
+                    type: ProfileDetail.ERROR_HANDLER,
+                    errorFrom: UserDetail.ERROR_FROM,
+                    errorName: ProfileDetail.ERROR_NAME
+                })
             })
     }
 }
@@ -181,7 +202,11 @@ export const updateUserDetails = (id, values) => {
                 },1500)
             })
             .catch(err => {
-                console.log(err);
+                dispatch({
+                    type: ProfileDetail.ERROR_HANDLER,
+                    errorFrom: UserDetail.ERROR_FROM,
+                    errorName: ProfileDetail.ERROR_NAME
+                })
             })
     }
 }

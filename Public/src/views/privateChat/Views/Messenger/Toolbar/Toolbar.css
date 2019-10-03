@@ -45,7 +45,26 @@
     color: #1F4E3A;
     margin-top: 10px;
   }
+
+  .Badge {
+    border-radius: 20px;
+     margin: 10px;
+     background: #FF8F00;
+  }
+
+  .Badge:hover {
+    cursor: pointer;
+  }
   
+
+  .BadgeLabel {
+    margin-top: 8px;
+    color: white;
+  }
+
+  .BadgeLabel:hover {
+    cursor: pointer;
+  }
   .right-items {
     /* flex-direction: row-reverse; */
     flex: 1;

@@ -66,3 +66,23 @@
   .right-items .toolbar-button:last-child {
     margin: 0;
   }
+
+  .Badge {
+    border-radius: 20px;
+     margin: 10px;
+     background: #FF8F00;
+  }
+
+  .Badge:hover {
+    cursor: pointer;
+  }
+  
+
+  .BadgeLabel {
+    margin-top: 8px;
+    color: white;
+  }
+
+  .BadgeLabel:hover {
+    cursor: pointer;
+  }

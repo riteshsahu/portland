@@ -93,9 +93,6 @@ class ForgetPassword extends Component {
                                                                 className={'form-control' + (errors.confirmPassword && touched.confirmPassword ? ' is-invalid' : '')} />
                                                             <ErrorMessage name="confirmPassword" component="div" className="invalid-feedback" /> <br />
                                                         </InputGroup>
-                                                        <Row>
-                                                            <span style={{ color: "red", marginLeft: 15 }} >{this.props.authError == true ? "Email Doesn't Exist" : null}</span>
-                                                        </Row>
                                                         {this.props.passwordChanged ?
                                                             <Row>
                                                                 <Col xs="12">

@@ -15,18 +15,17 @@ class Chat extends Component {
   componentDidMount() {
     this.ws.onopen = () => {
       // on connecting, do nothing but log it to the console
-      console.log('connected')
+      // console.log('connected')
     }
 
     this.ws.onmessage = evt => {
       // on receiving a message, add it to the list of messages
-      // console.log('evt', evt)
       const message = JSON.parse(evt.data)
       this.addMessage(message)
     }
 
     this.ws.onclose = () => {
-      console.log('disconnected')
+      // console.log('disconnected')
       // automatically try to reconnect on connection loss
       this.setState({
         ws: new WebSocket(URL),

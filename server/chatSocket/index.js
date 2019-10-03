@@ -13,14 +13,12 @@ function socketConnection (io) {
             if (data.privateChat == true) {
                 chatService.subscribePrivateUser(data)
                 .then(results => {
-                    console.log('joining room', data.room);
                     client.join(data.room);
                 })
             }
             else
             chatService.subscribeUser(data)
             .then(results => {
-                console.log('joining room', data.room);
                 client.join(data.room);
             })
             .catch(err => {
@@ -29,9 +27,7 @@ function socketConnection (io) {
             //client.join(data.room);
         });
 
-        client.on('send message', function(data) {
-            console.log('sending room post', data.room);
-            
+        client.on('send message', function(data) {            
             if (data.privateChat == true) {
                 chatService.privateMessageUpdate(data)
                 .then(results => {

@@ -101,11 +101,11 @@ class Login extends Component {
 
                             </InputGroup>
                             <Row>
-                              <span style={{ color: "red", marginLeft: 15 }} >{this.props.authError == true ? "Invalid Email or Password" : null}</span>
+                              <span style={{ color: "red", marginLeft: 15 }} >{this.props.authError  ? this.props.authError : null}</span>
                             </Row>
                             <Row>
                               <Col xs="6">
-                                <Button color="primary" className="px-4" onClick={this.handleLogin} >Login</Button>
+                                <Button type="submit" color="primary" className="px-4" onClick={this.handleLogin} >Login</Button>
                               </Col>
                               <Col xs="6" className="text-right">
                                 <Button style={{ fontSize: "smaller" }} onClick={() => this.handleForgetPassword()} color="link" className="px-0">Forgot password?</Button>

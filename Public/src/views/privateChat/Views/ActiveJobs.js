@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import Messenger from './Messenger/Messenger';
+import {Row,Alert} from 'reactstrap';
 
 class PrivateChat extends Component {
     constructor(props) {
@@ -14,6 +15,11 @@ class PrivateChat extends Component {
     render() {
         return (
             <div style={{ width: "100%",height: "100%", display: "flex", flexDirection: "column", flexWrap: "nowrap"}}>
+                {this.props.errorFrom === "PRIVATE_CHAT" ?
+            <Row>
+                <Alert color= "danger">{this.props.errorName}</Alert>
+            </Row>
+              : null } 
                 <Messenger   history={this.props.history} params={this.props.match.params}/>               
 
             </div>

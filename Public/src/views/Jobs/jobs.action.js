@@ -1,5 +1,6 @@
 import { JobDetail } from './jobs.constants'
 import { API_ROOT, URI, StringFormat } from '../../config/config';
+import {ProfileDetail} from '../../views/Profile/profile.constants';
 
 export const getAllJob=(id)=>{
     return (dispatch) => {
@@ -17,7 +18,11 @@ export const getAllJob=(id)=>{
                 })
             })
             .catch(err => {
-                console.log(err);
+                dispatch({
+                    type: ProfileDetail.ERROR_HANDLER,
+                    errorFrom: JobDetail.ERROR_FROM,
+                    errorName: ProfileDetail.ERROR_NAME
+                })
             })
     }
 }
@@ -52,7 +57,11 @@ export const deleteUserJob = (id) => {
                 })
             })
             .catch(err => {
-                console.log(err);
+                dispatch({
+                    type: ProfileDetail.ERROR_HANDLER,
+                    errorFrom: JobDetail.ERROR_FROM,
+                    errorName: ProfileDetail.ERROR_NAME
+                })
             })
     }
 }
@@ -84,7 +93,11 @@ export const updateJobDetails = (id, value) => {
 
             })
             .catch(err => {
-                console.log(err);
+                dispatch({
+                    type: ProfileDetail.ERROR_HANDLER,
+                    errorFrom: JobDetail.ERROR_FROM,
+                    errorName: ProfileDetail.ERROR_NAME
+                })
             })
     }
 }
@@ -106,13 +119,17 @@ export const searchJobs = (data) => {
                 })
             })
             .catch(err => {
-                console.log(err);
+                dispatch({
+                    type: ProfileDetail.ERROR_HANDLER,
+                    errorFrom: JobDetail.ERROR_FROM,
+                    errorName: ProfileDetail.ERROR_NAME
+                })
             })
     }
 }
 
 
-export const CreateJobHandler = () => {
+export const createJobHandler = () => {
     return (dispatch) => {
         dispatch({
             type: JobDetail.CREATE_JOB,
@@ -120,7 +137,7 @@ export const CreateJobHandler = () => {
     }
 }
 
-export const CreateNewJob = (value) => {
+export const createNewJob = (value) => {
     return (dispatch) => {
         fetch(API_ROOT + URI.CREATE_JOB, {
             method: 'POST',
@@ -147,7 +164,11 @@ export const CreateNewJob = (value) => {
                 }, 2000)
             })
             .catch(err => {
-                console.log(err);
+                dispatch({
+                    type: ProfileDetail.ERROR_HANDLER,
+                    errorFrom: JobDetail.ERROR_FROM,
+                    errorName: ProfileDetail.ERROR_NAME
+                })
             })
     }
 }

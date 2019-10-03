@@ -3,7 +3,7 @@ import { Login } from './constants.login';
 
 const initialState = {
     userDetail: "",
-    authError: false,
+    authError: "",
     passwordChanged: false,
     invalidEmail: false
 }
@@ -20,13 +20,11 @@ function rootReducer(state = initialState, action) {
             return {
                 ...state,
                 userDetail: action.payload,
-                authError: false
-
             }
         case Login.AUTH_ERROR:
             return {
                 ...state,
-                authError: true
+                authError: action.payload
             }
 
         case Login.INVALID_EMAIL:

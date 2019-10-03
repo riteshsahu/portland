@@ -559,29 +559,7 @@ class JobService {
         })
     }
 
-    static getUserLatestJobs(id) {
-        var connection;
-        return new Promise((resolve, reject) => {
-            db.getConnection().
-                then(conn => {
-                    connection = conn;
-                    connection.query(`SELECT DISTINCT job.jobId, message.id, message.createAt FROM job LEFT JOIN 
-                    messagerecipient ON job.jobId = messagerecipient.recipientGroupId LEFT JOIN
-                     message ON messagerecipient.messageId = message.id WHERE job.isActive = 1 ORDER BY message.createAt DESC`, [id], (err, results) => {
-                            db.releaseConnection(connection);
-                            if (err) {
-                                reject(err)
-                            } else {
-                                resolve(results);
-                            }
-                        });
-                })
-                .catch(err => {
-                    db.releaseConnection(connection);
-                    reject(err);
-                })
-        })
-    }
+    
 
     static getJobParticipantsInfo(id) {
         var connection;

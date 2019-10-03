@@ -11,9 +11,9 @@ const xml = `
 util.xmlToJson(xml);
 // parser.xmlToJson(xml, (err,json)=>{
 //     if(err) {
-//         console.log(err)
+//      
 //     }else{
-//         console.log(json)
+//  
 //     }
  
     //json

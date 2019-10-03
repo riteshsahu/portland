@@ -1,8 +1,8 @@
 import { ActiveJobDetail } from './constants.activeJobs';
 import { API_ROOT, URI, StringFormat } from '../../config/config';
+import {ProfileDetail} from '../../views/Profile/profile.constants';
 
-
-export const SelectedJob = (id,value) => {
+export const selectedJob = (id,value) => {
   return (dispatch) => {
      dispatch({
         type: ActiveJobDetail.GET_JOB_ID,
@@ -31,14 +31,18 @@ export const createNewPrivateChatRoom = (data) => {
                 }
             })
             .catch(err => {
-                console.log(err);
+                dispatch({
+                    type: ProfileDetail.ERROR_HANDLER,
+                    errorFrom: ActiveJobDetail.ERROR_FROM,
+                    errorName: ProfileDetail.ERROR_NAME
+                })
             })
         }
   }
 
 
 
-export const GetJobParticipants = (id) => {
+export const getJobParticipants = (id) => {
     return (dispatch) => {
         fetch ( StringFormat(API_ROOT + URI.GET_JOB_PARTICIPANTS,id), {
             method: 'GET',
@@ -54,12 +58,16 @@ export const GetJobParticipants = (id) => {
                 })
             })
             .catch(err => {
-                console.log(err);
+                dispatch({
+                    type: ProfileDetail.ERROR_HANDLER,
+                    errorFrom: ActiveJobDetail.ERROR_FROM,
+                    errorName: ProfileDetail.ERROR_NAME
+                })
             })
     }
 }
 
-export const GetChatHistory = (id) => {
+export const getChatHistory = (id) => {
     return (dispatch) => {
         dispatch({
             type: ActiveJobDetail.UPDATE_JOB_ID,
@@ -91,7 +99,11 @@ export const GetChatHistory = (id) => {
                 },1000)
             })
             .catch(err => {
-                console.log(err);
+                dispatch({
+                    type: ProfileDetail.ERROR_HANDLER,
+                    errorFrom: ActiveJobDetail.ERROR_FROM,
+                    errorName: ProfileDetail.ERROR_NAME
+                })
             })
     }
 }

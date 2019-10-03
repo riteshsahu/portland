@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Button, Col, Label, Input, Row } from 'reactstrap';
 import { connect } from "react-redux";
-import { CreateJobHandler, searchJobs, getSearchOFF } from '../../jobs.action';
-import {GetUserJobs,GetUserCompletedJobs} from '../../../../containers/DefaultLayout/action.defaultLayout';
+import { createJobHandler, searchJobs, getSearchOFF } from '../../jobs.action';
+import {getUserJobs,getUserCompletedJobs} from '../../../../containers/DefaultLayout/action.defaultLayout';
 import {getAllJob} from '../../jobs.action';
 
 class JobSearch extends Component {
@@ -47,8 +47,8 @@ class JobSearch extends Component {
             const user = JSON.parse(userDetails);
             this.props.getAllJob(user[0].userId);
             
-            this.props.GetUserJobs(user[0].userId);
-            this.props.GetUserCompletedJobs(user[0].userId);
+            this.props.getUserJobs(user[0].userId);
+            this.props.getUserCompletedJobs(user[0].userId);
             this.setState({
                 searchPersmission: false
             });
@@ -86,12 +86,12 @@ class JobSearch extends Component {
                 </Col>
                 <Col xs="12" md="2" lg="2">
                     {!this.props.createJob &&
-                        <Button onClick={this.props.CreateJobHandler} style={{ float: "right", background: "#ff8f00", color: "white", fontSize: "medium" }}>
+                        <Button onClick={this.props.createJobHandler} style={{ float: "right", background: "#ff8f00", color: "white", fontSize: "medium" }}>
                             <i style={{ marginRight: 5 }} className="fa fa-plus "></i>
                             Create Job
                         </Button>}
                     {this.props.createJob &&
-                        <Button onClick={this.props.CreateJobHandler} style={{ float: "right", background: "#ff8f00", color: "white", fontSize: "medium" }}>
+                        <Button onClick={this.props.createJobHandler} style={{ float: "right", background: "#ff8f00", color: "white", fontSize: "medium" }}>
                             Job List
                         </Button>}
                 </Col>
@@ -111,12 +111,12 @@ const mapStateToProps = state => {
 
 function mapDispatchToProps(dispatch) {
     return {
-        CreateJobHandler: () => dispatch(CreateJobHandler()),
+        createJobHandler: () => dispatch(createJobHandler()),
         searchJobs: (data) => dispatch(searchJobs(data)),
         getSearchOFF: () => dispatch(getSearchOFF()),
-        GetUserJobs:(id) => dispatch(GetUserJobs(id)),
+        getUserJobs:(id) => dispatch(getUserJobs(id)),
         getAllJob:(id) => dispatch(getAllJob(id)),
-        GetUserCompletedJobs:(id) => dispatch(GetUserCompletedJobs(id))
+        getUserCompletedJobs:(id) => dispatch(getUserCompletedJobs(id))
     };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(JobSearch);

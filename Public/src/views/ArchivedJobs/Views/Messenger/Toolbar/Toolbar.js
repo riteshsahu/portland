@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import './Toolbar.css';
 import { Modal, ModalBody, ModalHeader, ModalFooter, Button, Col, Label, Row, Input } from 'reactstrap';
-import { GetJobParticipants } from '../../../action.activeJobs';
+import { getJobParticipants } from '../../../action.activeJobs';
 
 class Toolbar extends Component {
   constructor(props) {
@@ -29,12 +29,12 @@ class Toolbar extends Component {
   }
 
   componentDidMount = () => {
-    this.props.GetJobParticipants(this.props.JobId);
+    this.props.getJobParticipants(this.props.JobId);
   }
 
   componentWillReceiveProps = (nextProps) => {
     if (this.state.selectedJobId !== nextProps.JobId) {
-      this.props.GetJobParticipants(nextProps.JobId);
+      this.props.getJobParticipants(nextProps.JobId);
       this.setState({
         isJobIdUpdated: false,
         selectedJobId: nextProps.JobId,
@@ -176,7 +176,7 @@ const mapStateToProps = state => {
 
 function mapDispatchToProps(dispatch) {
   return {
-    GetJobParticipants: (id) => dispatch(GetJobParticipants(id))
+    getJobParticipants: (id) => dispatch(getJobParticipants(id))
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Toolbar);

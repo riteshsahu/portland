@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Input, Card, Col, Label, Row, Alert } from 'reactstrap';
 import { connect } from "react-redux";
 import { updateUserProfile } from './profile.action';
+import ErrorBoundary from '../../containers/ErrorHandler/errorHandler';
+import { stat } from 'fs';
 
 class UserProfile extends Component {
     constructor(props) {
@@ -18,7 +20,7 @@ class UserProfile extends Component {
                 4 : "External Employee",
                 5 : "Designer",
                 6 : "Client"
-            }
+            },
         }
     }
 
@@ -71,6 +73,11 @@ class UserProfile extends Component {
     render() {
         return (
             <>
+            {this.props.errorFrom === "PROFILE_UPDATE" ?
+            <Row>
+                <Alert color= "danger">{this.props.errorName}</Alert>
+            </Row>
+              : null }
                 <Row>
                     <Col xs="12" md="2" lg="2">
                     </Col>
@@ -180,7 +187,9 @@ class UserProfile extends Component {
 
 const mapStateToProps = state => {
     return {
-        ProfileUpdated: state.ProfileDetail.ProfileUpdated
+        ProfileUpdated: state.ProfileDetail.ProfileUpdated,
+        errorName: state.ProfileDetail.errorMessage.errorName,
+        errorFrom: state.ProfileDetail.errorMessage.errorFrom
     };
 }
 

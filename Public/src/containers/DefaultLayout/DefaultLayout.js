@@ -1,8 +1,8 @@
 import React, { Component, Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { Container } from 'reactstrap';
+import { Container,Row,Alert } from 'reactstrap';
 import { connect } from "react-redux";
-import {GetUserJobs,GetUserCompletedJobs,GetUserLatestJobs} from './action.defaultLayout';
+import {getUserJobs,getUserCompletedJobs} from './action.defaultLayout';
 import AppSlidebar from './AppSideBar';
 
 import {
@@ -66,9 +66,8 @@ class DefaultLayout extends Component {
   componentDidMount= () => {
     const userDetails = localStorage.getItem("userDetails");
     const user= JSON.parse(userDetails) ;
-    this.props.GetUserJobs(user[0].userId);
-    // this.props.GetUserLatestJobs(user[0].userId);
-    this.props.GetUserCompletedJobs(user[0].userId);
+    this.props.getUserJobs(user[0].userId);
+    this.props.getUserCompletedJobs(user[0].userId);
   }
   signOut(e) {
     e.preventDefault()
@@ -133,12 +132,18 @@ class DefaultLayout extends Component {
     const user= JSON.parse(userDetails) ;
     let roleNavigation = this.getNavigationForRoles(user[0].role, navigation)
     return (
+      
       <div className="app">
         <AppHeader fixed  >
           <Suspense fallback={this.loading()}>
             <DefaultHeader history={this.props.history} onLogout={e => this.signOut(e)} handleProfile ={e => this.manageProfile(e)} />
           </Suspense>
         </AppHeader>
+        {this.props.errorFrom === "LAYOUT_USER_JOBS" ?
+            <Row>
+                <Alert color= "danger">{this.props.errorName}</Alert>
+            </Row>
+              : null }
         <div className="app-body">
           <AppSidebar fixed display="lg" style={{backgroundColor: "#1F4E3A",fontSize: "large"}}>
             <AppSidebarHeader />
@@ -190,17 +195,15 @@ class DefaultLayout extends Component {
 
 const mapStateToProps = state => {
   return {
-    JobDetails: state.LayoutDetail.JobDetails,
-    DeletedJobDetails: state.LayoutDetail.DeletedJobDetails,
-    RecentJobDetails: state.LayoutDetail.RecentJobDetails
+    errorName: state.ProfileDetail.errorMessage.errorName,
+    errorFrom: state.ProfileDetail.errorMessage.errorFrom
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    GetUserJobs: (id) => dispatch(GetUserJobs(id)),
-    GetUserLatestJobs: (id) => dispatch(GetUserLatestJobs(id)),
-    GetUserCompletedJobs: (id) => dispatch(GetUserCompletedJobs(id))
+    getUserJobs: (id) => dispatch(getUserJobs(id)),
+    getUserCompletedJobs: (id) => dispatch(getUserCompletedJobs(id))
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(DefaultLayout);

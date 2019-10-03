@@ -5,7 +5,7 @@ import {  AppHeaderDropdown, AppSidebarToggler } from '@coreui/react';
 import user from '../../assets/img/brand/user.png';
 import './header.css';
 import { connect } from "react-redux";
-import {SelectedJob,getPrivateChatDetails} from '../../views/ActiveJobs/action.activeJobs';
+import {selectedJob,getPrivateChatDetails} from '../../views/ActiveJobs/action.activeJobs';
 
 const propTypes = {
   children: PropTypes.node,
@@ -25,23 +25,23 @@ constructor(props){
   }
 }
 componentDidUpdate=() => {
-  if(this.props.JobDetails !== this.state.stateJobDetails){
+  if(this.props.jobDetails !== this.state.stateJobDetails){
   this.setState({
-    stateJobDetails: this.props.JobDetails
+    stateJobDetails: this.props.jobDetails
   })  
 }
 
 }
 handleOnClick=(id,title) => {
   var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
-  this.props.SelectedJob(id,title);
+  this.props.selectedJob(id,title);
   this.props.getPrivateChatDetails(id,USER_DETAILS[0].userId)
   this.props.history.push("/activeJobs/"+ id)
 }
 activeJobList=() => {
   let Result = [] ;
-  if ( this.props.JobDetails && this.props.JobDetails.length>0  && !this.state.searchData) {
-    this.props.JobDetails.map(data=> {
+  if ( this.props.jobDetails && this.props.jobDetails.length>0  && !this.state.searchData) {
+    this.props.jobDetails.map(data=> {
       Result.push (
         <DropdownItem  className= "item" onClick= {()=>this.handleOnClick(data.jobId,data.jobTitle)}>
         {data.jobTitle}
@@ -61,19 +61,26 @@ activeJobList=() => {
   return Result;
 }
 handleDeletedJobs =(id,title) => {
-  this.props.SelectedJob(id,title);
+  this.props.selectedJob(id,title);
   this.props.history.push("/archivedJobs/"+ id)
 }
 deletedJobList=() => {
   let Result = [] ;
-  if ( this.props.DeletedJobDetails && this.props.DeletedJobDetails.length>0 ) {
-    this.props.DeletedJobDetails.map(data=> {
+  if ( this.props.deletedJobDetails && this.props.deletedJobDetails.length>0 ) {
+    this.props.deletedJobDetails.map(data=> {
       Result.push (
         <DropdownItem  className= "item" onClick= {()=>this.handleDeletedJobs(data.jobId,data.jobTitle)}>
         {data.jobTitle}
         </DropdownItem>
         );
     })
+  }
+  else {
+    Result.push (
+      <DropdownItem  className= "item" >
+        No Deleted Chats Available
+      </DropdownItem>
+      );
   }
   return Result;
 }
@@ -109,10 +116,9 @@ handleSearch=(e) => {
     return (
       <React.Fragment>
         <AppSidebarToggler className="d-lg-none" display="md" mobile />
-        <h3 className="logo" style={{ color :"#1F4E3A"}}>Dashboard</h3>
+        <h3 className="logo" style={{ color :"#1F4E3A"}}>Portland Floor</h3>
         {/* <AppSidebarToggler className="d-md-down-none" display="lg" /> */}
         <AppSidebarToggler className="d-md-down-none dashboardIcon" display="lg"  />
-
         <Nav className="d-md-down-none" navbar>
           <AppHeaderDropdown direction="down">
           <DropdownToggle nav style={{marginRight: 20, marginLeft: 20}}>
@@ -190,15 +196,15 @@ DefaultHeader.defaultProps = defaultProps;
 
 const mapStateToProps = state => {
   return {
-    JobDetails: state.LayoutDetail.JobDetails,
-    DeletedJobDetails: state.LayoutDetail.DeletedJobDetails,
+    jobDetails: state.LayoutDetail.jobDetails,
+    deletedJobDetails: state.LayoutDetail.deletedJobDetails,
 
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    SelectedJob:(id,name)=> dispatch(SelectedJob(id,name)),
+    selectedJob:(id,name)=> dispatch(selectedJob(id,name)),
     getPrivateChatDetails:(jobId,userId) => dispatch(getPrivateChatDetails(jobId,userId))
   };
 }

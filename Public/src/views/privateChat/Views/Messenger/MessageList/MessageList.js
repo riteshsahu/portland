@@ -4,10 +4,10 @@ import socketIOClient from "socket.io-client";
 import './MessageList.css';
 import Messages from '../Message/Messages';
 import Toolbar from '../Toolbar/Toolbar';
-import { GetChatHistory } from '../../../action.activeJobs';
+import { getChatHistory } from '../../../action.activeJobs';
 import 'emoji-mart/css/emoji-mart.css';
 import { Picker } from 'emoji-mart';
-import { GetUserJobs} from '../../../../../containers/DefaultLayout/action.defaultLayout';
+import { getUserJobs} from '../../../../../containers/DefaultLayout/action.defaultLayout';
 
 class MessageList extends Component {
   constructor(props) {
@@ -37,7 +37,7 @@ class MessageList extends Component {
   componentDidMount() {
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
     var JobId = this.props.params.id;
-    this.props.GetChatHistory(JobId);
+    this.props.getChatHistory(JobId);
     let privateChatId = this.props.params.id;
     let jobId ="";
     if (this.props.privateChatData && this.props.privateChatData.length> 0) {
@@ -68,7 +68,7 @@ class MessageList extends Component {
   componentDidUpdate(prevProps) {
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
     if (prevProps.ActiveJobDetail.JobId != this.props.params.id) {
-      this.props.GetChatHistory(this.props.params.id);
+      this.props.getChatHistory(this.props.params.id);
     }
     let subscribe = {
       room: window.location.href.split('/').pop(),
@@ -168,7 +168,7 @@ class MessageList extends Component {
 
   submitMessage = (value) => {
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
-    this.props.GetUserJobs(USER_DETAILS[0].userId);
+    this.props.getUserJobs(USER_DETAILS[0].userId);
 
     let tempArr = this.state.messages;
     if (this.isValidMessage(value)) {
@@ -202,6 +202,7 @@ class MessageList extends Component {
       <div >
 
         <Toolbar
+          params={this.props.params} 
           leftItems="Private Chat"
           rightItems="Participants"
           handleClientAnswer={(value) => this.submitMessage(value)}
@@ -250,8 +251,8 @@ const mapStateToProps = state => {
 }
 function mapDispatchToProps(dispatch) {
   return {
-    GetChatHistory: (id) => dispatch(GetChatHistory(id)),
-    GetUserJobs: (id) => dispatch(GetUserJobs(id))
+    getChatHistory: (id) => dispatch(getChatHistory(id)),
+    getUserJobs: (id) => dispatch(getUserJobs(id))
   };
 }
 

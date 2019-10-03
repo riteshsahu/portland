@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import './Toolbar.css';
 import { Modal, ModalBody, ModalHeader, ModalFooter, Button,Badge, Col, Label, Row, Input } from 'reactstrap';
-import { GetJobParticipants,createNewPrivateChatRoom } from '../../../action.activeJobs';
+import { getJobParticipants,createNewPrivateChatRoom } from '../../../action.activeJobs';
 
 class Toolbar extends Component {
   constructor(props) {
@@ -21,7 +21,9 @@ class Toolbar extends Component {
         4: "External Employee",
         5: "Designer",
         6: "Client"
-      }
+      },
+      jobIdforPC: '',
+      privateChatName: ''
     }
     this.toggleModel = this.toggleModel.bind(this);
     this.togglePrimary = this.togglePrimary.bind(this);
@@ -29,12 +31,25 @@ class Toolbar extends Component {
   }
 
   componentDidMount = () => {
-    this.props.GetJobParticipants(this.props.JobId);
+    this.props.getJobParticipants(this.props.JobId);
+    let urlId= this.props.params.id;
+
+
+    if (this.props.privateChatData && this.props.privateChatData.length> 0) {
+      this.props.privateChatData.map((data,i) => {
+          if (data.privateChatId == urlId){
+            this.setState({
+              jobIdforPC: data.jobId,
+              privateChatName: data.chatName
+            })
+          }
+      })
+    }
   }
 
   componentWillReceiveProps = (nextProps) => {
     if (this.state.selectedJobId !== nextProps.JobId) {
-      this.props.GetJobParticipants(nextProps.JobId);
+      this.props.getJobParticipants(nextProps.JobId);
       this.setState({
         isJobIdUpdated: false,
         selectedJobId: nextProps.JobId,
@@ -99,13 +114,18 @@ class Toolbar extends Component {
     this.props.createNewPrivateChatRoom(values);
     this.props.history.push("/privateChat/"+uniquePrivateChatId)
   }
+
+  handleBadge = () => {
+    this.props.history.push("/activeJobs/"+this.state.jobIdforPC)
+  }
   render() {
     const { title, leftItems, rightItems } = this.props;
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
     return (
       <>
         <div className="toolbar">
-          <div ><h3 className="jobtitle" >{leftItems}</h3></div>
+          <div ><h3 className="jobtitle" >{this.state.privateChatName ? this.state.privateChatName : "Private Chat"}</h3></div>
+          <Badge onClick={this.handleBadge} className="Badge" ><Label className= "BadgeLabel">{"Back to Job Chat"}</Label></Badge>
           {/* <h1 className="toolbar-title">{title}</h1> */}
           <div className="right-items" >
           {/* <Badge style={{borderRadius: "20px"}} color="warning"><Label style={{marginTop: "8px"}}>Admin Client Chat</Label></Badge> */}
@@ -188,12 +208,13 @@ const mapStateToProps = state => {
     JobId: state.ActiveJobDetail.JobId,
     JobTitle: state.ActiveJobDetail.JobTitle,
     ParticipantsDetails: state.ActiveJobDetail.ParticipantsDetails,
+    privateChatData: state.ActiveJobDetail.privateChatData
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    GetJobParticipants: (id) => dispatch(GetJobParticipants(id)),
+    getJobParticipants: (id) => dispatch(getJobParticipants(id)),
     createNewPrivateChatRoom: (data) => dispatch(createNewPrivateChatRoom(data))
   };
 }

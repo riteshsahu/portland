@@ -158,7 +158,6 @@ class UserService {
                         })
                 })
                 .catch(err => {
-                    console.log(err);
                     db.releaseConnection(connection);
                     reject(err);
                 })
@@ -203,7 +202,6 @@ class UserService {
                             if (err) {
                                 db.rollbackTransaction(connection);
                                 db.releaseConnection(connection);
-                                console.log(err);
                                 reject(err)
                             } else {
                                 res(result[0].password);
@@ -218,7 +216,6 @@ class UserService {
                                 if (err) {
                                     db.rollbackTransaction(connection);
                                     db.releaseConnection(connection);
-                                    console.log(err);
                                     reject(err)
                                 } else {
                                     res();
@@ -230,7 +227,6 @@ class UserService {
                     return new Promise((resSelect, rejSelect) => {
                         connection.query(`INSERT INTO user SET ?  `, [data], (err, result) => {
                             if (err) {
-                                console.log(err);
                                 db.rollbackTransaction(connection);
                                 db.releaseConnection(connection);
                                 reject(err)
@@ -247,7 +243,6 @@ class UserService {
                             if (err) {
                                 db.rollbackTransaction(connection);
                                 db.releaseConnection(connection);
-                                console.log(err);
                                 reject(err)
                             } else {
                                
@@ -258,7 +253,6 @@ class UserService {
                     })
             
                 .catch(err => {
-                    console.log(err);
                     reject(err);
                 })
         });
@@ -418,7 +412,6 @@ class UserService {
                                 if (err) {
                                     db.rollbackTransaction(connection);
                                     db.releaseConnection(connection);
-                                    console.log(err);
                                     reject(err)
                                 } else {
                                     res(result);

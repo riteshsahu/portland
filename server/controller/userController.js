@@ -9,8 +9,6 @@ class UserController {
                 }).catch(err => {
                         res.status(500)
                         res.json(err)
-                        console.log(err)
-
                 })
         }
         
@@ -22,8 +20,6 @@ class UserController {
                 }).catch(err => {
                         res.status(500)
                         res.json(err)
-                        console.log(err)
-
                 })
         }
         
@@ -33,8 +29,6 @@ class UserController {
                 }).catch(err => {
                         res.status(500)
                         res.json(err)
-                        console.log(err)
-
                 })
         }
         static editUser(req, res) {
@@ -43,10 +37,8 @@ class UserController {
                 UserService.editUser(id, data).then(result => {
                         res.json(result);
                 }).catch(err => {
-                        console.log(err)
                         res.status(500)
                         res.json(err)
-                        console.log(err)
                 })
         }
 
@@ -56,10 +48,8 @@ class UserController {
                 UserService.deleteUser(id).then(result => {
                         res.json(result);
                 }).catch(err => {
-                        console.log(err)
                         res.status(500)
                         res.json(err)
-                        console.log(err)
                 })
         }
 

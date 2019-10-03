@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux';
 import RegisterReducer from './views/Pages/Register/reducer.register';
 import LoginReducer from './views/Pages/Login/reducer.login';
-import CardToggleReducer from './views/New Business/reducer/reducer.newBusiness';
 import userDetailReducer from './views/userDetail/userDetail.reducer';
 import jobDetailReducer from './views/Jobs/jobs.reducer';
 import roleDetailReducer from './views/Roles/role.reducer';
@@ -12,7 +11,6 @@ import ActiveJobsReducer from './views/ActiveJobs/reducer.activeJobs';
 const rootReducer = combineReducers({
     register: RegisterReducer,
     login: LoginReducer,
-    ToggleCard:CardToggleReducer,
     userDetail: userDetailReducer,
     jobDetail: jobDetailReducer,
     roleDetail: roleDetailReducer,

@@ -2,7 +2,11 @@
 import { ProfileDetail } from './profile.constants';
 
 const initialState = {
-    ProfileUpdated: 1
+    ProfileUpdated: 1,
+    errorMessage: {
+        errorFrom: "",
+        errorName: ""
+    }
 }
 
 
@@ -15,6 +19,16 @@ function ProfileReducer(state = initialState, action) {
                 ...state,
                 ProfileUpdated: action.payload
             }
+        case ProfileDetail.ERROR_HANDLER:
+            return {
+                ...state,
+                errorMessage: {
+                    errorFrom: action.errorFrom,
+                    errorName: action.errorName
+                }
+
+            }
+
         default:
             return state;
 
