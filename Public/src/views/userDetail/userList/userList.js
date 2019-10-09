@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Badge, Modal, ModalBody, ModalFooter, Button, Col, Pagination,Label, PaginationItem, PaginationLink, Row, Table } from 'reactstrap';
+import { Badge, Modal, ModalBody, ModalFooter, Button, Col,Label,Row, Table } from 'reactstrap';
 import { connect } from "react-redux";
 import { deleteUserData, updateUser, GetUserList } from '../userDetail.action';
 import '../user.css';

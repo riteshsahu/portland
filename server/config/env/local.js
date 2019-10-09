@@ -22,6 +22,7 @@ module.exports = {
     },
     vapidPublicKey: "BJSb4Xhcs8_ZPa0Qu4epmDeU9GBj4E8BrDjFZebMZBMHBqP4HyAW-bGleVlnX7N9Qnlj4uPUGGxzYj9F_-4xq2Q",
     vapidPrivateKey: "5NwdayA2A7s0spACkz2E93jcTQYWNl2VhbwPNBOeX_A",
-    googleApiKey: "AIzaSyD9gPW-PJ7eztnlR137aWYm3d-wvDZWKGo"
+    googleApiKey: "AIzaSyD9gPW-PJ7eztnlR137aWYm3d-wvDZWKGo",
+    email: "pandeyaniket546@gmail.com"
   };
   

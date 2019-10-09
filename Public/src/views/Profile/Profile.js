@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { Input, Card, Col, Label, Row, Alert } from 'reactstrap';
 import { connect } from "react-redux";
 import { updateUserProfile } from './profile.action';
-import ErrorBoundary from '../../containers/ErrorHandler/errorHandler';
-import { stat } from 'fs';
+
 
 class UserProfile extends Component {
     constructor(props) {

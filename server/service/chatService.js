@@ -260,7 +260,7 @@ class ChatService {
                     let records = [];
                     isSubscribedArray.map(value => {
                         records.push([value.privateChatFor, data.room, messageId, value.isSubscribed, new Date(), data.userId,0])
-                        records.push([ data.userId, data.room, messageId, value.isSubscribed, new Date(), data.userId,0])
+                        records.push([ data.userId, data.room, messageId, 0, new Date(), data.userId,0])
                     })
                     return new Promise((resMessageRecipient, rejMessageRescipient) => {
                         connection.query('INSERT INTO MessageRecipient ( recipientId, recipientGroupId, messageId, isRead, createAt, createBy,isMainChat) VALUES ? ',
@@ -323,6 +323,67 @@ class ChatService {
                                 reject(err)
                             } else {
                                 resolve(results);
+                            }
+                        })
+                })
+                .catch(err => {
+                    db.releaseConnection(connection);
+                    reject(err);
+                })
+        });
+
+    }
+
+    static countUnreadMsg(data){
+        function isExist(repId, countResult){
+            if(countResult.length > 0){
+                let innerCount = 0;
+                countResult.map(dt=>{
+                    if(dt.id === repId){
+                        dt.count = dt.count + 1;
+                        innerCount  = innerCount + 1;
+                    }
+                })
+                if(innerCount){
+                    return countResult;
+                }else{
+                    return "NOT_EXIST"                
+                }
+            }else{
+                return "NOT_EXIST"
+            }
+        }
+
+        if(data.length > 0){
+            let countResult = [];
+            data.map(dt=>{
+                if(isExist(dt.recipientGroupId, countResult) === "NOT_EXIST"){
+                    countResult.push({
+                        id: dt.recipientGroupId,
+                        Title: dt.jobTitle,
+                        count : 1
+                    });
+                }
+            });
+            return countResult;
+        }else{
+            return data;
+        }
+    }
+
+    static getUserNotifications(id) {
+        var connection;
+        return new Promise((resolve, reject) => {
+            db.getConnection().
+                then(conn => {
+                    connection = conn;
+                    connection.query(`SELECT mr.recipientGroupId, j.jobTitle FROM messagerecipient as mr LEFT JOIN
+                    job as j ON mr.recipientGroupId = j.jobId WHERE recipientId = ? AND isRead = 0`, [id],(err, results) => {
+                            db.releaseConnection(connection);
+                            if(err) {
+                                reject(err)
+                            } else {
+                                resolve(ChatService.countUnreadMsg(results));
                             }
                         })
                 })

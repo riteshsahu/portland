@@ -86,7 +86,7 @@ class Toolbar extends Component {
     }
   }
   render() {
-    const { title, leftItems, rightItems } = this.props;
+    const { leftItems, rightItems } = this.props;
     return (
       <>
         <div className="toolbar">

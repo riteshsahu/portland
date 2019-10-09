@@ -51,8 +51,41 @@
     width: 250px;
     max-height: 548px;
 }
+
+.notificationList {
+  height: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: absolute;
+  top: 47px;
+  width: 300px;
+  max-height: 548px;
+}
+
 .item {
   white-space: pre-wrap !important;
+}
+
+
+.circle {
+  width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  color: white;
+  padding-left: 5px;
+  background-color: red;
+  margin-bottom: 30px;
+ }
+ 
+.notification {
+  color: cornflowerblue;
+    font-size: x-large;
+    margin-bottom: 10px;
+    /* margin-right: 20px; */
+}
+
+.notification:hover {
+  cursor: pointer;
 }
 ::-webkit-scrollbar {
   width: 10px;

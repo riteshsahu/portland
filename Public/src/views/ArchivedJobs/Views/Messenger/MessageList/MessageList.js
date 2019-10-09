@@ -188,7 +188,6 @@ class MessageList extends Component {
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
     return (
       <div >
-
         <Toolbar
           leftItems="Job Title"
           rightItems="Participants"

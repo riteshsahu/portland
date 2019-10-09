@@ -72,6 +72,7 @@ class DefaultLayout extends Component {
   signOut(e) {
     e.preventDefault()
     localStorage.removeItem("userDetails");
+    localStorage.removeItem("notifications");
     this.props.history.push('/')
   }
 

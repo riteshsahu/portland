@@ -1,6 +1,6 @@
 export const API_ROOT = 'https://portland-web.herokuapp.com/api/';
 // export const API_ROOT = 'http://localhost:5000/api/';
- 
+
 
 export const URI = {
     CREATE_USER: 'user',
@@ -28,7 +28,8 @@ export const URI = {
     GET_CHAT_HISTORY: "chat/{0}",
     UPDATE_USER_PROFILE: "user/updateProfile/{0}",
     CREATE_NEW_PRIVATE_CHAT: "job/privateChat",
-    GET_PRIVATE_CHAT_DATA: "job/privateChatData/{0}/{1}"
+    GET_PRIVATE_CHAT_DATA: "job/privateChatData/{0}/{1}",
+    GET_NOTIFICATIONS: "chat/notification"
 }
 
 export const StringFormat = function() {

@@ -13,6 +13,7 @@ function socketConnection (io) {
             if (data.privateChat == true) {
                 chatService.subscribePrivateUser(data)
                 .then(results => {
+                    console.log("joining Room",data.room)
                     client.join(data.room);
                 })
             }
@@ -31,6 +32,7 @@ function socketConnection (io) {
             if (data.privateChat == true) {
                 chatService.privateMessageUpdate(data)
                 .then(results => {
+                    console.log("Sending Message",data.room)
                     client.join(data.room);
                 })
             }

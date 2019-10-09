@@ -4,7 +4,7 @@ import React from 'react';
 import { connect } from "react-redux";
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { Button, Alert, Card, CardBody, CardFooter, Col, Container, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
+import { Button, Alert, Card, CardBody, CardFooter, Col, Container, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { saveRegistrationDetails, userCreateFalse } from './action.register';
 
@@ -20,7 +20,7 @@ class Register extends React.Component {
     }
   }
   submitRegistrationDetails = () => {
-    if (this.state.name && this.state.email && this.state.password && this.state.password == this.state.RepeatPassword) {
+    if (this.state.name && this.state.email && this.state.password && this.state.password === this.state.RepeatPassword) {
       const userData = {
         name: this.state.name,
         email: this.state.email,

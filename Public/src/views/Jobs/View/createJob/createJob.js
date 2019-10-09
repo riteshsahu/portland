@@ -6,7 +6,7 @@ import { createNewJob, updateJobDetails } from '../../jobs.action';
 import TagsInput from 'react-tagsinput'
 import '../../jobs.css';
 import Autosuggest from 'react-autosuggest';
-import { GetUserList, getUserSuggestions } from '../../../userDetail/userDetail.action';
+import { getUserSuggestions } from '../../../userDetail/userDetail.action';
 class CreateJob extends Component {
     constructor(props) {
         super(props);
@@ -28,8 +28,6 @@ class CreateJob extends Component {
     }
 
     componentDidMount() {
-        
-        // this.props.GetUserList(0);
         this.props.getUserSuggestions();
         const userDetails = JSON.parse(localStorage.getItem("userDetails"));
         let jobDetail = this.state.jobDetails; 
@@ -42,8 +40,8 @@ class CreateJob extends Component {
             if (userDetails[0].role != 1){
                 tag.push(userDetails[0].firstName +" "+ userDetails[0].lastName);
             }
-           
-            tag.push("Admin" +" "+ "Admin");
+            let a = "Admin"
+            tag.push(a +" "+ a);
             this.setState({
                 jobDetails: jobDetail,
                 tags: tag
@@ -362,7 +360,6 @@ function mapDispatchToProps(dispatch) {
     return {
         createNewJob: (data) => dispatch(createNewJob(data)),
         updateJobDetails: (id, data) => dispatch(updateJobDetails(id, data)),
-        // GetUserList: (offset) => dispatch(GetUserList(offset)),
         getUserSuggestions: () => dispatch(getUserSuggestions())
     };
 }

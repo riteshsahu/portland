@@ -42,7 +42,7 @@ class JobSearch extends Component {
                 jobStatus: this.state.jobSearch.jobStatus,
                 jobCreatedBy: this.state.jobSearch.jobCreatedBy,
             };
-            // this.props.searchJobs(data);
+            this.props.searchJobs(data);
             const userDetails = localStorage.getItem("userDetails");
             const user = JSON.parse(userDetails);
             this.props.getAllJob(user[0].userId);
