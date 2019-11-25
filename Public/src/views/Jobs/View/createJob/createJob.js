@@ -24,7 +24,6 @@ class CreateJob extends Component {
             },
             isSubmitted: false
         }
-
     }
 
     componentDidMount() {
@@ -119,7 +118,11 @@ class CreateJob extends Component {
             "createAt": new Date(),
             "createBy": user[0].userId,
         }
-          this.props.createNewJob(data);
+        
+        // validation
+        if (data.jobTitle !== '' && data.jobDescription !== '' && data.jobStatus !== '') {
+            this.props.createNewJob(data);
+        }
     }
 
     updateJob = () => {
@@ -141,7 +144,12 @@ class CreateJob extends Component {
             "updatedBy": user[0].userId,
             "jobUsers": temp
         };
-        this.props.updateJobDetails(this.props.updatedDetails.jobId, data);
+
+        // validation
+        if (data.jobTitle !== '' && data.jobDescription !== '' && data.jobStatus !== '') {
+            this.props.updateJobDetails(this.props.updatedDetails.jobId, data);
+        }
+        
         this.setState({
             tags: []
               })

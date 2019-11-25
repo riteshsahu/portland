@@ -60,10 +60,12 @@ class UserProfile extends Component {
             firstName: this.state.firstName,
             lastName: this.state.lastName,
             email: this.state.email,
+            isActive: 1, //fix
             updatedBy: user[0].userId,
             role: user[0].role,
             status: user[0].status,
-            createAt: user[0].createAt
+            createAt: user[0].createAt,
+            createBy: user[0].createBy
         }
 
         this.props.updateUserProfile(user[0].userId, data);

@@ -107,7 +107,7 @@ class MessageList extends Component {
     }
   }
 
-  isValidMessage = (value) => {
+  isValidMessage = (value = "") => {
     return this.state.message.trim() || value.trim() 
   }
 
@@ -175,7 +175,7 @@ class MessageList extends Component {
         room: window.location.href.split('/').pop(),
         author: USER_DETAILS[0].firstName
       }
-      this.ws.emit('send message', message)
+      this.ws.emit('send message', message);
       this.setState({
         messages: tempArr,
         message: "",

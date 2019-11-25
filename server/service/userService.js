@@ -11,7 +11,7 @@ class UserService {
             db.getConnection().then(conn => {
                 connection = conn;
                 return new Promise((res, rej) => {
-                connection.query('SELECT COUNT(*) as COUNT FROM user WHERE isActive=1', (err, results) => {
+                connection.query('SELECT COUNT(*) as COUNT FROM User WHERE isActive=1', (err, results) => {
                     if (err) {
                         db.releaseConnection(connection);
                         rej(err)
@@ -134,6 +134,7 @@ class UserService {
                 }).then(() => {
                     // Insert Record
                     let updatedData = {
+                        userId: data.userId,
                         firstName: data.firstName,
                         lastName: data.lastName,
                         email: data.email,
@@ -141,11 +142,13 @@ class UserService {
                         role: data.role,
                         isActive: 1,
                         status: data.status,
+                        createAt: data.createAt,
+                        createBy: data.createBy
                     }
-                    updatedData = db.addAttributesForNew(updatedData, data.userId);
-                    delete data.userId;
-                    connection.query('INSERT INTO User SET ?',
-                        [updatedData], (err, results) => {
+                    updatedData = db.addAttributesForEdit(updatedData, data.updatedBy);
+                    delete data.updatedBy;
+                    connection.query('INSERT INTO User (userId, firstName, lastName, email, password, role, isActive, status, createAt, createBy,  updatedAt, updatedBy) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                        [updatedData.userId, updatedData.firstName, updatedData.lastName, updatedData.email, updatedData.password, updatedData.role, updatedData.isActive, updatedData.status, updatedData.createAt, updatedData.createBy, updatedData.updatedAt, updatedData.updatedBy], (err, results) => {
                             if (err) {
                                 db.rollbackTransaction(connection);
                                 db.releaseConnection(connection);
@@ -172,7 +175,7 @@ class UserService {
             db.getConnection().
                 then(conn => {
                     connection = conn;
-                    connection.query('update user SET isActive = 0 WHERE userId = ? AND isActive = 1', [id], (err, results) => {
+                    connection.query('update User SET isActive = 0 WHERE userId = ? AND isActive = 1', [id], (err, results) => {
                         db.releaseConnection(connection);
                         if (err) {
                             reject(err)
@@ -198,7 +201,7 @@ class UserService {
                     return db.beginTransaction(connection);
                 }).then(() => {
                     return new Promise((res, rej) => {
-                        connection.query(`SELECT * FROM user  WHERE userId =? AND isActive = 1 `, [data.userId], (err, result) => {
+                        connection.query(`SELECT * FROM User  WHERE userId =? AND isActive = 1 `, [data.userId], (err, result) => {
                             if (err) {
                                 db.rollbackTransaction(connection);
                                 db.releaseConnection(connection);
@@ -212,7 +215,7 @@ class UserService {
                 .then((password) => {
                     data["password"] = password;
                     return new Promise((res, rej) => {
-                            connection.query(`UPDATE user SET isActive = 0, updatedBy= ?  WHERE userId =? AND isActive = 1 AND email = ? `, [data.updatedBy,data.userId, data.email], (err, result) => {
+                            connection.query(`UPDATE User SET isActive = 0, updatedBy= ?  WHERE userId =? AND isActive = 1 AND email = ? `, [data.updatedBy,data.userId, data.email], (err, result) => {
                                 if (err) {
                                     db.rollbackTransaction(connection);
                                     db.releaseConnection(connection);
@@ -225,7 +228,7 @@ class UserService {
                 })
                 .then(() => {
                     return new Promise((resSelect, rejSelect) => {
-                        connection.query(`INSERT INTO user SET ?  `, [data], (err, result) => {
+                        connection.query(`INSERT INTO User SET ?  `, [data], (err, result) => {
                             if (err) {
                                 db.rollbackTransaction(connection);
                                 db.releaseConnection(connection);
@@ -239,7 +242,7 @@ class UserService {
                     })
                    
                 }).then(()=> {
-                        connection.query(`SELECT * FROM user  WHERE userId =? AND isActive = 1 `, [data.userId], (err, result) => {
+                        connection.query(`SELECT * FROM User  WHERE userId =? AND isActive = 1 `, [data.userId], (err, result) => {
                             if (err) {
                                 db.rollbackTransaction(connection);
                                 db.releaseConnection(connection);
@@ -310,8 +313,8 @@ class UserService {
                 .then((uniqueId) => {
                     data["userId"] = uniqueId;
                     data = db.addAttributesForNew(data, data.userId);
-                    // delete data.userId;
-                    connection.query(`INSERT INTO User SET ?`, [data], (err, result) => {
+                    connection.query(`INSERT INTO User (userId, firstName, lastName, email, password, role, isActive, status, createAt, createBy) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                    [data.userId, data.firstName, data.lastName, data.email, data.password, data.role, data.isActive, data.status, data.createAt, data.createBy], (err, result) => {
                         db.releaseConnection(connection);
                         if (err) {
                             if (err.code == "ER_DUP_ENTRY") {
@@ -408,7 +411,7 @@ class UserService {
                     userdata["password"] = newPasswordHash;
                     delete userdata["userRecordId"];
                     return new Promise((res, rej) => {
-                            connection.query(`UPDATE user SET isActive = 0  WHERE isActive = 1 AND email = ? `, [data.email], (err, result) => {
+                            connection.query(`UPDATE User SET isActive = 0  WHERE isActive = 1 AND email = ? `, [data.email], (err, result) => {
                                 if (err) {
                                     db.rollbackTransaction(connection);
                                     db.releaseConnection(connection);

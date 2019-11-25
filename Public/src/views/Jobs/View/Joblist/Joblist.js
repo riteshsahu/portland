@@ -37,7 +37,7 @@ class JobList extends Component {
         const user = JSON.parse(userDetails);
         this.props.getAllJob(user[0].userId);
         this.props.getUserJobs(user[0].userId);
-            }
+    }
 
     toggleSmall(i, jobId) {
         this.setState({
@@ -57,7 +57,7 @@ class JobList extends Component {
 
     showJobList = () => {
         const userDetails = JSON.parse(localStorage.getItem("userDetails"));
-       if( this.props.jobDetails && this.props.jobDetails.length > 0){
+        if (this.props.jobDetails && this.props.jobDetails.length > 0) {
         return this.props.jobDetails.map((data, i) => 
               <tr key = {i}>
                 <td>{data.jobId}</td>

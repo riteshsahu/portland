@@ -13,7 +13,8 @@ class JobService {
                     return new Promise((res, rej) => {
                         connection.query('INSERT INTO Job ( jobId, jobTitle, jobDescription , jobCreatedBy, jobStatus, isActive, createAt, updatedAt, createBy, updatedBy) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ',
                             [data.jobId, data.jobTitle, data.jobDescription, data.jobCreatedBy, data.jobStatus, data.isActive, data.createAt, data.updatedAt, data.createBy, data.updatedBy],
-                            (err, results) => {                    // jobCreatedBy                                                                                 
+                            (err, results) => {
+                                console.log(results)                    // jobCreatedBy                                                                                 
                                 if (err) {
                                     db.rollbackTransaction(connection);
                                     db.releaseConnection(connection);
@@ -25,7 +26,7 @@ class JobService {
                     })
                 })
                 .then((results) => {
-                    if(data.jobUsers.length > 0) {
+                    if (data.jobUsers.length > 0) {
                         let jobUsers = data.jobUsers.map(dt => {
                             let arr = [];
                             arr[0] = data.jobId;
@@ -35,7 +36,7 @@ class JobService {
                             arr[4] = new Date()
                             arr[5] = null
                             arr[6] = data.createBy,
-                            arr[7] = null;
+                                arr[7] = null;
                             return arr;
                         })
                         connection.query('INSERT INTO JobUsers ( jobId, userId, isActive, isSubscribed, createAt, updatedAt, createBy, updatedBy) VALUES ? ',
@@ -56,7 +57,7 @@ class JobService {
                         db.releaseConnection(connection);
                         resolve(results)
                     }
-                    
+
                 })
                 .catch(err => {
                     db.releaseConnection(connection);
@@ -79,8 +80,8 @@ class JobService {
                 }).then(() => {
                     return new Promise((res, rej) => {
                         connection.query('INSERT INTO private_chat (privateChatId,jobId,privateChatFor,createAt,createBy,chatName) VALUES(?, ?, ?, ?, ?,?)',
-                            [data.privateChatId, data.jobId, data.privateChatFor, data.createAt, data.createBy,data.chatName],
-                            (err, results) => {                                                                                 
+                            [data.privateChatId, data.jobId, data.privateChatFor, data.createAt, data.createBy, data.chatName],
+                            (err, results) => {
                                 if (err) {
                                     db.rollbackTransaction(connection);
                                     db.releaseConnection(connection);
@@ -124,7 +125,7 @@ class JobService {
                 //         db.releaseConnection(connection);
                 //         resolve(results)
                 //     }
-                    
+
                 // })
                 .catch(err => {
                     db.releaseConnection(connection);
@@ -133,28 +134,28 @@ class JobService {
         });
     }
 
-    static getPrivateChatData(jobId,userId) {
+    static getPrivateChatData(jobId, userId) {
         var connection;
-        return new Promise((resolve,reject) => {
+        return new Promise((resolve, reject) => {
             db.getConnection().then(conn => {
                 connection = conn;
-                connection.query(`SELECT * FROM private_chat WHERE jobId=? AND (privateChatFor = ? OR createBy = ?)`, [jobId,userId,userId],(err,results) => {
+                connection.query(`SELECT * FROM private_chat WHERE jobId=? AND (privateChatFor = ? OR createBy = ?)`, [jobId, userId, userId], (err, results) => {
                     db.releaseConnection(connection);
-                    if(err) {
+                    if (err) {
                         reject(err)
-                    } 
+                    }
                     else {
                         resolve(results);
                     }
                 })
             })
-            .catch(err => {
-                db.releaseConnection(connection);
-                reject(err);
-            })
+                .catch(err => {
+                    db.releaseConnection(connection);
+                    reject(err);
+                })
         })
     }
-    
+
     static updateJob(jobId, data) {
         var connection;
         return new Promise((resolve, reject) => {
@@ -303,8 +304,9 @@ class JobService {
             db.getConnection().
                 then(conn => {
                     connection = conn;
-                    connection.query(`select J.jobId, J.jobTitle,J.createAt, J.jobDescription, J.jobCreatedBy, J.jobStatus, JU.userId from Job J
-                    LEFT JOIN JobUsers JU  ON J.jobId = JU.jobId  WHERE (J.jobId LIKE ? AND J.jobStatus LIKE ? AND J.jobCreatedBy LIKE ?)   AND J.isActive = 1 AND JU.isActive = 1`,
+                    connection.query(`select J.jobId, J.jobTitle,J.createAt, J.jobDescription, J.jobCreatedBy, J.jobStatus, JU.userId, U.role as createByRole
+                    from Job J LEFT JOIN JobUsers JU  ON J.jobId = JU.jobId LEFT JOIN User U ON U.userId = J.createBy 
+                    WHERE (J.jobId LIKE ? AND J.jobStatus LIKE ? AND U.role LIKE ? ) AND J.isActive = 1 AND JU.isActive = 1`,
                         ["%" + jobId + "%", "%" + jobStatus + "%", "%" + jobCreatedBy + "%"], (err, results) => {
                             db.releaseConnection(connection);
                             if (err) {
@@ -332,7 +334,7 @@ class JobService {
 
                                             jobID.push(dt.jobId);
                                             finalResult.push({
-                                                jobId: dt.jobId, jobTitle: dt.jobTitle, createAt: dt.createAt,
+                                                jobId: dt.jobId, jobTitle: dt.jobTitle, createAt: dt.createAt, createByRole: dt.createByRole,
                                                 jobDescription: dt.jobDescription, jobCreatedBy: dt.jobCreatedBy, jobStatus: dt.jobStatus, userId: ids
                                             });
                                         } else {
@@ -395,7 +397,7 @@ class JobService {
         });
     }
 
-    
+
 
     static getAllJob(id) {
         var connection;
@@ -406,13 +408,13 @@ class JobService {
                     connection.query(`select J.jobId, J.jobTitle,J.createAt, J.jobDescription, J.jobCreatedBy, J.jobStatus, JU.userId, U.role as createByRole from Job J
                     LEFT JOIN JobUsers JU  ON J.jobId = JU.jobId JOIN User U ON J.createBy = U.userId
                       WHERE  J.isActive = 1 AND JU.isActive = 1`
-                  
-                    
-                    
-                    // select J.jobId, J.jobTitle,J.createAt, J.jobDescription, J.jobCreatedBy, J.jobStatus, JU.userId from Job J
-                    // LEFT JOIN JobUsers JU  ON J.jobId = JU.jobId
-                    //   WHERE  J.isActive = 1 AND JU.isActive = 1`
-                      , (err, results) => {
+
+
+
+                        // select J.jobId, J.jobTitle,J.createAt, J.jobDescription, J.jobCreatedBy, J.jobStatus, JU.userId from Job J
+                        // LEFT JOIN JobUsers JU  ON J.jobId = JU.jobId
+                        //   WHERE  J.isActive = 1 AND JU.isActive = 1`
+                        , (err, results) => {
                             db.releaseConnection(connection);
                             if (err) {
                                 reject(err)
@@ -440,7 +442,7 @@ class JobService {
 
                                             jobID.push(dt.jobId);
                                             finalResult.push({
-                                                jobId: dt.jobId, jobTitle: dt.jobTitle, createAt: dt.createAt, createByRole:dt.createByRole,
+                                                jobId: dt.jobId, jobTitle: dt.jobTitle, createAt: dt.createAt, createByRole: dt.createByRole,
                                                 jobDescription: dt.jobDescription, jobCreatedBy: dt.jobCreatedBy, jobStatus: dt.jobStatus, userId: ids
                                             });
                                         } else {
@@ -465,7 +467,7 @@ class JobService {
         });
     }
 
-    static filterRecentJob(result){
+    static filterRecentJob(result) {
         function isExist(id, jobArr) {
             if (jobArr.length > 0) {
                 let keyIndex, count = 0;
@@ -494,7 +496,7 @@ class JobService {
                         jobId: dt.jobId,
                     })
                 } else {
-                   
+
                 }
             })
             return jobList;
@@ -512,21 +514,21 @@ class JobService {
                     connection = conn;
                     // connection.query(`select J.jobId, J.jobTitle,J.createAt, J.jobDescription, J.jobCreatedBy, J.jobStatus, JU.userId from JobUsers 
                     // JU LEFT JOIN Job J ON J.jobId = JU.jobId WHERE J.isActive = 1 AND JU.isActive = 1 AND J.jobStatus = 1 AND JU.userId=? `, [id], (err, results) => {
-                           
-                    connection.query(`select DISTINCT J.jobId, J.jobTitle, message.createAt, J.jobDescription, J.jobCreatedBy, J.jobStatus, JU.userId
-                    from JobUsers JU LEFT JOIN Job J ON J.jobId = JU.jobId 
-                   LEFT JOIN messagerecipient ON J.jobId = messagerecipient.recipientGroupId
-                     LEFT JOIN message ON messagerecipient.messageId = message.id 
-                   WHERE J.isActive = 1 AND JU.isActive = 1 AND J.jobStatus = 1 AND JU.userId=?  ORDER BY message.createAt DESC`,[id],(err,results) => {
 
-     
+                    connection.query(`select DISTINCT J.jobId, J.jobTitle, Message.createAt, J.jobDescription, J.jobCreatedBy, J.jobStatus, JU.userId
+                    from JobUsers JU LEFT JOIN Job J ON J.jobId = JU.jobId 
+                   LEFT JOIN MessageRecipient ON J.jobId = MessageRecipient.recipientGroupId
+                     LEFT JOIN Message ON MessageRecipient.MessageId = Message.id 
+                   WHERE J.isActive = 1 AND JU.isActive = 1 AND J.jobStatus = 1 AND JU.userId=?  ORDER BY Message.createAt DESC`, [id], (err, results) => {
+
+
                         db.releaseConnection(connection);
-                            if (err) {
-                                reject(err)
-                            } else {
-                                resolve(JobService.filterRecentJob(results));
-                            }
-                        });
+                        if (err) {
+                            reject(err)
+                        } else {
+                            resolve(JobService.filterRecentJob(results));
+                        }
+                    });
                 })
                 .catch(err => {
                     db.releaseConnection(connection);
@@ -544,13 +546,13 @@ class JobService {
                     connection = conn;
                     connection.query(`select J.jobId, J.jobTitle,J.createAt, J.jobDescription, J.jobCreatedBy, J.jobStatus, JU.userId from JobUsers 
                     JU LEFT JOIN Job J ON J.jobId = JU.jobId WHERE J.isActive = 0 AND JU.isActive = 0 AND J.jobStatus = 2 AND JU.userId=? `, [id], (err, results) => {
-                            db.releaseConnection(connection);
-                            if (err) {
-                                reject(err)
-                            } else {
-                                resolve(JobService.filterRecentJob(results));
-                            }
-                        });
+                        db.releaseConnection(connection);
+                        if (err) {
+                            reject(err)
+                        } else {
+                            resolve(JobService.filterRecentJob(results));
+                        }
+                    });
                 })
                 .catch(err => {
                     db.releaseConnection(connection);
@@ -559,7 +561,7 @@ class JobService {
         })
     }
 
-    
+
 
     static getJobParticipantsInfo(id) {
         var connection;
@@ -567,16 +569,16 @@ class JobService {
             db.getConnection().
                 then(conn => {
                     connection = conn;
-                        connection.query(`SELECT JU.jobId,U.userId,U.firstName,U.lastName,U.email,U.role From User U
+                    connection.query(`SELECT JU.jobId,U.userId,U.firstName,U.lastName,U.email,U.role From User U
                         INNER JOIN JobUsers JU ON U.userId = JU.userID and U.isActive=1
                         where JU.jobId = ?  and U.status = 1 `, [id], (err, results) => {
-                             db.releaseConnection(connection);
-                            if (err) {
-                                reject(err)
-                            } else {
-                                resolve(results);
-                            }
-                        });
+                        db.releaseConnection(connection);
+                        if (err) {
+                            reject(err)
+                        } else {
+                            resolve(results);
+                        }
+                    });
                 })
                 .catch(err => {
                     db.releaseConnection(connection);

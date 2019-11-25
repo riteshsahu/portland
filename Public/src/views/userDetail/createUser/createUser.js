@@ -55,7 +55,10 @@ class CreateUser extends Component {
             status: 1,
             userId: user[0].userId
         }
-        this.props.CreateNewUser(data);
+
+        if (data.firstName !== '' && data.lastName !== '' && data.email !== '' && data.role !== "" && data.password !== "") {
+            this.props.CreateNewUser(data);
+        }
     }
 
     handleUpdate = () => {
@@ -66,6 +69,7 @@ class CreateUser extends Component {
         const userDetails = localStorage.getItem("userDetails");
         const user = JSON.parse(userDetails);
         let data = {
+            "userId": this.state.userDetails.userId,
             "firstName": this.state.userDetails.firstName,
             "lastName": this.state.userDetails.lastName,
             "email": this.state.userDetails.email,
@@ -73,9 +77,14 @@ class CreateUser extends Component {
             "role": this.state.userDetails.role,
             "isActive": 1, //fix
             "status": this.state.userDetails.status,
-            userId: user[0].userId
+            "createAt" : this.state.userDetails.createAt,
+            "createBy" : this.state.userDetails.createBy,
+            "updatedBy" : user[0].userId
         }
-        this.props.updateUserDetails(this.state.userDetails.userId,data);
+
+        if (data.firstName !== '' && data.lastName !== '' && data.email !== '') {
+            this.props.updateUserDetails(this.state.userDetails.userId, data);
+        }
     }
 
     render() {
@@ -120,6 +129,7 @@ class CreateUser extends Component {
                     </Col>
                     <Col xs="5" md="4" lg="4">
                         <Input id="role" type="select"  onChange={this.handleUserChange}>
+                            <option value="" selected disabled>Select a role</option>
                             <option value="2" selected={this.state.userDetails.role === 2 ? true: false } >Management</option>
                             <option value="3" selected={this.state.userDetails.role === 3 ? true: false } >Internal Employee</option>
                             <option value="4" selected={this.state.userDetails.role === 4 ? true: false } >External Employee</option>

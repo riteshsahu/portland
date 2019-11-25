@@ -7,7 +7,7 @@ import { API_ROOT, URI, StringFormat } from '../../config/config';
 
 export const updateUserProfile = (id, values) => {
     return (dispatch) => {
-        fetch(StringFormat(API_ROOT + URI.UPDATE_USE_PROFILE, id), {
+        fetch(StringFormat(API_ROOT + URI.UPDATE_USER_PROFILE, id), {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
