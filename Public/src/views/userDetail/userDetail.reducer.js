@@ -58,8 +58,8 @@ function UserReducer(state = initialState, action) {
         case UserDetail.GET_USER_LIST:
             return {
                 ...state,
-                userDetails: action.payload.result,
-                count: action.payload.count
+                userDetails: action.payload.result || action.payload,
+                count: action.payload.count || action.payload.length
             }
 
             case UserDetail.USER_SUGGESTIONS:

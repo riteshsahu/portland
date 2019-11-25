@@ -37,15 +37,15 @@ class JobSearch extends Component {
 
     render() {
         if (this.state.searchPersmission || this.props.saerchPermission) {
-            let data = {
+            let data = {    
                 jobId: this.state.jobSearch.job,
                 jobStatus: this.state.jobSearch.jobStatus,
                 jobCreatedBy: this.state.jobSearch.jobCreatedBy,
             };
-            // this.props.searchJobs(data);
+            this.props.searchJobs(data);
             const userDetails = localStorage.getItem("userDetails");
             const user = JSON.parse(userDetails);
-            this.props.getAllJob(user[0].userId);
+            // this.props.getAllJob(user[0].userId);
             
             this.props.getUserJobs(user[0].userId);
             this.props.getUserCompletedJobs(user[0].userId);

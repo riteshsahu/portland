@@ -3,8 +3,10 @@
 # dependencies
 /node_modules
 public/node_modules
+Public/node_modules
 /package-lock.json
 public/package-lock.json
+Public/package-lock.json
 # testing
 /coverage
 

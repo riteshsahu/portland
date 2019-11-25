@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "client-install": "npm install --prefix public",
+    "client-install": "npm install --prefix Public",
     "start": "nodemon server.js",
     "server": "nodemon server.js",
-    "public": "npm start --prefix public",
+    "public": "npm start --prefix Public",
     "dev": "concurrently \"npm run server\" \"npm run public\""
   },
   "author": "",
