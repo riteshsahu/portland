@@ -74,7 +74,7 @@ class UserList extends Component {
 
         if (this.props.userDetails && this.props.userDetails.length > 0) {
             this.props.userDetails.map((data, i) => {
-                result.push(<tr>
+                result.push(<tr key = {i}>
                     {/* <td><a href="javascript:void(0)" onClick={e => { this.toggleModel(data.userId) }}>{data.firstName} </a></td> */}
                     <td>{data.firstName} </td>
                     <td>{data.lastName}</td>
@@ -136,7 +136,7 @@ class UserList extends Component {
                 <Row>
                     <Modal isOpen={this.state.toggle1} toggle={this.toggleModel }
                         className={'modal-sm ' + this.props.className}>
-                           {(this.props.userDetails.length > 0) && this.props.userDetails.map((data, i) =>
+                           {(this.props.userDetails && this.props.userDetails.length > 0) && this.props.userDetails.map((data, i) =>
                             (this.state.selectedIndex === data.userId) &&
                             <ModalBody>
                                 <div>

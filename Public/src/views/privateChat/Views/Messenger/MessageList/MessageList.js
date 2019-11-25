@@ -31,8 +31,8 @@ class MessageList extends Component {
   }
   triggerInputFileContract = () => this.fileInputContract.click();
 
-  ws = socketIOClient(window.location.hostname);
-  // ws = socketIOClient('http://localhost:5000')
+  // ws = socketIOClient(window.location.hostname);
+  ws = socketIOClient('http://localhost:5000')
 
   componentDidMount() {
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';

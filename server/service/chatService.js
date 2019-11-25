@@ -378,7 +378,7 @@ class ChatService {
                 then(conn => {
                     connection = conn;
                     connection.query(`SELECT mr.recipientGroupId, j.jobTitle FROM messagerecipient as mr LEFT JOIN
-                    job as j ON mr.recipientGroupId = j.jobId WHERE recipientId = ? AND isRead = 0`, [id],(err, results) => {
+                    job as j ON mr.recipientGroupId = j.jobId WHERE recipientId = ? AND isRead = 0 AND isMainChat = 1`, [id],(err, results) => {
                             db.releaseConnection(connection);
                             if(err) {
                                 reject(err)

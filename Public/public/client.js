@@ -1,5 +1,5 @@
-export const API_ROOT = 'https://portland-web.herokuapp.com/api/';
-// const API_ROOT = 'http://localhost:5000/api/';
+// export const API_ROOT = 'https://portland-web.herokuapp.com/api/';
+const API_ROOT = 'http://localhost:5000/api/';
 const GET_NOTIFICATIONS = "chat/notification";
 const publicVapidKey = "BJSb4Xhcs8_ZPa0Qu4epmDeU9GBj4E8BrDjFZebMZBMHBqP4HyAW-bGleVlnX7N9Qnlj4uPUGGxzYj9F_-4xq2Q";
 

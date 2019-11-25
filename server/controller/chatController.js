@@ -28,6 +28,7 @@ class ChatController {
             const payload = JSON.stringify({ title: "Notification" , notification : notification })
             webPush.sendNotification(subscription, payload).catch(err => {
                 res.status(500);
+                res.json(err)
             })
         }).catch(err => {
             res.status(500)

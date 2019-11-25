@@ -59,7 +59,7 @@ class JobList extends Component {
         const userDetails = JSON.parse(localStorage.getItem("userDetails"));
        if( this.props.jobDetails && this.props.jobDetails.length > 0){
         return this.props.jobDetails.map((data, i) => 
-              <tr>
+              <tr key = {i}>
                 <td>{data.jobId}</td>
                 <td>{data.jobTitle}</td>
                 <td>{ data.createAt.split("T")[0]}</td>
