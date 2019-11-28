@@ -16,8 +16,6 @@ class Message extends React.Component {
           <Label>
             {this.props.message}
           </Label>
-
-
         </div>
       </div>
     );

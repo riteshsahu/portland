@@ -1,6 +1,8 @@
 // export const API_ROOT = 'https://portland-web.herokuapp.com/api/';
 export const API_ROOT = 'http://localhost:5000/api/';
 
+export const APP_ROOT = window.location.origin.replace("3000", "5000");
+
 export const URI = {
     CREATE_USER: 'user',
     GET_USER_BY_SEARCH: 'user',

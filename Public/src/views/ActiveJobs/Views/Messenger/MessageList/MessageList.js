@@ -8,6 +8,7 @@ import { getChatHistory } from '../../../action.activeJobs';
 import 'emoji-mart/css/emoji-mart.css';
 import { Picker } from 'emoji-mart';
 import { getUserJobs} from '../../../../../containers/DefaultLayout/action.defaultLayout';
+import { APP_ROOT } from "../../../../../config/config";
 
 class MessageList extends Component {
   constructor(props) {
@@ -31,8 +32,7 @@ class MessageList extends Component {
   }
   triggerInputFileContract = () => this.fileInputContract.click();
 
-  // ws = socketIOClient(window.location.hostname);
-  ws = socketIOClient('http://localhost:5000')
+  ws = socketIOClient(APP_ROOT);
 
   componentDidMount() {
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
@@ -43,6 +43,8 @@ class MessageList extends Component {
       room: window.location.href.split('/').pop(),
       userId: USER_DETAILS[0].userId
     }
+
+    // subscirbe user to this chat and unsubscibe him from all other chats
     this.ws.emit('subscribe', subscribe);
 
     this.ws.on("response", evt => {

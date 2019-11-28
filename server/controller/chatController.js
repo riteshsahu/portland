@@ -15,29 +15,31 @@ class ChatController {
         ChatService.getMessageHistory(id).then(result => {
             res.json(result);
         }).catch(err => {
-            res.status(500)
-            res.json(err)
+            res.status(500).json(err)
         })
     }
 
     static getUserNotifications(req, res) {
-        let id = req.body.id;
-        const subscription = req.body;
-        ChatService.getUserNotifications(id).then(notification => {
-            res.status(201).json({ 'msg': notification });
-            const payload = JSON.stringify({ title: "Notification" , notification : notification })
-            webPush.sendNotification(subscription, payload).catch(err => {
-                res.status(500);
-                res.json(err)
-            })
+        let userId = req.body.userId;
+        const subscription = req.body.subscription;
+        ChatService.getUserNotifications(userId).then(notifications => {
+            notifications = notifications.map((dt, i) => {
+                return {
+                    id: dt.id,
+                    msg: "You have " + dt.count + " Unread messages in " + dt.Title
+                }
+            });
+            const payload = JSON.stringify({ title: "Portland Floor" , notifications: notifications });
+            res.status(201).json(notifications);
+            if (notifications.length > 0) {
+                webpush.sendNotification(subscription, payload).catch(err => {
+                    res.status(500).json(err);
+                });
+            }
         }).catch(err => {
-            res.status(500)
-            res.json(err)
+            res.status(500).json(err);
         })
     }
 }
 
 module.exports = ChatController;
-
-
-

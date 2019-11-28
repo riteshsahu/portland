@@ -8,6 +8,7 @@ import { getChatHistory } from '../../../action.activeJobs';
 import 'emoji-mart/css/emoji-mart.css';
 import { Picker } from 'emoji-mart';
 import { Alert } from 'reactstrap';
+import { APP_ROOT } from "../../../../../config/config";
 
 class MessageList extends Component {
   constructor(props) {
@@ -31,8 +32,7 @@ class MessageList extends Component {
   }
   triggerInputFileContract = () => this.fileInputContract.click();
 
-  // ws = socketIOClient(window.location.hostname);
-  ws = socketIOClient('http://localhost:5000')
+  ws = socketIOClient(APP_ROOT);
 
   componentDidMount() {
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';

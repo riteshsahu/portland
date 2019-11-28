@@ -30,7 +30,6 @@ class DefaultLayout extends Component {
 
   loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
 
-
   componentWillReceiveProps = (nextProps) => {
     // let arrRes = [] ;
     // nextProps.JobDetails && nextProps.JobDetails.map((data) => {
@@ -73,7 +72,8 @@ class DefaultLayout extends Component {
     e.preventDefault()
     localStorage.removeItem("userDetails");
     localStorage.removeItem("notifications");
-    this.props.history.push('/')
+    // this.ws.disconnect();
+    this.props.history.push('/');
   }
 
 
@@ -156,7 +156,7 @@ class DefaultLayout extends Component {
             <AppSidebarFooter />
             <AppSidebarMinimizer />
           </AppSidebar>
-          <main className="main" style={{ position: 'relative', overflow: 'auto' }}>
+          <main className="main">
             {/* <AppBreadcrumb appRoutes={routes} /> */}
             <Container fluid>
               <Suspense fallback={this.loading()}>

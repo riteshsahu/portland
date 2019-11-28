@@ -46,6 +46,25 @@ class ChatService {
                             })
                     })
                 })
+                .then((results) => {
+                    return new Promise((resS, rejS) => {
+                        connection.query('Update MessageRecipient SET isRead = 1 WHERE recipientId = ? and recipientGroupId = ?',
+                            [data.userId, data.room],
+                            (err, results) => {
+                                if (err) {
+                                    db.rollbackTransaction(connection);
+                                    db.releaseConnection(connection);
+                                    rejS(err)
+                                    reject(err)
+                                } else {
+                                    db.commitTransaction(connection);
+                                    db.releaseConnection(connection);
+                                    resS(results);
+                                    resolve(results);
+                                }
+                            })
+                    })
+                })
                 .catch(err => {
                     db.releaseConnection(connection);
                     reject(err);
@@ -315,7 +334,7 @@ class ChatService {
             db.getConnection().
                 then(conn => {
                     connection = conn;
-                    connection.query(` SELECT DISTINCT MR.recipientGroupId, M.id, M.message, U.role,M.createBy,M.createAt,M.isVisibleToClient, U.firstName, U.lastName 
+                    connection.query(`SELECT DISTINCT MR.recipientGroupId, M.id, M.message, U.role,M.createBy,M.createAt,M.isVisibleToClient, U.firstName, U.lastName 
                     FROM MessageRecipient MR JOIN Message M ON MR.messageId = M.id 
                     JOIN User U ON U.userId = M.creatorId WHERE U.isActive= 1 AND MR.recipientGroupId= ? ORDER BY M.createAt ASC`, [id],(err, results) => {
                             db.releaseConnection(connection);
@@ -377,8 +396,8 @@ class ChatService {
             db.getConnection().
                 then(conn => {
                     connection = conn;
-                    connection.query(`SELECT mr.recipientGroupId, j.jobTitle FROM messagerecipient as mr LEFT JOIN
-                    job as j ON mr.recipientGroupId = j.jobId WHERE recipientId = ? AND isRead = 0 AND isMainChat = 1`, [id],(err, results) => {
+                    connection.query(`SELECT mr.recipientGroupId, j.jobTitle FROM MessageRecipient as mr LEFT JOIN
+                    Job as j ON mr.recipientGroupId = j.jobId WHERE recipientId = ? AND isRead = 0 AND isMainChat = 1`, [id],(err, results) => {
                             db.releaseConnection(connection);
                             if(err) {
                                 reject(err)
@@ -392,10 +411,7 @@ class ChatService {
                     reject(err);
                 })
         });
-
     }
-    
-
 }
 
 module.exports = ChatService;

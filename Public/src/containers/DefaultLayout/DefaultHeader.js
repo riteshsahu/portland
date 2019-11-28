@@ -13,8 +13,6 @@ const propTypes = {
 
 const defaultProps = {};
 
-const notification = JSON.parse(localStorage.getItem('notifications'));
-
 class DefaultHeader extends Component {
 
   constructor(props) {
@@ -23,23 +21,38 @@ class DefaultHeader extends Component {
       loginShow: false,
       stateJobDetails: [],
       searchData: '',
-      jobFilterData: []
+      jobFilterData: [],
+      notifications: []
     }
   }
+
+  componentDidMount = () => {
+    window.addEventListener('storage', this.updateNotifications);
+    window.dispatchEvent( new Event('storage') );
+  }
+
   componentDidUpdate = () => {
     if (this.props.jobDetails !== this.state.stateJobDetails) {
       this.setState({
         stateJobDetails: this.props.jobDetails
       })
     }
-
   }
+
+  updateNotifications = () => {
+    let notifications = JSON.parse(localStorage.getItem('notifications'));
+    this.setState({
+      notifications: notifications
+    });
+  }
+
   handleOnClick = (id, title) => {
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
     this.props.selectedJob(id, title);
     this.props.getPrivateChatDetails(id, USER_DETAILS[0].userId)
     this.props.history.push("/activeJobs/" + id)
   }
+
   activeJobList = () => {
     let Result = [];
     if (this.props.jobDetails && this.props.jobDetails.length > 0 && !this.state.searchData) {
@@ -66,6 +79,16 @@ class DefaultHeader extends Component {
     this.props.selectedJob(id, title);
     this.props.history.push("/archivedJobs/" + id)
   }
+
+  handleNotificationClick = (id) => {
+    // remove notification from local storage
+    let notifications = this.state.notifications.filter(data => data.id !== id);
+    
+    localStorage.setItem('notifications', JSON.stringify(notifications));
+    this.updateNotifications();
+    this.props.history.push("/activeJobs/" + id);
+  }
+
   deletedJobList = () => {
     let Result = [];
     if (this.props.deletedJobDetails && this.props.deletedJobDetails.length > 0) {
@@ -89,11 +112,11 @@ class DefaultHeader extends Component {
 
   notificationList = () => {
     let Result = [];
-    if (notification && notification.length > 0) {
-      notification.map(data => {
+    if (this.state.notifications && this.state.notifications.length > 0) {
+      this.state.notifications.map(data => {
         Result.push(
-          <DropdownItem className= "item" >
-            {data}
+          <DropdownItem className= "item" onClick={() => this.handleNotificationClick(data.id)}>
+            {data.msg}
           </DropdownItem>
         );
       })
@@ -202,7 +225,7 @@ class DefaultHeader extends Component {
             {this.notificationList()}
             </DropdownMenu>
           </AppHeaderDropdown>
-          <div className="circle">5</div>
+          {this.state.notifications && this.state.notifications.length > 0 ? <div className="circle">{this.state.notifications.length}</div> : ""}
           <AppHeaderDropdown direction="down" style={{ display: 'contents' }}>
             <div style={{ marginBottom: "15px", color: "cornflowerblue", fontWeight: "bold" }}> {userDetails[0].firstName}</div>
             <DropdownToggle nav style={{ marginRight: 20 }}>
