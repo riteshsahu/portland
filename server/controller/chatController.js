@@ -31,7 +31,7 @@ class ChatController {
             });
             const payload = JSON.stringify({ title: "Portland Floor" , notifications: notifications });
             res.status(201).json(notifications);
-            if (notifications.length > 0) {
+            if (subscription && notifications.length > 0) {
                 webpush.sendNotification(subscription, payload).catch(err => {
                     res.status(500).json(err);
                 });

@@ -1,11 +1,10 @@
 // export const API_ROOT = 'https://portland-web.herokuapp.com/api/';
-const API_ROOT = 'http://localhost:5000/api/';
+const API_ROOT = 'http://localhost:5000/api/';	// TODO: change API_ROOT when in production
 const GET_NOTIFICATIONS = "chat/notification";
 const publicVapidKey = "BJSb4Xhcs8_ZPa0Qu4epmDeU9GBj4E8BrDjFZebMZBMHBqP4HyAW-bGleVlnX7N9Qnlj4uPUGGxzYj9F_-4xq2Q";
 
 if ('serviceWorker' in navigator && 'PushManager' in window) {
 	setInterval(function () {
-		console.log("calling...")
 		send().catch(err => {
 			console.log(err);
 		});
@@ -17,19 +16,22 @@ if ('serviceWorker' in navigator && 'PushManager' in window) {
 
 async function send() {
 	console.log('Registering service worker');
-	const register = await navigator.serviceWorker.register('/worker.js', {
+	const registeration = await navigator.serviceWorker.register('/worker.js', {
 		scope: '/'
 	});
 	console.log('Service worker registered..');
 
 	// registering push
+	console.log("subscribing.......");
 	await navigator.serviceWorker.ready;
-	const subscription = await register.pushManager.subscribe({
+	const subscription = await registeration.pushManager.subscribe({
 		userVisibleOnly: true,
 		applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
+	}).then(() => {
+		console.log("subscribed");
 	});
 
-	console.log("Push registered.....");
+	console.log("Getting notifications.....");
 	//Send push notification
 	const user = JSON.parse(localStorage.getItem('userDetails'));
 	const payload = {
@@ -38,9 +40,6 @@ async function send() {
 	}
 
 	if (user) {
-		console.log("Push registered.....");
-		//Send push notification
-
 		await fetch(API_ROOT + GET_NOTIFICATIONS, {
 			method: 'POST',
 			body: JSON.stringify(payload),
@@ -51,7 +50,7 @@ async function send() {
 			.then(res => res.json())
 			.then(data => {
 				localStorage.setItem('notifications', JSON.stringify(data));
-				window.dispatchEvent( new Event('storage') );
+				window.dispatchEvent(new Event('storage'));
 			});
 	}
 }

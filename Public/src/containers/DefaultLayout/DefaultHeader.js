@@ -6,6 +6,7 @@ import user from '../../assets/img/brand/user.png';
 import './header.css';
 import { connect } from "react-redux";
 import { selectedJob, getPrivateChatDetails } from '../../views/ActiveJobs/action.activeJobs';
+import { API_ROOT, URI } from "../../../src/config/config";
 
 const propTypes = {
   children: PropTypes.node,
@@ -28,7 +29,25 @@ class DefaultHeader extends Component {
 
   componentDidMount = () => {
     window.addEventListener('storage', this.updateNotifications);
-    window.dispatchEvent( new Event('storage') );
+    const user = JSON.parse(localStorage.getItem('userDetails'));
+    const payload = {
+      userId: user[0].userId
+    }
+
+    if (user) {
+      fetch(API_ROOT + URI.GET_NOTIFICATIONS, {
+        method: 'POST',
+        body: JSON.stringify(payload),
+        headers: {
+          'content-type': 'application/json',
+        }
+      })
+        .then(res => res.json())
+        .then(data => {
+          localStorage.setItem('notifications', JSON.stringify(data));
+          window.dispatchEvent(new Event('storage'));
+        });
+    }
   }
 
   componentDidUpdate = () => {
