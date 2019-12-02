@@ -16,7 +16,6 @@ class MessageList extends Component {
       messages: [],
       isVisibleToClient: 0,
       showEmojiPicker: false,
-      newMessage: '',
       KeyRole: {
         1: "Admin",
         2: "Management",
@@ -156,11 +155,9 @@ class MessageList extends Component {
   }
 
   addEmoji = (emoji) => {
-    const { newMessage } = this.state;
-    const text = `${newMessage}${emoji.native}`;
-
+    let emoji = e.native;
     this.setState({
-      newMessage: text,
+      message: this.state.message + emoji,
       showEmojiPicker: false,
     });
   }

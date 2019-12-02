@@ -3,32 +3,39 @@ const API_ROOT = 'http://localhost:5000/api/';	// TODO: change API_ROOT when in 
 const GET_NOTIFICATIONS = "chat/notification";
 const publicVapidKey = "BJSb4Xhcs8_ZPa0Qu4epmDeU9GBj4E8BrDjFZebMZBMHBqP4HyAW-bGleVlnX7N9Qnlj4uPUGGxzYj9F_-4xq2Q";
 
-if ('serviceWorker' in navigator && 'PushManager' in window) {
-	setInterval(function () {
-		send().catch(err => {
-			console.log(err);
+(async function () {
+	await new Promise(resolve => setTimeout(resolve, 5000));
+
+	if (window.Notification && 'serviceWorker' in navigator && 'PushManager' in window) {
+		Notification.requestPermission(() => {
+			if (Notification.permission === 'granted') {
+				setInterval(function () {
+					send().catch(err => {
+						console.log(err);
+					});
+				}, 60000)
+				send().catch(err => {
+					console.log(err);
+				});
+			}
 		});
-	}, 60000)
-	send().catch(err => {
-		console.log(err);
-	});
-}
+	}
+})();
 
 async function send() {
 	console.log('Registering service worker');
-	const registeration = await navigator.serviceWorker.register('/worker.js', {
+	const register = await navigator.serviceWorker.register('/worker.js', {
 		scope: '/'
 	});
 	console.log('Service worker registered..');
 
 	// registering push
+	
 	console.log("subscribing.......");
 	await navigator.serviceWorker.ready;
-	const subscription = await registeration.pushManager.subscribe({
+	const subscription = await register.pushManager.subscribe({
 		userVisibleOnly: true,
 		applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
-	}).then(() => {
-		console.log("subscribed");
 	});
 
 	console.log("Getting notifications.....");

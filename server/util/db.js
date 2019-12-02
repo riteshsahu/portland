@@ -4,7 +4,8 @@ const config = require('../config/env');
 const pool = mysql.createPool(`${config.db_url}?connectionLimit=${config.db_connection_limit}
 &dateStrings=true&multipleStatements=true
 &acquireTimeout=${config.db_acquire_timeout}
-&connectTimeout=${config.db_connect_timeout}`);
+&connectTimeout=${config.db_connect_timeout}
+&charset=utf8mb4`);
 
 
 class DB {
@@ -12,7 +13,7 @@ class DB {
   static getConnection() {
     return new Promise((resolve, reject) => {
       pool.getConnection((err, connection) => {
-        console.log('database connected');
+        // console.log('database connected');
         if (err) { console.log(err); return reject(err); }
         return resolve(connection);
       });
