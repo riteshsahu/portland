@@ -154,7 +154,7 @@ class MessageList extends Component {
     });
   }
 
-  addEmoji = (emoji) => {
+  addEmoji = (e) => {
     let emoji = e.native;
     this.setState({
       message: this.state.message + emoji,
