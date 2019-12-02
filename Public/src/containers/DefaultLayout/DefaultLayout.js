@@ -72,7 +72,8 @@ class DefaultLayout extends Component {
     e.preventDefault()
     localStorage.removeItem("userDetails");
     localStorage.removeItem("notifications");
-    // this.ws.disconnect();
+    window.clientSocket.disconnect();
+    delete window.clientSocket;
     this.props.history.push('/');
   }
 

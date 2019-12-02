@@ -6,26 +6,43 @@
 // const chatroomManager = ChatroomManager()
 
 const chatService = require('../service/chatService');
+const users = {};
 
 function socketConnection (io) {
     io.on('connection', client => {
+        console.log("%s user connected", client.id);
+        client.on('user logged in', (user) => {
+            users[client.id] = user;
+            // console.log(users);
+        });
+        
         client.on('subscribe', function(data) {
             if (data.privateChat == true) {
                 chatService.subscribePrivateUser(data)
                 .then(results => {
-                    console.log("joining Room",data.room)
+                    console.log("joining private Room",data.room)
                     client.join(data.room);
                 })
             }
             else
             chatService.subscribeUser(data)
             .then(results => {
+                console.log("joining room", data.room);
                 client.join(data.room);
             })
             .catch(err => {
                 console.log('error', err)
             })
-            //client.join(data.room);
+        });
+
+        client.on('unsubscribe', function(data) {
+            chatService.unsubscribeUserFromAllJobs(data)
+                .then(results => {
+                    console.log("user left room", data.room)
+                })
+                .catch(err => {
+                    console.log('error', err)
+                })
         });
 
         client.on('send message', function(data) {            
@@ -50,8 +67,13 @@ function socketConnection (io) {
             // });
         });
 
-        client.on('disconnect', (error) => { 
-            console.log("disconnected", error) 
+        client.on('disconnect', () => {
+            // unsubscribe user from all jobs
+            if (users[client.id]) {
+                chatService.unsubscribeUserFromAllJobs(users[client.id])
+                delete users[client.id];            
+            }
+            console.log("%s user disconnected", client.id); 
         });
         
         client.on('error', error => {

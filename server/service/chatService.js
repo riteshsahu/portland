@@ -412,6 +412,40 @@ class ChatService {
                 })
         });
     }
+
+    static unsubscribeUserFromAllJobs(data) {
+        var connection;
+        return new Promise((resolve, reject) => {
+            db.getConnection()
+                .then(conn => {
+                    connection = conn;
+                    return db.beginTransaction(conn);
+                })
+                .then(() => {
+                    return new Promise((resS, rejS) => {
+                        connection.query('Update JobUsers SET isSubscribed = 0 WHERE userId = ?',
+                            [data.userId],
+                            (err, results) => {
+                                if (err) {
+                                    db.rollbackTransaction(connection);
+                                    db.releaseConnection(connection);
+                                    rejS(err)
+                                    reject(err)
+                                } else {
+                                    db.commitTransaction(connection);
+                                    db.releaseConnection(connection);
+                                    resS(results);
+                                    resolve(results);
+                                }
+                            })
+                    })
+                })
+                .catch(err => {
+                    db.releaseConnection(connection);
+                    reject(err);
+                })
+        });
+    }
 }
 
 module.exports = ChatService;

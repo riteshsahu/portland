@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import socketIOClient from "socket.io-client";
 import './MessageList.css';
 import Messages from '../Message/Messages';
 import Toolbar from '../Toolbar/Toolbar';
@@ -8,7 +7,6 @@ import { getChatHistory } from '../../../action.activeJobs';
 import 'emoji-mart/css/emoji-mart.css';
 import { Picker } from 'emoji-mart';
 import { getUserJobs} from '../../../../../containers/DefaultLayout/action.defaultLayout';
-import { APP_ROOT } from "../../../../../config/config";
 
 class MessageList extends Component {
   constructor(props) {
@@ -32,30 +30,28 @@ class MessageList extends Component {
   }
   triggerInputFileContract = () => this.fileInputContract.click();
 
-  ws = socketIOClient(APP_ROOT);
-
   componentDidMount() {
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
     var JobId = this.props.params.id;
     this.props.getChatHistory(JobId);
 
-    let subscribe = {
-      room: window.location.href.split('/').pop(),
-      userId: USER_DETAILS[0].userId
-    }
-
-    // subscirbe user to this chat and unsubscibe him from all other chats
-    this.ws.emit('subscribe', subscribe);
-
-    this.ws.on("response", evt => {
-      if ((USER_DETAILS[0].role !== 6) || (USER_DETAILS[0].role === 6 && evt.isVisibleToClient)) {
-        const message = evt;
-        this.addMessage(message)
+    if (USER_DETAILS) {
+      let subscribe = {
+        room: window.location.href.split('/').pop(),
+        userId: USER_DETAILS[0].userId
       }
-
-    });
+      
+      // subscirbe user to this chat and unsubscibe him from all other chats
+      window.clientSocket.emit('subscribe', subscribe);  
+      
+      window.clientSocket.on("response", evt => {
+        if ((USER_DETAILS[0].role !== 6) || (USER_DETAILS[0].role === 6 && evt.isVisibleToClient)) {
+          const message = evt;
+          this.addMessage(message)
+        }
+      });
+    }
   }
-
 
   componentDidUpdate(prevProps) {
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
@@ -66,10 +62,11 @@ class MessageList extends Component {
       room: window.location.href.split('/').pop(),
       userId: USER_DETAILS[0].userId
     }
-    this.ws.emit('subscribe', subscribe);
+    
+    // subscirbe user to this chat and unsubscibe him from all other chats
     if (this.props.ActiveJobDetail) {
       if (this.props.ActiveJobDetail.JobId !== prevProps.ActiveJobDetail.JobId) {
-        this.ws.emit('subscribe', window.location.href.split('/').pop());
+        window.clientSocket.emit('subscribe', subscribe);
         this.setState({
           messages: []
         })
@@ -106,6 +103,20 @@ class MessageList extends Component {
       this.setState({
         messages: messages,
       })
+    }
+  }
+
+  componentWillUnmount() {
+    var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
+
+    if (USER_DETAILS) {
+      let unsubscribe = {
+        room: window.location.href.split('/').pop(),
+        userId: USER_DETAILS[0].userId
+      }
+      
+      // unsubscirbe user to this chat and unsubscibe him from all other chats
+      window.clientSocket.emit('unsubscribe', unsubscribe);
     }
   }
 
@@ -177,7 +188,7 @@ class MessageList extends Component {
         room: window.location.href.split('/').pop(),
         author: USER_DETAILS[0].firstName
       }
-      this.ws.emit('send message', message);
+      window.clientSocket.emit('send message', message);
       this.setState({
         messages: tempArr,
         message: "",

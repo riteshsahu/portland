@@ -30,11 +30,12 @@ class DefaultHeader extends Component {
   componentDidMount = () => {
     window.addEventListener('storage', this.updateNotifications);
     const user = JSON.parse(localStorage.getItem('userDetails'));
-    const payload = {
-      userId: user[0].userId
-    }
 
     if (user) {
+      const payload = {
+        userId: user[0].userId
+      }
+      
       fetch(API_ROOT + URI.GET_NOTIFICATIONS, {
         method: 'POST',
         body: JSON.stringify(payload),

@@ -1,5 +1,7 @@
 
 import { Login } from './constants.login';
+import socketIOClient from "socket.io-client";
+import { APP_ROOT } from "../../../config/config";
 
 const initialState = {
     userDetail: "",
@@ -17,6 +19,8 @@ function rootReducer(state = initialState, action) {
         case Login.SAVE_LOGIN_DATA:
             const userDetails = action.payload;
             localStorage.setItem('userDetails', JSON.stringify(userDetails));
+            window.clientSocket = window.clientSocket ? window.clientSocket : socketIOClient(APP_ROOT);
+            window.clientSocket.emit('user logged in', userDetails[0]);
             return {
                 ...state,
                 userDetail: action.payload,

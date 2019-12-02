@@ -34,12 +34,13 @@ async function send() {
 	console.log("Getting notifications.....");
 	//Send push notification
 	const user = JSON.parse(localStorage.getItem('userDetails'));
-	const payload = {
-		subscription: subscription,
-		userId: user[0].userId
-	}
 
 	if (user) {
+		const payload = {
+			subscription: subscription,
+			userId: user[0].userId
+		}
+		
 		await fetch(API_ROOT + GET_NOTIFICATIONS, {
 			method: 'POST',
 			body: JSON.stringify(payload),

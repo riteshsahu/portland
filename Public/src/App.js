@@ -2,6 +2,17 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 // import { renderRoutes } from 'react-router-config';
 import './App.scss';
+import socketIOClient from "socket.io-client";
+import { APP_ROOT } from "../src/config/config";
+
+// create socket connection
+window.clientSocket = socketIOClient(APP_ROOT);
+
+// handle user socket connection on broswer refresh
+let USER_DETAILS = JSON.parse(localStorage.getItem('userDetails'));
+if (USER_DETAILS && USER_DETAILS[0]) {
+  window.clientSocket.emit('user logged in', USER_DETAILS[0]);
+}
 
 const loading = () => <div className="animated fadeIn pt-3 text-center">Loading...</div>;
 
