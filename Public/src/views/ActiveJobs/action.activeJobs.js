@@ -135,9 +135,29 @@ export const getChatHistory = (id) => {
     }
 }
 
-
-
-
-
-
-
+export const getJobDetails = (id) => {
+    return (dispatch) => {
+        fetch(StringFormat(API_ROOT + URI.GET_JOB_DETAILS, id), {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data && data[0]) {
+                    dispatch({
+                        type: ActiveJobDetail.GET_JOB_DETAILS,
+                        payload: data[0]
+                    })      
+                }
+            })
+            .catch(err => {
+                dispatch({
+                    type: ProfileDetail.ERROR_HANDLER,
+                    errorFrom: ActiveJobDetail.ERROR_FROM,
+                    errorName: ProfileDetail.ERROR_NAME
+                })
+            })
+    }
+}

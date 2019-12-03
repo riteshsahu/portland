@@ -25,7 +25,8 @@ class CreateUser extends Component {
                 4 : "External Employee",
                 5 : "Designer",
                 6 : "Client"
-            }
+            },
+            errors: []
         }
     }
 
@@ -56,7 +57,7 @@ class CreateUser extends Component {
             userId: user[0].userId
         }
 
-        if (data.firstName !== '' && data.lastName !== '' && data.email !== '' && data.role !== "" && data.password !== "") {
+        if (this.isDataValid(data)) {
             this.props.CreateNewUser(data);
         }
     }
@@ -82,9 +83,45 @@ class CreateUser extends Component {
             "updatedBy" : user[0].userId
         }
 
-        if (data.firstName !== '' && data.lastName !== '' && data.email !== '') {
+        if (this.isDataValid(data)) {
             this.props.updateUserDetails(this.state.userDetails.userId, data);
         }
+    }
+
+    isDataValid = (data) => {
+        let errors = [];
+        let error = "";
+
+        if (data.firstName === '') {
+            error = "First name cannot be empty!";
+            errors.push(error);
+        }
+
+        if (data.lastName === '') {
+            error = "Last name cannot be empty!";
+            errors.push(error);
+        }
+
+        if (data.role === '') {
+            error = "Please select a role!";
+            errors.push(error);
+        }
+        
+        if (data.role === '') {
+            error = "Email cannot be empty!";
+            errors.push(error);
+        }
+
+        if (data.password === '') {
+            error = "Password cannot be empty!";
+            errors.push(error);
+        }
+
+        this.setState({
+            errors: errors
+        })
+
+        return !errors.length;
     }
 
     render() {
@@ -185,6 +222,20 @@ class CreateUser extends Component {
                     <Col xs="12" md="3" lg="3">
                     </Col>
                 </Row> : null}
+
+                <Row style={{ marginTop: 5 }}>
+                    <Col xs="12" md="3" lg="3">
+                    </Col>
+                    <Col xs="12" md="6" lg="6">
+                            {this.state.errors.map(error => {
+                                return <Alert color="danger">
+                                {error}
+                              </Alert>
+                            })}
+                    </Col>
+                    <Col xs="12" md="3" lg="3">
+                    </Col>
+                </Row>
 
                 {this.props.userUpdated &&
                     <Row style={{ marginTop: 5 }}>

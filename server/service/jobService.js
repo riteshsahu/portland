@@ -407,13 +407,7 @@ class JobService {
                     connection = conn;
                     connection.query(`select J.jobId, J.jobTitle,J.createAt, J.jobDescription, J.jobCreatedBy, J.jobStatus, JU.userId, U.role as createByRole from Job J
                     LEFT JOIN JobUsers JU  ON J.jobId = JU.jobId JOIN User U ON J.createBy = U.userId
-                      WHERE  J.isActive = 1 AND JU.isActive = 1`
-
-
-
-                        // select J.jobId, J.jobTitle,J.createAt, J.jobDescription, J.jobCreatedBy, J.jobStatus, JU.userId from Job J
-                        // LEFT JOIN JobUsers JU  ON J.jobId = JU.jobId
-                        //   WHERE  J.isActive = 1 AND JU.isActive = 1`
+                      WHERE  J.isActive = 1 AND JU.isActive = 1 AND U.isActive = 1`
                         , (err, results) => {
                             db.releaseConnection(connection);
                             if (err) {
@@ -585,6 +579,28 @@ class JobService {
                     reject(err);
                 })
         })
+    }
+
+    static getJobDetails(id) {
+        var connection;
+        return new Promise((resolve, reject) => {
+            db.getConnection().
+                then(conn => {
+                    connection = conn;
+                    connection.query(`SELECT * FROM Job WHERE jobId = ?`, [id], (err, results) => {
+                        db.releaseConnection(connection);
+                        if (err) {
+                            reject(err)
+                        } else {
+                            resolve(results);
+                        }
+                    })
+                })
+                .catch(err => {
+                    db.releaseConnection(connection);
+                    reject(err);
+                })
+        });
     }
 }
 

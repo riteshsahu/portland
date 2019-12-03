@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import Messenger from './Messenger/Messenger';
 import {Row, Alert} from 'reactstrap';
+import { getJobDetails, getJobParticipants } from '../action.activeJobs';
 
 class ActiveJobs extends Component {
     constructor(props) {
@@ -12,6 +13,12 @@ class ActiveJobs extends Component {
        
 
     }
+
+    componentDidMount() {
+        this.props.getJobDetails(this.props.match.params.id);
+        this.props.getJobParticipants(this.props.match.params.id);
+    }
+    
     render() {
         return (
             <div style={{ width: "100%",height: "100%", display: "flex", flexDirection: "column", flexWrap: "nowrap"}}>
@@ -36,6 +43,8 @@ const mapStateToProps = state => {
 
 function mapDispatchToProps(dispatch) {
     return {
+        getJobDetails: (id) => dispatch(getJobDetails(id)),
+        getJobParticipants: (id) => dispatch(getJobParticipants(id))
     };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ActiveJobs);

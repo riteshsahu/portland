@@ -108,6 +108,16 @@ class JobController {
         })
     }
 
+    static getJobDetails(req, res) {
+        let id = req.params.id;
+        JobService.getJobDetails(id).then(result => {
+            res.json(result);
+        }).catch(err => {
+            res.status(500)
+            res.json(err)
+        })
+    }
+
 }
 
 module.exports = JobController;

@@ -16,18 +16,19 @@ function socketConnection (io) {
             // console.log(users);
         });
         
+        // subscribe to a job
         client.on('subscribe', function(data) {
             if (data.privateChat == true) {
                 chatService.subscribePrivateUser(data)
                 .then(results => {
-                    console.log("joining private Room",data.room)
+                    console.log("%s joining private room %s", client.id, data.room);
                     client.join(data.room);
                 })
             }
             else
             chatService.subscribeUser(data)
             .then(results => {
-                console.log("joining room", data.room);
+                console.log("%s joining room %s", client.id, data.room);
                 client.join(data.room);
             })
             .catch(err => {
@@ -35,6 +36,7 @@ function socketConnection (io) {
             })
         });
 
+        // unsubscribe from all jobs
         client.on('unsubscribe', function(data) {
             chatService.unsubscribeUserFromAllJobs(data)
                 .then(results => {
@@ -49,8 +51,7 @@ function socketConnection (io) {
             if (data.privateChat == true) {
                 chatService.privateMessageUpdate(data)
                 .then(results => {
-                    console.log("Sending Message",data.room)
-                    client.join(data.room);
+                    console.log("Sending Message in %s room",data.room)
                 })
             }
             else

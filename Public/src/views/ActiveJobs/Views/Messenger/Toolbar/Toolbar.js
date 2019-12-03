@@ -30,7 +30,6 @@ class Toolbar extends Component {
 
   componentDidMount = () => {
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
-    this.props.getJobParticipants(this.props.JobId);
     this.props.getPrivateChatDetails(this.props.params.id, USER_DETAILS[0].userId)
   }
 
@@ -151,7 +150,7 @@ class Toolbar extends Component {
     return (
       <>
         <div className="toolbar">
-          <div ><h3 className="jobtitle" >{this.state.jobTitle ? this.state.jobTitle : leftItems}</h3></div>
+          <div ><h3 className="jobtitle" >{this.props.JobTitle ? this.props.JobTitle : leftItems}</h3></div>
           {this.privateChatBadgeHandler()}
           {/* <Badge style={{borderRadius: "20px",margin: "10px"}} color="warning"><Label style={{marginTop: "8px"}}>{this.props.privateChatData.length>0 ? this.props.privateChatData[0].chatName: ""}</Label></Badge> */}
 

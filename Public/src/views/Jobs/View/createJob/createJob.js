@@ -22,14 +22,15 @@ class CreateJob extends Component {
                 jobUsers: [],
                 jobDescription: ''
             },
-            isSubmitted: false
+            isSubmitted: false,
+            errors: []
         }
     }
 
     componentDidMount() {
         this.props.getUserSuggestions();
         const userDetails = JSON.parse(localStorage.getItem("userDetails"));
-        let jobDetail = this.state.jobDetails; 
+        let jobDetail = this.state.jobDetails;
         if(!this.props.updateJob) {
             if (userDetails[0].role != 1){
                 jobDetail["jobUsers"].push(userDetails[0].userId);
@@ -46,7 +47,7 @@ class CreateJob extends Component {
                 tags: tag
             })
         }
-        
+
     }
 
     getUsersId = (tags) => {
@@ -97,16 +98,17 @@ class CreateJob extends Component {
         temp.map((data, i) => {
            if(data === "1") {
                count= count+1;
-               index = i 
-           }
+                index = i
+            }
         })
         let finalArr = temp;
         if (count> 1) {
            temp = finalArr.filter((res,i) => i !== index)
         }
-        
+
         const userDetails = localStorage.getItem("userDetails");
         const user = JSON.parse(userDetails);
+        
         let data = {
             "jobId": this.state.jobDetails.jobId,
             "jobTitle": this.state.jobDetails.jobTitle,
@@ -118,9 +120,9 @@ class CreateJob extends Component {
             "createAt": new Date(),
             "createBy": user[0].userId,
         }
-        
+
         // validation
-        if (data.jobTitle !== '' && data.jobDescription !== '' && data.jobStatus !== '') {
+        if (this.isDataValid(data)) {
             this.props.createNewJob(data);
         }
     }
@@ -138,7 +140,7 @@ class CreateJob extends Component {
             "jobDescription": this.state.jobDetails.jobDescription,
             "jobStatus": this.state.jobDetails.jobStatus,
             "jobCreatedBy": this.state.jobDetails.jobCreatedBy,
-            "createBy": this.state.jobDetails.createBy,
+            "createBy": user[0].userId,
             "createAt": new Date(),
             "updatedAt": new Date(),
             "updatedBy": user[0].userId,
@@ -146,29 +148,60 @@ class CreateJob extends Component {
         };
 
         // validation
-        if (data.jobTitle !== '' && data.jobDescription !== '' && data.jobStatus !== '') {
+        if (this.isDataValid(data)) {
             this.props.updateJobDetails(this.props.updatedDetails.jobId, data);
+
+            this.setState({
+                tags: []
+            })
+        }
+    }
+
+    isDataValid = (data) => {
+        let errors = [];
+        let error = "";
+
+        if (data.jobTitle === '') {
+            error = "Job title cannot be empty!";
+            errors.push(error);
+        }
+
+        if (data.jobDescription === '') {
+            error = "Job description cannot be empty!";
+            errors.push(error);
+        }
+
+        if (data.jobStatus === '') {
+            error = "Job status cannot be empty!";
+            errors.push(error);
         }
         
+        if (data.jobUsers.length < 3) {
+            error = "Please add atleast 3 participants!";
+            errors.push(error);
+        }
+
         this.setState({
-            tags: []
-              })
+            errors: errors
+        })
+
+        return !errors.length;
     }
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.updatedDetails.jobId && !this.state.isUpdateMode) {
-             let tagsArr = [];
+            let tagsArr = [];
             if(nextProps.updatedDetails.userId && nextProps.updatedDetails.userId.length > 0){
                 tagsArr =  nextProps.updatedDetails.userId.map(dt => {
                    let tagsPerson =[];
-                nextProps.userList.findIndex(stData => {
-                    if (stData.id == dt) {
-                        tagsPerson.push(stData.name);
-                    }
-                })
-                return tagsPerson;
-            });
-        }
+                    nextProps.userList.findIndex(stData => {
+                        if (stData.id == dt) {
+                            tagsPerson.push(stData.name);
+                        }
+                    })
+                    return tagsPerson[0];
+                });
+            }
             this.setState(prevState => ({
                 ...prevState,
                 jobDetails: {
@@ -203,9 +236,11 @@ class CreateJob extends Component {
             let suggestions =[];
              if(self.userList.length > 0) { 
                 suggestions=  self.userList.filter((state) => {
-                 return state.name.toLowerCase().slice(0, inputLength) === inputValue
+                    return state.name.toLowerCase().slice(0, inputLength) === inputValue
+                    //suggestions.push(state.name.toLowerCase().slice(0, inputLength) === inputValue)  
                 //suggestions.push(state.name.toLowerCase().slice(0, inputLength) === inputValue)  
-            })
+                    //suggestions.push(state.name.toLowerCase().slice(0, inputLength) === inputValue)  
+                })
             }
 
             return (
@@ -250,8 +285,8 @@ class CreateJob extends Component {
                         <Label> Job Title:-  </Label>
                     </Col>
                     <Col xs="5" md="4" lg="4">
-                        <Input type="text" id="jobTitle" value={this.state.jobDetails.jobTitle} 
-                        onChange={this.handleJobChange} placeholder="Job" />
+                        <Input type="text" id="jobTitle" value={this.state.jobDetails.jobTitle}
+                            onChange={this.handleJobChange} placeholder="Job" />
                     </Col>
                     <Col xs="12" md="3" lg="3">
                     </Col>
@@ -263,13 +298,13 @@ class CreateJob extends Component {
                         <Label> Job Description:-  </Label>
                     </Col>
                     <Col xs="5" md="4" lg="4">
-                        <Input type="text" id="jobDescription" value={this.state.jobDetails.jobDescription} 
-                        onChange={this.handleJobChange} placeholder="Job Description" />
+                        <Input type="text" id="jobDescription" value={this.state.jobDetails.jobDescription}
+                            onChange={this.handleJobChange} placeholder="Job Description" />
                     </Col>
                     <Col xs="12" md="3" lg="3">
                     </Col>
                 </Row>
-            
+
                 <Row style={{ marginTop: 5 }}>
                     <Col xs="12" md="3" lg="3">
                     </Col>
@@ -293,14 +328,14 @@ class CreateJob extends Component {
                         <Label> Participants:-  </Label>
                     </Col>
                     <Col xs="5" md="4" lg="4">
-                        <TagsInput renderInput={autocompleteRenderInput} inputProps={{ placeholder: "Add a Participant" }} value={this.state.tags} onChange={this.handleChange} />
+                        <TagsInput onlyUnique={true} renderInput={autocompleteRenderInput} inputProps={{ placeholder: "Add a Participant" }} value={this.state.tags} onChange={this.handleChange} />
                     </Col>
                     <Col xs="12" md="3" lg="3">
                     </Col>
                 </Row>
 
-                {this.props.updatedDetails.jobId 
-                    ? 
+                {this.props.updatedDetails.jobId
+                    ?
                     <Row style={{ marginTop: 5 }}>
                         <Col xs="12" md="3" lg="3">
                         </Col>
@@ -320,7 +355,22 @@ class CreateJob extends Component {
                         <Col xs="12" md="3" lg="3">
                         </Col>
                     </Row>
+                    
                 }
+                <Row style={{ marginTop: 5 }}>
+                    <Col xs="12" md="3" lg="3">
+                    </Col>
+                    <Col xs="12" md="6" lg="6">
+                            {this.state.errors.map(error => {
+                                return <Alert color="danger">
+                                {error}
+                              </Alert>
+                            })}
+                    </Col>
+                    <Col xs="12" md="3" lg="3">
+                    </Col>
+                </Row>
+
                 {this.props.jobUpdated &&
                     <Row style={{ marginTop: 5 }}>
                         <Col xs="12" md="3" lg="3">
