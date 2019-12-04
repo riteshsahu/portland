@@ -42,9 +42,9 @@ class Toolbar extends Component {
               jobIdforPC: data.jobId,
               privateChatName: data.chatName
             })
-          }
-      })
     }
+      })
+  }
   }
 
   componentWillReceiveProps = (nextProps) => {
@@ -116,7 +116,7 @@ class Toolbar extends Component {
   }
 
   handleBadge = () => {
-    this.props.history.push("/activeJobs/"+this.state.jobIdforPC)
+    this.props.history.push("/activeJobs/"+this.props.JobId)
   }
   render() {
     const { title, leftItems, rightItems } = this.props;
@@ -124,7 +124,7 @@ class Toolbar extends Component {
     return (
       <>
         <div className="toolbar">
-          <div ><h3 className="jobtitle" >{this.state.privateChatName ? this.state.privateChatName : "Private Chat"}</h3></div>
+          <div ><h3 className="jobtitle" >{this.props.chatName}</h3></div>
           <Badge onClick={this.handleBadge} className="Badge" ><Label className= "BadgeLabel">{"Back to Job Chat"}</Label></Badge>
           {/* <h1 className="toolbar-title">{title}</h1> */}
           <div className="right-items" >
@@ -205,8 +205,9 @@ class Toolbar extends Component {
 
 const mapStateToProps = state => {
   return {
-    JobId: state.ActiveJobDetail.JobId,
-    JobTitle: state.ActiveJobDetail.JobTitle,
+    privateChatId: state.PrivateChatDetail.privateChatId,
+    chatName: state.PrivateChatDetail.chatName,
+    JobId: state.PrivateChatDetail.JobId,
     ParticipantsDetails: state.ActiveJobDetail.ParticipantsDetails,
     privateChatData: state.ActiveJobDetail.privateChatData
   };

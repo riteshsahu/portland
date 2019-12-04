@@ -5,7 +5,7 @@ import { AppHeaderDropdown, AppSidebarToggler } from '@coreui/react';
 import user from '../../assets/img/brand/user.png';
 import './header.css';
 import { connect } from "react-redux";
-import { selectedJob, getPrivateChatDetails } from '../../views/ActiveJobs/action.activeJobs';
+import { selectedJob, getPrivateChatData } from '../../views/ActiveJobs/action.activeJobs';
 import { API_ROOT, URI } from "../../../src/config/config";
 
 const propTypes = {
@@ -69,7 +69,7 @@ class DefaultHeader extends Component {
   handleOnClick = (id, title) => {
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
     this.props.selectedJob(id, title);
-    this.props.getPrivateChatDetails(id, USER_DETAILS[0].userId)
+    this.props.getPrivateChatData(id, USER_DETAILS[0].userId)
     this.props.history.push("/activeJobs/" + id)
   }
 
@@ -278,7 +278,7 @@ const mapStateToProps = state => {
 function mapDispatchToProps(dispatch) {
   return {
     selectedJob: (id, name) => dispatch(selectedJob(id, name)),
-    getPrivateChatDetails: (jobId, userId) => dispatch(getPrivateChatDetails(jobId, userId))
+    getPrivateChatData: (jobId, userId) => dispatch(getPrivateChatData(jobId, userId))
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(DefaultHeader);

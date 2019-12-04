@@ -30,6 +30,7 @@ export const URI = {
     GET_CHAT_HISTORY: "chat/{0}",
     UPDATE_USER_PROFILE: "user/updateProfile/{0}",
     CREATE_NEW_PRIVATE_CHAT: "job/privateChat",
+    GET_PRIVATE_CHAT_DETAILS: "job/privateChat/{0}",
     GET_PRIVATE_CHAT_DATA: "job/privateChatData/{0}/{1}",
     GET_NOTIFICATIONS: "chat/notification"
 }

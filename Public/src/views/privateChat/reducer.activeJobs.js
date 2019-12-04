@@ -2,6 +2,8 @@ import { ActiveJobDetail } from './constants.activeJobs';
 
 const initialState = {
     JobId: '',
+    privateChatId: '',
+    chatName: '',
     ParticipantsDetails: [],
     JobTitle: '',
     chatHistory: '',
@@ -37,6 +39,14 @@ function ActiveJobReducer(state = initialState, action) {
             return {
                 ...state,
                 ParticipantsDetails: action.payload
+            }
+
+        case ActiveJobDetail.GET_PRIVATE_CHAT_DETAILS:
+            return {
+                ...state,
+                privateChatId: action.payload.privateChatId,
+                chatName: action.payload.chatName,
+                JobId: action.payload.jobId
             }
 
         case ActiveJobDetail.GET_CHAT_HISTORY:

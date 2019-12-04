@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import './Toolbar.css';
 import { Modal, ModalBody, ModalHeader, ModalFooter, Button, Col, Label, Row, Input, Badge } from 'reactstrap';
-import { getJobParticipants, createNewPrivateChatRoom, getPrivateChatDetails } from '../../../action.activeJobs';
+import { getJobParticipants, createNewPrivateChatRoom, getPrivateChatData } from '../../../action.activeJobs';
 
 class Toolbar extends Component {
   constructor(props) {
@@ -30,7 +30,7 @@ class Toolbar extends Component {
 
   componentDidMount = () => {
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
-    this.props.getPrivateChatDetails(this.props.params.id, USER_DETAILS[0].userId)
+    this.props.getPrivateChatData(this.props.params.id, USER_DETAILS[0].userId)
   }
 
   componentWillReceiveProps = (nextProps) => {
@@ -138,14 +138,14 @@ class Toolbar extends Component {
     if (this.props.privateChatData && this.props.privateChatData.length > 0) {
       return this.props.privateChatData.map((dt, i) =>
         (this.props.params.id == dt.jobId) ?
-          <Badge onClick={()=>this.routePrivateChat(dt.privateChatId)} className="Badge"><Label className="BadgeLabel">{dt.chatName}</Label></Badge>
+          <Badge onClick={() => this.routePrivateChat(dt.privateChatId)} className="Badge"><Label className="BadgeLabel">{dt.chatName}</Label></Badge>
           : null
       )
     }
   }
 
   render() {
-    const {leftItems, rightItems } = this.props;
+    const { leftItems, rightItems } = this.props;
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
     return (
       <>
@@ -246,7 +246,7 @@ function mapDispatchToProps(dispatch) {
   return {
     getJobParticipants: (id) => dispatch(getJobParticipants(id)),
     createNewPrivateChatRoom: (data) => dispatch(createNewPrivateChatRoom(data)),
-    getPrivateChatDetails: (jobId, userId) => dispatch(getPrivateChatDetails(jobId, userId))
+    getPrivateChatData: (jobId, userId) => dispatch(getPrivateChatData(jobId, userId))
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Toolbar);

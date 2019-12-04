@@ -602,6 +602,28 @@ class JobService {
                 })
         });
     }
+
+    static getPrivateChatDetails(id) {
+        var connection;
+        return new Promise((resolve, reject) => {
+            db.getConnection().
+                then(conn => {
+                    connection = conn;
+                    connection.query(`SELECT * FROM private_chat WHERE privateChatId = ?`, [id], (err, results) => {
+                        db.releaseConnection(connection);
+                        if (err) {
+                            reject(err)
+                        } else {
+                            resolve(results);
+                        }
+                    })
+                })
+                .catch(err => {
+                    db.releaseConnection(connection);
+                    reject(err);
+                })
+        });
+    }
 }
 
 module.exports = JobService;

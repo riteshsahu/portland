@@ -7,6 +7,7 @@ import roleDetailReducer from './views/Roles/role.reducer';
 import ProfileReducer from './views/Profile/profile.reducer';
 import LayoutReducer from './containers/DefaultLayout/reducer.defaultLayout';
 import ActiveJobsReducer from './views/ActiveJobs/reducer.activeJobs';
+import PrivateChatReducer from './views/privateChat/reducer.activeJobs';
 
 const rootReducer = combineReducers({
     register: RegisterReducer,
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
     roleDetail: roleDetailReducer,
     ProfileDetail: ProfileReducer,
     LayoutDetail: LayoutReducer,
-    ActiveJobDetail: ActiveJobsReducer
+    ActiveJobDetail: ActiveJobsReducer,
+    PrivateChatDetail: PrivateChatReducer
 })
 
 

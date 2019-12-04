@@ -40,7 +40,7 @@ export const createNewPrivateChatRoom = (data) => {
         }
   }
 
-  export const getPrivateChatDetails = (jobId,userId) => {
+  export const getPrivateChatData = (jobId,userId) => {
     return (dispatch) => {
       
         fetch ( StringFormat(API_ROOT + URI.GET_PRIVATE_CHAT_DATA,jobId,userId), {

@@ -118,6 +118,16 @@ class JobController {
         })
     }
 
+    static getPrivateChatDetails(req, res) {
+        let id = req.params.id;
+        JobService.getPrivateChatDetails(id).then(result => {
+            res.json(result);
+        }).catch(err => {
+            res.status(500)
+            res.json(err)
+        })
+    }
+
 }
 
 module.exports = JobController;
