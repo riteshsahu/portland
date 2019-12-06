@@ -47,21 +47,24 @@ function socketConnection (io) {
                 })
         });
 
-        client.on('send message', function(data) {            
+        client.on('send message', function(data) {
             if (data.privateChat == true) {
                 chatService.privateMessageUpdate(data)
-                .then(results => {
+                .then(result => {
+                    client.emit('message updated', result);
                     console.log("Sending Message in %s room",data.room)
                 })
             }
             else
             chatService.messageUpdate(data)
             .then(result => {
-                client.broadcast.to(data.room).emit('response', {
-                    message: data.message,
-                    author: data.author,
-                    isVisibleToClient: data.isVisibleToClient
-                });
+                // client.emit('message updated', result);
+                // client.broadcast.to(data.room).emit('response', {
+                //     message: data.message,
+                //     author: data.author,
+                //     isVisibleToClient: data.isVisibleToClient
+                // });
+                io.in(data.room).emit('message updated', result);
             })
             // client.broadcast.to(data.room).emit('response', {
             //     message: data.message,

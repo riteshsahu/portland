@@ -9,9 +9,9 @@ module.exports = {
       "connectTimeout": 100000
     },
     aws : {
-      accessKeyId: "AKIAIC4K2CVALZPF2FDA",
-      secretAccessKey: "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",
-      bucketName : "cspprofile"
+      accessKeyId: "AKIAI7O75HYRI2ZP6NXA",
+      secretAccessKey: "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",
+      bucketName : "afro-project"
     },
     logging: {
       logToFile: process.env.LOGFILEPATH ? true : false,

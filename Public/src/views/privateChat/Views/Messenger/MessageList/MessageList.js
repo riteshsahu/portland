@@ -23,7 +23,8 @@ class MessageList extends Component {
         4: "External Employee",
         5: "Designer",
         6: "Client"
-      }
+      },
+      selectedFile: "",
     };
 
   }
@@ -33,6 +34,11 @@ class MessageList extends Component {
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
     var JobId = this.props.params.id;
     this.props.getChatHistory(JobId);
+
+    window.clientSocket.on('message updated', (result) => {
+      this.props.getChatHistory(this.props.params.id);
+    });
+
     let privateChatId = this.props.params.id;
     let jobId ="";
     if (this.props.privateChatData && this.props.privateChatData.length> 0) {
@@ -96,6 +102,9 @@ class MessageList extends Component {
             author: this.state.KeyRole[data.role] + "-" + data.firstName,
             fromMe: fromMe,
             message: data.message,
+            fileName: data.fileName,
+            filePath: data.filePath,
+            fileType: data.fileType,
             timestamp: new Date().getTime()
           })
         } else if (USER_DETAILS[0].role != 6) {
@@ -106,6 +115,9 @@ class MessageList extends Component {
             author: this.state.KeyRole[data.role] + "-" + data.firstName,
             fromMe: fromMe,
             message: data.message,
+            fileName: data.fileName,
+            filePath: data.filePath,
+            fileType: data.fileType,
             timestamp: new Date().getTime()
           })
         }
@@ -131,7 +143,7 @@ class MessageList extends Component {
     }
   }
 
-  isValidMessage = (value) => {
+  isValidMessage = (value = "") => {
     return this.state.message.trim() || value.trim() 
   }
 
@@ -178,30 +190,42 @@ class MessageList extends Component {
     })
   }
 
+  handleContractFile = (e) => {
+    var file = this.fileInputContract.files[0];
+    var reader = new FileReader();
+    if (file) {
+      reader.readAsDataURL(file);
+
+      reader.onloadend = function (e) {
+        this.setState({
+          selectedFile: {
+            name: file.name,
+            data: reader.result,
+            type: file.type.includes("image") ? "image" : "file"
+          }
+        })
+      }.bind(this);
+    }
+  }
+
   submitMessage = (value) => {
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
     this.props.getUserJobs(USER_DETAILS[0].userId);
 
-    let tempArr = this.state.messages;
-    if (this.isValidMessage(value)) {
-      tempArr.push({
-        author: USER_DETAILS[0].firstName,
-        message: value || this.state.message,
-        fromMe: true,
-        timestamp: new Date().getTime()
-      });
-      const message = {
+    if (this.isValidMessage(value) || this.state.selectedFile.name) {
+      const messageData = {
         isVisibleToClient: this.state.isVisibleToClient,
         userId: USER_DETAILS[0].userId,
         message: value || this.state.message,
         room: window.location.href.split('/').pop(),
         author: USER_DETAILS[0].firstName,
+        file: this.state.selectedFile || "",
         privateChat: true
       }
-      window.clientSocket.emit('send message', message)
+      window.clientSocket.emit('send message', messageData);
       this.setState({
-        messages: tempArr,
         message: "",
+        selectedFile: "",
         isVisibleToClient: 0
       });
     }
@@ -212,7 +236,6 @@ class MessageList extends Component {
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
     return (
       <div >
-
         <Toolbar
           params={this.props.params} 
           leftItems="Private Chat"
@@ -223,6 +246,16 @@ class MessageList extends Component {
         />
 
         <Messages messages={this.state.messages} />
+
+        {
+          this.state.selectedFile ?
+            this.state.selectedFile.type === "image" ?
+              <img src={this.state.selectedFile.data} style={{ position: "absolute", height: "150px", bottom: "60px" }} />
+              :
+              <span style={{ position: "absolute", bottom: "60px" }}>{this.state.selectedFile.name}</span>
+            :
+            null
+        }
 
         <div className="compose">
 
@@ -236,7 +269,7 @@ class MessageList extends Component {
           />
           <input style={{ display: "none" }}
             ref={fileInputContract => this.fileInputContract = fileInputContract}
-            type="file" accept="application/pdf" id="fileInputContract" onChange={this.handleContractFile} />
+            type="file" id="fileInputContract" onChange={this.handleContractFile} />
 
           <i style={{ color: "yellow", fontSize: "x-large", flexDirection: "row-reverse", marginTop: "7px", marginLeft: "3px" }}
             className="fa fa-smile-o" onClick={this.toggleEmojiPicker}></i>

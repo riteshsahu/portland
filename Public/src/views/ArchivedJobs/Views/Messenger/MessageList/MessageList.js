@@ -166,33 +166,6 @@ class MessageList extends Component {
     })
   }
 
-  submitMessage = (value) => {
-    var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
-
-    let tempArr = this.state.messages;
-    // if (this.isValidMessage(value)) {
-    tempArr.push({
-      author: USER_DETAILS[0].firstName,
-      message: value || this.state.message,
-      fromMe: true,
-      timestamp: new Date().getTime()
-    });
-    const message = {
-      isVisibleToClient: this.state.isVisibleToClient,
-      userId: USER_DETAILS[0].userId,
-      message: value || this.state.message,
-      room: window.location.href.split('/').pop(),
-      author: USER_DETAILS[0].firstName
-    }
-    window.clientSocket.emit('send message', message)
-    this.setState({
-      messages: tempArr,
-      message: "",
-      isVisibleToClient: 0
-    });
-  }
-
-
   render() {
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
     return (

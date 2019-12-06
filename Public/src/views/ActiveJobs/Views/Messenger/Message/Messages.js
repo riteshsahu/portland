@@ -17,6 +17,9 @@ export default class Messages extends Component {
             key={i}
             username={message.author}
             message={message.message}
+            fileName={message.fileName}
+            filePath={message.filePath}
+            fileType={message.fileType}
             fromMe={message.fromMe} />
         );
       });

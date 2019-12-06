@@ -1,5 +1,6 @@
 const db = require('../util/db');
 const Message = require('../model/Message');
+const AwsUtil = require('../util/Aws');
 
 class ChatService {
 
@@ -135,8 +136,23 @@ class ChatService {
                     let message = {
                         message: data.message,
                         creatorId: data.userId,
-                        isVisibleToClient: data.isVisibleToClient
+                        isVisibleToClient: data.isVisibleToClient,
                     }
+
+                    return new Promise((res, rej) => {
+                        if (data.file) {
+                            AwsUtil.updateFile(data.file).then(filePath => {
+                                message.fileName = data.file.name
+                                message.filePath = filePath;
+                                message.fileType = data.file.type
+                                res(message);
+                            })
+                        } else {
+                            res(message);
+                        }
+                    })
+                })
+                .then((message) => {
                     message = db.addAttributesForNew(message, data.userId);
                     return new Promise((resMessage, rejMessage) => {
                         connection.query('INSERT INTO Message SET ?',
@@ -237,8 +253,23 @@ class ChatService {
                     let message = {
                         message: data.message,
                         creatorId: data.userId,
-                        isVisibleToClient: data.isVisibleToClient
+                        isVisibleToClient: data.isVisibleToClient,
                     }
+
+                    return new Promise((res, rej) => {
+                        if (data.file) {
+                            AwsUtil.updateFile(data.file).then(filePath => {
+                                message.fileName = data.file.name
+                                message.filePath = filePath;
+                                message.fileType = data.file.type
+                                res(message);
+                            })
+                        } else {
+                            res(message);
+                        }
+                    })
+                })
+                .then((message) => {
                     message = db.addAttributesForNew(message, data.userId);
                     return new Promise((resMessage, rejMessage) => {
                         connection.query('INSERT INTO Message SET ?',
@@ -334,7 +365,7 @@ class ChatService {
             db.getConnection().
                 then(conn => {
                     connection = conn;
-                    connection.query(`SELECT DISTINCT MR.recipientGroupId, M.id, M.message, U.role,M.createBy,M.createAt,M.isVisibleToClient, U.firstName, U.lastName 
+                    connection.query(`SELECT DISTINCT MR.recipientGroupId, M.id, M.message, M.fileName, M.filePath, M.fileType, U.role,M.createBy,M.createAt,M.isVisibleToClient, U.firstName, U.lastName 
                     FROM MessageRecipient MR JOIN Message M ON MR.messageId = M.id 
                     JOIN User U ON U.userId = M.creatorId WHERE U.isActive= 1 AND MR.recipientGroupId= ? ORDER BY M.createAt ASC`, [id],(err, results) => {
                             db.releaseConnection(connection);
