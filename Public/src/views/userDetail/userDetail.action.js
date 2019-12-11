@@ -84,9 +84,9 @@ export const GetUserList = (offset) => {
 }
 
 export const searchUser = (data) => {
-    let qq = API_ROOT.concat(`${URI.GET_USER_BY_SEARCH}?firstName=${data.firstName}&lastName=${data.lastName}&email=${data.email}&role=${data.role}`);
+    let qq = API_ROOT.concat(`${URI.GET_USER_BY_SEARCH}?firstName=${data.firstName || ''}&lastName=${data.lastName || ''}&email=${data.email || ''}&role=${data.role || ''}`);
     return (dispatch) => {
-        fetch(qq, {
+        return fetch(qq, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'

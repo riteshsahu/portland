@@ -278,7 +278,7 @@ const mapStateToProps = state => {
 function mapDispatchToProps(dispatch) {
   return {
     selectedJob: (id, name) => dispatch(selectedJob(id, name)),
-    getPrivateChatData: (jobId, userId) => dispatch(getPrivateChatData(jobId, userId))
+    getPrivateChatData: (jobId, userId, roleId) => dispatch(getPrivateChatData(jobId, userId, roleId))
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(DefaultHeader);

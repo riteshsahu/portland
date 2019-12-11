@@ -56,7 +56,7 @@ function socketConnection (io) {
                 })
             }
             else
-            chatService.messageUpdate(data)
+            chatService.roleMessageUpdate(data)
             .then(result => {
                 // client.emit('message updated', result);
                 // client.broadcast.to(data.room).emit('response', {
@@ -64,6 +64,8 @@ function socketConnection (io) {
                 //     author: data.author,
                 //     isVisibleToClient: data.isVisibleToClient
                 // });
+
+                // broadcast message to everyone in room
                 io.in(data.room).emit('message updated', result);
             })
             // client.broadcast.to(data.room).emit('response', {

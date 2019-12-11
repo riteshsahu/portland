@@ -15,7 +15,7 @@ jobRoutes.get('/userInfo/:id',jobController.getJobParticipantsInfo);
 jobRoutes.get('/userCompletedJobs/:id',jobController.getUserCompletedJobs);
 jobRoutes.post('/privateChat', jobController.createPrivateChat);
 jobRoutes.get('/privateChat/:id', jobController.getPrivateChatDetails);
-jobRoutes.get('/privateChatData/:jobId/:userId',jobController.getPrivateChatData)
+jobRoutes.get('/privateChatData/:jobId/:userId/:roleId',jobController.getPrivateChatData)
 
 
 module.exports =  jobRoutes;

@@ -21,8 +21,9 @@ const Jobs =  React.lazy(() => import('./views/Jobs/View/Jobs'));
 const Roles =  React.lazy(() => import('./views/Roles/Views/Roles'));
 const UserProfile =React.lazy(() => import ('./views/Profile/Profile'));
 const ActiveJobs =React.lazy(() => import ('./views/ActiveJobs/Views/ActiveJobs'));
+const RoleChat =React.lazy(() => import ('./views/ActiveJobs/Views/RoleChat/Views/RoleChat'));
 const ArchivedJobs = React.lazy(()=> import('./views/ArchivedJobs/Views/ArchivedJobs'));
-const PrivateChat = React.lazy(() => import ('./views/privateChat/Views/ActiveJobs'));
+const PrivateChat = React.lazy(() => import ('./views/ActiveJobs/Views/privateChat/Views/PrivateChat'));
 const Breadcrumbs = React.lazy(() => import('./views/Base/Breadcrumbs'));
 const Cards = React.lazy(() => import('./views/Base/Cards'));
 const Carousels = React.lazy(() => import('./views/Base/Carousels'));
@@ -58,7 +59,6 @@ const Typography = React.lazy(() => import('./views/Theme/Typography'));
 const Widgets = React.lazy(() => import('./views/Widgets/Widgets'));
 // const Users = React.lazy(() => import('./views/Users/Users'));
 // const User = React.lazy(() => import('./views/Users/User'));
-const Chat = React.lazy(() => import('./views/Chat/Chat'));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -77,11 +77,10 @@ const routes = [
   { path: '/jobs', name: 'Jobs', component: Jobs },
   { path: '/roles', name: 'Roles', component: Roles },
   { path: '/userProfile', exact: true, name: 'UserProfile', component: UserProfile },
-  { path: '/chats', name: 'Chat', component: Chat},
   { path: '/activeJobs/:id', exact: true, name: 'Active Jobs', component: ActiveJobs },
+  { path: '/activeJobs/:id/roleChat/:roleKey', exact: true, name: 'Role Chat', component: ActiveJobs },
+  { path: '/activeJobs/:id/privateChat/:privateChatId', exact: true, name: 'Private Chat', component: ActiveJobs },
 
-  { path: '/privateChat/:id', exact: true, name: 'Private Chat', component: PrivateChat },
-  
   { path: '/archivedJobs/:id', exact: true, name: 'Archived Jobs', component: ArchivedJobs },
 
   

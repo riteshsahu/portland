@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import './Toolbar.css';
 import { Modal, ModalBody, ModalHeader, ModalFooter, Button, Col, Label, Row, Input } from 'reactstrap';
-import { getJobParticipants } from '../../../action.activeJobs';
+import { getJobParticipants } from '../../../action.archivedJobs';
 
 class Toolbar extends Component {
   constructor(props) {

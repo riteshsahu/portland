@@ -37,6 +37,7 @@ function ActiveJobReducer(state = initialState, action) {
         case ActiveJobDetail.GET_JOB_DETAILS:
             return {
                 ...state,
+                JobId: action.payload.jobId,
                 JobTitle: action.payload.jobTitle
             }
 

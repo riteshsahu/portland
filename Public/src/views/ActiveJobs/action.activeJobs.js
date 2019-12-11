@@ -40,10 +40,10 @@ export const createNewPrivateChatRoom = (data) => {
         }
   }
 
-  export const getPrivateChatData = (jobId,userId) => {
+  export const getPrivateChatData = (jobId,userId,roleId) => {
     return (dispatch) => {
       
-        fetch ( StringFormat(API_ROOT + URI.GET_PRIVATE_CHAT_DATA,jobId,userId), {
+        fetch ( StringFormat(API_ROOT + URI.GET_PRIVATE_CHAT_DATA,jobId,userId,roleId), {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'

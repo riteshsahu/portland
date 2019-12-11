@@ -27,11 +27,11 @@ export const URI = {
     GET_USER_COMPLETED_JOBS: "job/userCompletedJobs/{0}",
     GET_JOB_DETAILS: "job/details/{0}",
     GET_JOB_PARTICIPANTS:"job/userInfo/{0}",
-    GET_CHAT_HISTORY: "chat/{0}",
+    GET_ROLE_CHAT_HISTORY: "chat/{0}/{1}",
     UPDATE_USER_PROFILE: "user/updateProfile/{0}",
     CREATE_NEW_PRIVATE_CHAT: "job/privateChat",
     GET_PRIVATE_CHAT_DETAILS: "job/privateChat/{0}",
-    GET_PRIVATE_CHAT_DATA: "job/privateChatData/{0}/{1}",
+    GET_PRIVATE_CHAT_DATA: "job/privateChatData/{0}/{1}/{2}",
     GET_NOTIFICATIONS: "chat/notification"
 }
 

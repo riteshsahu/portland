@@ -14,7 +14,6 @@ class JobService {
                         connection.query('INSERT INTO Job ( jobId, jobTitle, jobDescription , jobCreatedBy, jobStatus, isActive, createAt, updatedAt, createBy, updatedBy) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ',
                             [data.jobId, data.jobTitle, data.jobDescription, data.jobCreatedBy, data.jobStatus, data.isActive, data.createAt, data.updatedAt, data.createBy, data.updatedBy],
                             (err, results) => {
-                                console.log(results)                    // jobCreatedBy                                                                                 
                                 if (err) {
                                     db.rollbackTransaction(connection);
                                     db.releaseConnection(connection);
@@ -134,7 +133,7 @@ class JobService {
         });
     }
 
-    static getPrivateChatData(jobId, userId) {
+    static getPrivateChatData(jobId, userId, roleId) {
         var connection;
         return new Promise((resolve, reject) => {
             db.getConnection().then(conn => {

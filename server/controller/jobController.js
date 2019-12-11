@@ -100,7 +100,8 @@ class JobController {
     static getPrivateChatData(req, res) {
         let jobId = req.params.jobId;
         let userId = req.params.userId;
-        JobService.getPrivateChatData(jobId,userId).then(result => {
+        let roleId = req.params.roleId;
+        JobService.getPrivateChatData(jobId,userId, roleId).then(result => {
             res.json(result);
         }).catch(err => {
             res.status(500)

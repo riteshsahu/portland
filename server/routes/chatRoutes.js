@@ -5,7 +5,7 @@ const chatController = require('../controller/chatController');
 
 
 
-chatRoutes.get('/:id', chatController.getMessageHistory);
+chatRoutes.get('/:id/:role', chatController.getRoleChatHistory);
 chatRoutes.post('/notification',chatController.getUserNotifications);
 
 module.exports =  chatRoutes;

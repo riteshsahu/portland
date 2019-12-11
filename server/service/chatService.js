@@ -124,7 +124,7 @@ class ChatService {
         });
     }
 
-    static messageUpdate(data) {
+    static roleMessageUpdate(data) {
         var connection, messageId, isSubscribedArray;
         return new Promise((resolve, reject) => {
             db.getConnection()
@@ -173,8 +173,8 @@ class ChatService {
                 })
                 .then(() => {
                     return new Promise((resJobUser, rejJobUser) => {
-                        connection.query('SELECT isSubscribed, userId from JobUsers where jobId = ?',
-                            [data.room],
+                        connection.query('SELECT JU.isSubscribed, JU.userId from JobUsers JU JOIN User U on JU.userId = U.userId where JU.jobId = ? AND U.isActive = 1 AND U.role = ?',
+                            [data.room, data.recipientRole],
                             (err, result) => {
                                 if (err) {
                                     db.rollbackTransaction(connection);
@@ -359,15 +359,13 @@ class ChatService {
     }
 
 
-    static getMessageHistory(id) {
+    static getRoleChatHistory(id, role) {
         var connection;
         return new Promise((resolve, reject) => {
             db.getConnection().
                 then(conn => {
                     connection = conn;
-                    connection.query(`SELECT DISTINCT MR.recipientGroupId, M.id, M.message, M.fileName, M.filePath, M.fileType, U.role,M.createBy,M.createAt,M.isVisibleToClient, U.firstName, U.lastName 
-                    FROM MessageRecipient MR JOIN Message M ON MR.messageId = M.id 
-                    JOIN User U ON U.userId = M.creatorId WHERE U.isActive= 1 AND MR.recipientGroupId= ? ORDER BY M.createAt ASC`, [id],(err, results) => {
+                    connection.query(`SELECT MR.recipientId ,MR.recipientGroupId, M.message, MR.isRead, SU.firstName senderFirstName, SU.lastName senderLastName, SU.role senderRole, RU.firstName recipientFirstName, RU.lastName recipientLastName, RU.role recipientRole, M.createBy,M.createAt FROM MessageRecipient MR JOIN Message M ON MR.messageId = M.id JOIN User SU ON SU.userId = M.creatorId JOIN User RU on RU.userId = MR.recipientId WHERE MR.recipientGroupId = ? AND SU.isActive = 1 AND RU.role = ? GROUP BY M.id ORDER BY M.createAt ASC`, [id, role],(err, results) => {
                             db.releaseConnection(connection);
                             if(err) {
                                 reject(err)

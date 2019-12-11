@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import './MessageList.css';
-import Messages from '../Message/Messages';
 import Toolbar from '../Toolbar/Toolbar';
-import { getChatHistory } from '../../../action.activeJobs';
+import Messages from '../Message/Messages';
+import { getChatHistory } from '../../../action.archivedJobs';
 import 'emoji-mart/css/emoji-mart.css';
 import { Picker } from 'emoji-mart';
 import { Alert } from 'reactstrap';

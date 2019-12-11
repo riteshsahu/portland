@@ -7,6 +7,8 @@ import TagsInput from 'react-tagsinput'
 import '../../jobs.css';
 import Autosuggest from 'react-autosuggest';
 import { getUserSuggestions } from '../../../userDetail/userDetail.action';
+import { searchUser } from '../../../userDetail/userDetail.action';
+
 class CreateJob extends Component {
     constructor(props) {
         super(props);
@@ -29,25 +31,35 @@ class CreateJob extends Component {
 
     componentDidMount() {
         this.props.getUserSuggestions();
+
         const userDetails = JSON.parse(localStorage.getItem("userDetails"));
         let jobDetail = this.state.jobDetails;
         if(!this.props.updateJob) {
-            if (userDetails[0].role != 1){
-                jobDetail["jobUsers"].push(userDetails[0].userId);
-            }
-            jobDetail["jobUsers"].push("1");
-            let tag =[];
-            if (userDetails[0].role != 1){
-                tag.push(userDetails[0].firstName +" "+ userDetails[0].lastName);
-            }
-            let a = "Admin"
-            tag.push(a +" "+ a);
-            this.setState({
-                jobDetails: jobDetail,
-                tags: tag
-            })
-        }
+            // if (userDetails[0].role != 1){
+            //     jobDetail["jobUsers"].push(userDetails[0].userId);
+            // }
+            // jobDetail["jobUsers"].push("1");
+            let tags = [];
 
+            // if logged in user is not admin, push to tags
+            if (userDetails[0].role != 1){
+                tags.push(userDetails[0].firstName +" "+ userDetails[0].lastName);
+            }
+
+            // push all admins to tags
+            this.props.searchUser({ role: 1 }).then(() => {
+                this.props.userDetails.forEach(user => {
+                    tags.push(user.firstName + " " + user.lastName);
+                })
+
+                this.setState({
+                    jobDetails: jobDetail,
+                    tags: tags
+                })
+
+                this.getUsersId(tags);
+            });
+        }
     }
 
     getUsersId = (tags) => {
@@ -90,32 +102,18 @@ class CreateJob extends Component {
     }
     handleSumbit = () => {
         let temp =  this.state.jobDetails.jobUsers;
-        let isExist = temp.findIndex(el=> el === 1)
-        if (isExist== -1){
-            temp.push("1")
-        }
-        let count = 0, index;
-        temp.map((data, i) => {
-           if(data === "1") {
-               count= count+1;
-                index = i
-            }
-        })
-        let finalArr = temp;
-        if (count> 1) {
-           temp = finalArr.filter((res,i) => i !== index)
-        }
+        console.log(temp);
 
         const userDetails = localStorage.getItem("userDetails");
         const user = JSON.parse(userDetails);
-        
+
         let data = {
             "jobId": this.state.jobDetails.jobId,
             "jobTitle": this.state.jobDetails.jobTitle,
             "jobDescription": this.state.jobDetails.jobDescription,
             "jobCreatedBy": user[0].userId,
             "jobStatus": this.state.jobDetails.jobStatus,
-            "isActive": 1, 
+            "isActive": 1,
             "jobUsers": temp,
             "createAt": new Date(),
             "createBy": user[0].userId,
@@ -124,15 +122,12 @@ class CreateJob extends Component {
         // validation
         if (this.isDataValid(data)) {
             this.props.createNewJob(data);
+
         }
     }
 
     updateJob = () => {
         let temp =  this.state.jobDetails.jobUsers;
-        let isExist = temp.findIndex(el=> el === 1)
-        if (isExist== -1){
-            temp.push(1)
-        }
         const userDetails = localStorage.getItem("userDetails");
         const user = JSON.parse(userDetails);
         let data = {
@@ -150,7 +145,6 @@ class CreateJob extends Component {
         // validation
         if (this.isDataValid(data)) {
             this.props.updateJobDetails(this.props.updatedDetails.jobId, data);
-
             this.setState({
                 tags: []
             })
@@ -175,7 +169,7 @@ class CreateJob extends Component {
             error = "Job status cannot be empty!";
             errors.push(error);
         }
-        
+
         if (data.jobUsers.length < 3) {
             error = "Please add atleast 3 participants!";
             errors.push(error);
@@ -214,7 +208,9 @@ class CreateJob extends Component {
                 },
                 isUpdateMode: true,
                 tags: tagsArr
-            }))
+            }), () => {
+                this.getUsersId(this.state.tags);
+            })
         }
     }
 
@@ -234,12 +230,12 @@ class CreateJob extends Component {
             const inputLength = inputValue.length
 
             let suggestions =[];
-             if(self.userList.length > 0) { 
+             if(self.userList.length > 0) {
                 suggestions=  self.userList.filter((state) => {
                     return state.name.toLowerCase().slice(0, inputLength) === inputValue
-                    //suggestions.push(state.name.toLowerCase().slice(0, inputLength) === inputValue)  
-                //suggestions.push(state.name.toLowerCase().slice(0, inputLength) === inputValue)  
-                    //suggestions.push(state.name.toLowerCase().slice(0, inputLength) === inputValue)  
+                    //suggestions.push(state.name.toLowerCase().slice(0, inputLength) === inputValue)
+                //suggestions.push(state.name.toLowerCase().slice(0, inputLength) === inputValue)
+                    //suggestions.push(state.name.toLowerCase().slice(0, inputLength) === inputValue)
                 })
             }
 
@@ -355,7 +351,7 @@ class CreateJob extends Component {
                         <Col xs="12" md="3" lg="3">
                         </Col>
                     </Row>
-                    
+
                 }
                 <Row style={{ marginTop: 5 }}>
                     <Col xs="12" md="3" lg="3">
@@ -410,7 +406,8 @@ const mapStateToProps = state => {
         jobUpdated: state.jobDetail.jobUpdated,
         createJob: state.jobDetail.createJob,
         jobCreateCompleted: state.jobDetail.jobCreateCompleted,
-        userList: state.jobDetail.userList
+        userList: state.jobDetail.userList,
+        userDetails: state.userDetail.userDetails,
     };
 }
 
@@ -418,7 +415,8 @@ function mapDispatchToProps(dispatch) {
     return {
         createNewJob: (data) => dispatch(createNewJob(data)),
         updateJobDetails: (id, data) => dispatch(updateJobDetails(id, data)),
-        getUserSuggestions: () => dispatch(getUserSuggestions())
+        getUserSuggestions: () => dispatch(getUserSuggestions()),
+        searchUser: (data) => dispatch(searchUser(data)),
     };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(CreateJob);
