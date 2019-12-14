@@ -10,12 +10,23 @@ webpush.setVapidDetails(
 
 class ChatController {
 
+    static getChatHistory(req, res) {
+        let id = req.params.id;
+        let userId = req.params.userId;
+        
+        ChatService.getChatHistory(id, userId).then(result => {
+            res.json(result);
+        }).catch(err => {
+            res.status(500).json(err)
+        })
+    }
+
     static getRoleChatHistory(req, res) {
         let id = req.params.id
+        let userId = req.params.userId;
         let role = req.params.role
-        console.log(id, role);
         
-        ChatService.getRoleChatHistory(id, role).then(result => {
+        ChatService.getRoleChatHistory(id, userId, role).then(result => {
             res.json(result);
         }).catch(err => {
             res.status(500).json(err)

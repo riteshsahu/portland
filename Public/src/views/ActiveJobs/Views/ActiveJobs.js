@@ -1,23 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import {Row, Alert} from 'reactstrap';
-import { getJobDetails, getJobParticipants, getPrivateChatData } from '../action.activeJobs';
-import Toolbar from './Toolbar/Toolbar';
-import RoleChat from './RoleChat/Views/RoleChat';
-import PrivateChat from './privateChat/Views/PrivateChat'
+import { getJobDetails, getJobParticipants } from '../action.activeJobs';
+import Toolbar from './Chat/Views/Toolbar/Toolbar';
+import Chat from './Chat/Views/Chat';
 
 class ActiveJobs extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-
-        }
     }
 
     componentDidMount() {
-        var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
+        // var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
         this.props.getJobDetails(this.props.match.params.id);
-        // this.props.getJobParticipants(this.props.match.params.id);
+        this.props.getJobParticipants(this.props.match.params.id);
         // this.props.getPrivateChatData(this.props.match.params.id, USER_DETAILS[0].userId)
     }
     
@@ -32,24 +28,15 @@ class ActiveJobs extends Component {
                                 <Alert color="danger">{this.props.errorName}</Alert>
                             </Row>
                             : null}
-                        {/* <Messenger   history={this.props.history} params={this.props.match.params}/>                */}
                         <Toolbar
                             leftItems="Job Title"
                             rightItems="Participants"
-                            handleClientAnswer={(value) => this.submitMessage(value)}
+                            // handleClientAnswer={(value) => this.submitMessage(value)}
                             userRole={USER_DETAILS[0].role}
                             history={this.props.history}
                             params={this.props.match.params}
                         />
-                        {this.props.match.params.roleKey ?
-                            <RoleChat params={this.props.match.params} />
-                            : this.props.match.params.privateChatId ?
-                                <PrivateChat params={this.props.match.params} />
-                                :
-                                <div style={{ fontSize: "1.5rem", display: "flex", justifyContent: "center", alignItems: "center", flexGrow: "1" }}>
-                                    <span>Please click on a tab to start chat.</span>
-                                </div>
-                        }
+                        <Chat params={this.props.match.params}/>
                     </div>
                 </div>
             </div>
@@ -66,23 +53,11 @@ const mapStateToProps = state => {
     };
 }
 
-// const mapStateToProps = state => {
-//     return {
-//       privateChatId: state.PrivateChatDetail.privateChatId,
-//       chatName: state.PrivateChatDetail.chatName,
-//       ParticipantsDetails: state.ActiveJobDetail.ParticipantsDetails,
-//       privateChatData: state.ActiveJobDetail.privateChatData,
-//       // ParticipantsDetails: state.PrivateChatDetail.ParticipantsDetails,
-//       // privateChatData: state.PrivateChatDetail.privateChatData
-//     };
-//   }
-
 function mapDispatchToProps(dispatch) {
     return {
         getJobDetails: (id) => dispatch(getJobDetails(id)),
         getJobParticipants: (id) => dispatch(getJobParticipants(id)),
-        getPrivateChatData: (jobId, userId, roleId) => dispatch(getPrivateChatData(jobId, userId, roleId))
+        // getPrivateChatData: (jobId, userId, roleId) => dispatch(getPrivateChatData(jobId, userId, roleId))
     };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ActiveJobs);
-

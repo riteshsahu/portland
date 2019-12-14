@@ -16,62 +16,70 @@ function socketConnection (io) {
             // console.log(users);
         });
         
-        // subscribe to a job
-        client.on('subscribe', function(data) {
-            if (data.privateChat == true) {
-                chatService.subscribePrivateUser(data)
-                .then(results => {
-                    console.log("%s joining private room %s", client.id, data.room);
-                    client.join(data.room);
-                })
-            }
-            else
-            chatService.subscribeUser(data)
-            .then(results => {
-                console.log("%s joining room %s", client.id, data.room);
-                client.join(data.room);
-            })
-            .catch(err => {
-                console.log('error', err)
-            })
+        // subscribe to chat room
+        client.on('subscribe to chat room', function(data) {
+            client.join(data.JobId);
+                console.log("%s joining main chat %s", client.id, data.JobId);
+
+            // chatService.subscribeUser(data)
+            // .then(results => {
+            //     console.log("%s joining main chat %s", client.id, data.JobId);
+            //     client.join(data.JobId);
+            // })
+            // .catch(err => {
+            //     console.log('error', err)
+            // })
         });
+
+        // subscribe to private chat
+        // client.on('subscribe to private chat', function (data) {
+        //     chatService.subscribePrivateUser(data)
+        //         .then(results => {
+        //             console.log("%s joining private chat %s", client.id, data.privateChatId);
+        //             client.join(data.privateChatId);
+        //         })
+        //         .catch(err => {
+        //             console.log('error', err)
+        //         })
+        // });
 
         // unsubscribe from all jobs
         client.on('unsubscribe', function(data) {
             chatService.unsubscribeUserFromAllJobs(data)
                 .then(results => {
-                    console.log("user left room", data.room)
+                    console.log("user left room", data.JobId)
                 })
                 .catch(err => {
                     console.log('error', err)
                 })
         });
 
-        client.on('send message', function(data) {
-            if (data.privateChat == true) {
-                chatService.privateMessageUpdate(data)
-                .then(result => {
-                    client.emit('message updated', result);
-                    console.log("Sending Message in %s room",data.room)
-                })
-            }
-            else
-            chatService.roleMessageUpdate(data)
+        client.on('main chat send message', function(messageData) {
+            chatService.messageUpdate(messageData)
             .then(result => {
-                // client.emit('message updated', result);
-                // client.broadcast.to(data.room).emit('response', {
-                //     message: data.message,
-                //     author: data.author,
-                //     isVisibleToClient: data.isVisibleToClient
-                // });
-
-                // broadcast message to everyone in room
-                io.in(data.room).emit('message updated', result);
+                // broadcast message to everyone in main chat room
+                console.log("broadcasting msg to ", messageData.JobId);
+                // io.in(messageData.JobId).emit('main chat messages updated', result);
+                io.in(messageData.JobId).emit('chat messages updated', result);
             })
-            // client.broadcast.to(data.room).emit('response', {
-            //     message: data.message,
-            // });
         });
+
+        client.on('role chat send message', function(messageData) {
+            chatService.roleMessageUpdate(messageData)
+            .then(result => {
+                // broadcast message to everyone in role chat room
+                io.in(messageData.JobId).emit('chat messages updated', result);
+                // io.in(messageData.JobId).emit('role chat messages updated', result);
+            })
+        });
+
+        // client.on('private chat send message', function(messageData) {
+        //     chatService.privateMessageUpdate(messageData)
+        //     .then(result => {
+        //         // broadcast message to everyone in private chat room
+        //         io.in(messageData.JobId).emit('private chat messages update', result);
+        //     })
+        // });
 
         client.on('disconnect', () => {
             // unsubscribe user from all jobs

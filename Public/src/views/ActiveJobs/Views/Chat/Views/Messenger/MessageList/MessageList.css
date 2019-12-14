@@ -1,0 +1,24 @@
+.message-list-container {
+    padding: 10px;
+    padding-bottom: 70px;
+  }
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.layout {
+  padding: 0px 0px !important;
+}
+
+.messages {
+  flex: 6;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 1rem;
+}
+
+.app-footer {
+  display: none
+}

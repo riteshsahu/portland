@@ -4,10 +4,17 @@ const initialState = {
     JobId: '',
     ParticipantsDetails: [],
     JobTitle: '',
-    chatHistory: '',
     isChatUpdated: false,
     isPrivateChatCreated: false,
-    privateChatData: []
+    privateChatData: [],
+    KeyRole: {
+        1: "Admin",
+        2: "Management",
+        3: "Internal Employee",
+        4: "External Employee",
+        5: "Designer",
+        6: "Client"
+    }
 }
 
 
@@ -47,17 +54,6 @@ function ActiveJobReducer(state = initialState, action) {
                 ParticipantsDetails: action.payload
             }
 
-        case ActiveJobDetail.GET_CHAT_HISTORY:
-            return {
-                ...state,
-                chatHistory: action.payload,
-                isChatUpdated: action.isChatUpdated
-            }
-        case ActiveJobDetail.GET_CHAT_HISTORY_UPDATE:
-            return {
-                ...state,
-                isChatUpdated: action.isChatUpdated
-            }
         case ActiveJobDetail.GET_PRIVATE_CHAT_DATA:
             return {
                 ...state,

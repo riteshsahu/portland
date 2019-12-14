@@ -1,0 +1,5 @@
+export const RoleChatDetail = {
+    GET_ROLE_CHAT_HISTORY:"GET_ROLE_CHAT_HISTORY",
+    UPDATE_ROLE:"UPDATE_ROLE",
+    ERROR_FROM: "ROLE_CHAT",
+}

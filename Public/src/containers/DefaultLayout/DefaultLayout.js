@@ -68,6 +68,7 @@ class DefaultLayout extends Component {
     this.props.getUserJobs(user[0].userId);
     this.props.getUserCompletedJobs(user[0].userId);
   }
+  
   signOut(e) {
     e.preventDefault()
     localStorage.removeItem("userDetails");
