@@ -16,7 +16,7 @@
   }
   
   .message.from-me .message-body {
-    background-color: #e6d897;
+    background-color: #f8e9a4;
   }
   
   .message {
@@ -29,11 +29,12 @@
     /* display: inline-block; */
     /* padding: 20px; */
     padding: 5px 10px;
-    background-color: #eee;
+    background-color: white;
     border: 1px;
     border-radius: 5px;
     padding-right: 50px;
     display: inline-flex;
+    box-shadow: 0px 0px 6px #B2B2B2;
   }
 
   .message-body a{
@@ -42,7 +43,7 @@
   
   .username {
     font-weight: bold;
-    font-size: 0.9rem;
-    color: #999;
+    font-size: 0.8rem;
+    color: #666;
     margin-bottom: 5px;
   }

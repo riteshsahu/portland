@@ -1,76 +1,86 @@
 .toggle-emoji {
-  height: auto;
-  margin-bottom: 0;
-  display: flex;
-  justify-content: flex-end;
-  position: relative;
-}
-
-.message-list-container {
-    padding: 10px;
-    padding-bottom: 70px;
-    /* min-height: 554px; */
-
-  }
-
-.container {
-  display: flex;
-  flex-direction: column;
-  /* overflow-y: scroll; */
-}
-
-.layout {
-  padding: 0px 0px !important;
-}
-
-  .compose {
-    /* flex: 1; */
+    height: auto;
+    margin-bottom: 0;
     display: flex;
-    padding: 10px;
-    /* display: inherit; */
-    /* align-items: center; */
-    background: white;
-    /* border-top: 1px solid #eeeef1; */
+    justify-content: flex-end;
     position: absolute;
-    /* width: 79%; */
-    bottom: 0px;
-    height: 60px;
-    overflow: hidden;
-    /* flex-shrink: 0; */
-    width: 83%;
+    bottom: 67px;
+    right: 40px;
   }
   
-  @supports (backdrop-filter: blur(20px)) {
-    .compose {
-      border: none;
-      background-color: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(20px);
+  .message-list-container {
+      padding: 10px;
+      padding-bottom: 70px;
     }
+  
+  .container {
+    display: flex;
+    flex-direction: column;
   }
   
-  .compose-input {
-    flex: 1;
-    border: none;
-    font-size: 14px;
-    height: 40px;
-    background: white;
-    width: 95%;
-    padding-left: 10px;
+  .layout {
+    padding: 0px 0px !important;
   }
   
-  /* .compose-input::placeholder {
-    opacity: 0.3;
-  } */
+    .compose {
+      display: flex;
+      margin: 0px 15px;
+      padding: 10px;
+      border-radius: 50px;
+      margin-bottom: 5px;
+      align-items: flex-end;
+      box-shadow: 0px 0px 6px #B2B2B2;
+      position: relative;
+    }
+    
+    @supports (backdrop-filter: blur(20px)) {
+      .compose {
+        border: none;
+        background-color: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(20px);
+      }
+    }
+    
+    .compose-input {
+      border: none;
+      font-size: 14px;
+      flex-grow: 1;
+      outline: none;
+      border-radius: 50px;
   
-  .compose .toolbar-button {
-    color: #bbbbbf;
-    margin-left: 15px;
-  }
+      padding: 10px;
+      min-height: 40px;
+      background: #fff;
+      border-radius: 15px;
+    }
+      
+    .compose .toolbar-button {
+      color: #bbbbbf;
+      margin-left: 15px;
+    }
+    
+    .compose .toolbar-button:hover {
+      color: #99999c;
+    }
   
-  .compose .toolbar-button:hover {
-    color: #99999c;
-  }
-
-  .app-footer {
-    display: none
-  }
+    .app-footer {
+      display: none
+    }
+  
+    .selected-file {
+      position: absolute;
+      bottom: 68px;
+      right: 51px;
+      background-color: #c7c5af;
+      padding: 10px;
+      border-radius: 6px;
+      box-shadow: 0px 0px 6px #B2B2B2;
+    }
+  
+    .selected-img {
+      position: absolute;
+      height: 100px;
+      bottom: 67px;
+      right: 51px;
+      box-shadow: 0px 0px 6px #B2B2B2;
+    }

@@ -24,28 +24,34 @@ class ActiveJobs extends Component {
     render() {
         var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
         return (
-            <div style={{ width: "100%",height: "100%", display: "flex", flexDirection: "column", flexWrap: "nowrap"}}>
-                {this.props.errorFrom === "ACTIVE_JOB_DETAIL" ?
-            <Row>
-                <Alert color= "danger">{this.props.errorName}</Alert>
-                    </Row>
-                    : null}
-                {/* <Messenger   history={this.props.history} params={this.props.match.params}/>                */}
-                <Toolbar
-                    leftItems="Job Title"
-                    rightItems="Participants"
-                    handleClientAnswer={(value) => this.submitMessage(value)}
-                    userRole={USER_DETAILS[0].role}
-                    history={this.props.history}
-                    params={this.props.match.params}
-                />
-                {this.props.match.params.roleKey ?
-                    <RoleChat params={this.props.match.params}/>
-                    : this.props.match.params.privateChatId ?
-                        <PrivateChat params={this.props.match.params}/>
-                        :
-                        <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}>Please click on a tab to start chat.</div>
-                }
+            <div style={{ position: "relative", height: "100%" }}>
+                <div style={{ position: "absolute", top: "0", left: "0", right: "0", bottom: "0", height: "100%" }}>
+                    <div style={{ width: "100%", height: "100%", display: "flex", flexDirection: "column", flexWrap: "nowrap", position: "relative" }}>
+                        {this.props.errorFrom === "ACTIVE_JOB_DETAIL" ?
+                            <Row>
+                                <Alert color="danger">{this.props.errorName}</Alert>
+                            </Row>
+                            : null}
+                        {/* <Messenger   history={this.props.history} params={this.props.match.params}/>                */}
+                        <Toolbar
+                            leftItems="Job Title"
+                            rightItems="Participants"
+                            handleClientAnswer={(value) => this.submitMessage(value)}
+                            userRole={USER_DETAILS[0].role}
+                            history={this.props.history}
+                            params={this.props.match.params}
+                        />
+                        {this.props.match.params.roleKey ?
+                            <RoleChat params={this.props.match.params} />
+                            : this.props.match.params.privateChatId ?
+                                <PrivateChat params={this.props.match.params} />
+                                :
+                                <div style={{ fontSize: "1.5rem", display: "flex", justifyContent: "center", alignItems: "center", flexGrow: "1" }}>
+                                    <span>Please click on a tab to start chat.</span>
+                                </div>
+                        }
+                    </div>
+                </div>
             </div>
         )
     }

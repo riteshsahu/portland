@@ -182,31 +182,35 @@ class Toolbar extends Component {
     return (
       <>
         <div className="toolbar">
-          <div ><h3 className="jobtitle" >{this.props.JobTitle ? this.props.JobTitle : leftItems}</h3></div>
-          {this.chatTabsHandler()}
-          {/* <Badge style={{borderRadius: "20px",margin: "10px"}} color="warning"><Label style={{marginTop: "8px"}}>{this.props.privateChatData.length>0 ? this.props.privateChatData[0].chatName: ""}</Label></Badge> */}
+          <div style={{ paddingLeft: "5px" }}>
+            <h3 className="jobtitle" >{this.props.JobTitle ? this.props.JobTitle : leftItems}</h3>
+          </div>
+          <div className="toolbar-tabs">
+            <div className="left-tabs">{this.chatTabsHandler()}</div>
+            {/* <Badge style={{borderRadius: "20px",margin: "10px"}} color="warning"><Label style={{marginTop: "8px"}}>{this.props.privateChatData.length>0 ? this.props.privateChatData[0].chatName: ""}</Label></Badge> */}
 
-          {/* <h1 className="toolbar-title">{title}</h1> */}
-          <div className="right-items" >
-            <Label style={{ cursor: "pointer", marginTop: 4 }} onClick={this.handleParticipants}>
-              {<i
-                style={{ marginTop: 5, marginRight: 5, marginLeft: 5 }}
-                className="fa fa-users">
-              </i>
-              }
-              {rightItems}
-            </Label>
-            {this.props.userRole != 6
-              ?
-              <Button style={{ background: "#ff8f00", color: "white" }}
-                onClick={this.handleAnswer}
+            {/* <h1 className="toolbar-title">{title}</h1> */}
+            <div className="right-tabs" >
+              <Label style={{ cursor: "pointer", marginTop: 4 }} onClick={this.handleParticipants}>
+                {<i
+                  style={{ marginTop: 5, marginRight: 5, marginLeft: 5 }}
+                  className="fa fa-users">
+                </i>
+                }
+                {rightItems}
+              </Label>
+              {this.props.userRole != 6
+                ?
+                <Button style={{ background: "#ff8f00", color: "white" }}
+                  onClick={this.handleAnswer}
 
-              >
-                Answer
+                >
+                  Answer
             </Button>
-              : null
-            }
+                : null
+              }
 
+            </div>
           </div>
         </div>
         {/*  */}

@@ -1,12 +1,6 @@
 .messages {
-  overflow: auto;
-  /* height: 435px; */
-  /* flex-grow: 1; */
-  padding: 20px;
-  top: 110px;
-  position: absolute;
-  bottom: 60px;
-  /* flex-grow: 1; */
-  width: 83%;
-  /* min-height: 440px; */
+  flex: 6;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 1rem;
 }

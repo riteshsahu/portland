@@ -159,7 +159,7 @@ class DefaultLayout extends Component {
           </AppSidebar>
           <main className="main">
             {/* <AppBreadcrumb appRoutes={routes} /> */}
-            <Container fluid>
+            <Container fluid style={{ height: "100%", padding: "0" }}>
               <Suspense fallback={this.loading()}>
                 <Switch>
                   {routes.map((route, idx) => {

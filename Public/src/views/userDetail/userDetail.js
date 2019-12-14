@@ -14,7 +14,7 @@ class userDetail extends Component {
 
     render() {
         return (
-                <Card style={{ marginTop: "10px" }}>
+                <Card>
                     <CardHeader className="header" >
                         <UserSearch />
                     </CardHeader>

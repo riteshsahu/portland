@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import './MessageList.css';
 import Messages from '../Message/Messages';
-// import Toolbar from '../Toolbar/Toolbar';
+import TextArea from 'react-autosize-textarea';
 import { getChatHistory } from '../../../action.privateChat';
 import 'emoji-mart/css/emoji-mart.css';
 import { Picker } from 'emoji-mart';
 import { getUserJobs} from '../../../../../../../containers/DefaultLayout/action.defaultLayout';
+import Aux from '../../../../../../Aux/Aux'
 
 class MessageList extends Component {
   constructor(props) {
@@ -183,6 +184,11 @@ class MessageList extends Component {
     }
   }
 
+  onInputChange = (event) => {
+    if(event.target.value !== "\n") { 
+      this.setState({ message: event.target.value });
+    }
+  }
 
   handleAnswerInput = (value) => {
     this.setState({
@@ -236,17 +242,37 @@ class MessageList extends Component {
   render() {
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
     return (
-      <div >
-        {/* <Toolbar
-          params={this.props.params} 
-          leftItems="Private Chat"
-          rightItems="Participants"
-          handleClientAnswer={(value) => this.submitMessage(value)}
-          userRole={USER_DETAILS[0].role}
-          history={this.props.history}
-        /> */}
-
+      <Aux>
         <Messages messages={this.state.messages} />
+
+        <div className="compose">
+
+          <TextArea
+            rows={1}
+            maxRows={10}
+            className="compose-input"
+            placeholder="Type a message"
+            onChange={e => this.onInputChange(e) }
+            defaultValue={this.state.message}
+            value={this.state.message}
+            // onKeyPress={e => this.keyPressed(e)}
+          />
+          <div style={{ padding: "5px 10px" }}>
+            <input style={{ display: "none" }}
+              ref={fileInputContract => this.fileInputContract = fileInputContract}
+              type="file" id="fileInputContract" onChange={this.handleContractFile} />
+
+            <i style={{ color: "yellow", fontSize: "x-large", flexDirection: "row-reverse", marginTop: "7px", marginLeft: "3px" }}
+              className="fa fa-smile-o" onClick={this.toggleEmojiPicker}></i>
+            <i style={{ color: "grey", fontSize: "x-large", flexDirection: "row-reverse", marginTop: "7px", marginLeft: "3px" }}
+              onClick={this.triggerInputFileContract} className="fa fa-paperclip"></i>
+            <i style={{ color: "#44c372", fontSize: "x-large", flexDirection: "row-reverse", margin: "7px 15px 0px", width: "3%" }}
+              onClick={() => { this.submitMessage() }} className="fa fa-paper-plane"></i>
+          </div>
+        </div>
+        {this.state.showEmojiPicker ? (
+          <div className="toggle-emoji"><Picker set="emojione" onSelect={this.addEmoji} /> </div>
+        ) : null}
 
         {
           this.state.selectedFile ?
@@ -257,32 +283,7 @@ class MessageList extends Component {
             :
             null
         }
-
-        <div className="compose">
-
-          <textarea
-            rows={1}
-            className="compose-input"
-            placeholder="Type a message"
-            onChange={e => { this.setState({ message: e.target.value }) }}
-            value={this.state.message}
-            onKeyPress={e => this.keyPressed(e)}
-          />
-          <input style={{ display: "none" }}
-            ref={fileInputContract => this.fileInputContract = fileInputContract}
-            type="file" id="fileInputContract" onChange={this.handleContractFile} />
-
-          <i style={{ color: "yellow", fontSize: "x-large", flexDirection: "row-reverse", marginTop: "7px", marginLeft: "3px" }}
-            className="fa fa-smile-o" onClick={this.toggleEmojiPicker}></i>
-          <i style={{ color: "grey", fontSize: "x-large", flexDirection: "row-reverse", marginTop: "7px", marginLeft: "3px" }}
-            onClick={this.triggerInputFileContract} className="fa fa-paperclip"></i>
-          <i style={{ color: "#44c372", fontSize: "x-large", flexDirection: "row-reverse", margin: "7px 15px 0px", width: "3%" }}
-            onClick={()=>{this.submitMessage()}} className="fa fa-paper-plane"></i>
-        </div>
-        {this.state.showEmojiPicker ? (
-          <div className="toggle-emoji"><Picker set="emojione" onSelect={this.addEmoji} /> </div>
-        ) : null}
-      </div>
+      </Aux>
     );
   }
 }

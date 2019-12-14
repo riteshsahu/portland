@@ -29,6 +29,7 @@
     "nodemon": "^1.19.0",
     "path": "^0.12.7",
     "react-alert": "^5.4.0",
+    "react-autosize-textarea": "^7.0.0",
     "react-time": "^4.3.0",
     "request": "^2.88.0",
     "socket.io": "^2.2.0",

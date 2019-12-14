@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import './MessageList.css';
 import Messages from '../Message/Messages';
-// import Toolbar from '../Toolbar/Toolbar';
+import TextArea from 'react-autosize-textarea';
 import { getRoleChatHistory } from '../../../action.roleChat';
 import 'emoji-mart/css/emoji-mart.css';
 import { Picker } from 'emoji-mart';
 import { getUserJobs } from '../../../../../../../containers/DefaultLayout/action.defaultLayout';
+import Aux from '../../../../../../Aux/Aux'
 
 class MessageList extends Component {
   constructor(props) {
@@ -251,53 +252,48 @@ class MessageList extends Component {
   render() {
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
     return (
-      <div >
-        {/* <Toolbar
-          params={this.props.params} 
-          leftItems="Private Chat"
-          rightItems="Participants"
-          handleClientAnswer={(value) => this.submitMessage(value)}
-          userRole={USER_DETAILS[0].role}
-          history={this.props.history}
-        /> */}
-
+      <Aux >
         <Messages messages={this.state.messages} />
 
-        {
-          this.state.selectedFile ?
-            this.state.selectedFile.type === "image" ?
-              <img src={this.state.selectedFile.data} style={{ position: "absolute", height: "150px", bottom: "60px" }} />
-              :
-              <span style={{ position: "absolute", bottom: "60px" }}>{this.state.selectedFile.name}</span>
-            :
-            null
-        }
-
         <div className="compose">
-
-          <textarea
+          
+          <TextArea 
             rows={1}
+            maxRows={10}
             className="compose-input"
             placeholder="Type a message"
             onChange={e => this.onInputChange(e) }
+            defaultValue={this.state.message}
             value={this.state.message}
-            onKeyPress={e => this.keyPressed(e)}
+            // onKeyPress={e => this.keyPressed(e)}
           />
-          <input style={{ display: "none" }}
-            ref={fileInputContract => this.fileInputContract = fileInputContract}
-            type="file" id="fileInputContract" onChange={this.handleContractFile} />
+          <div style={{ padding: "5px 10px" }}>
+            <input style={{ display: "none" }}
+              ref={fileInputContract => this.fileInputContract = fileInputContract}
+              type="file" id="fileInputContract" onChange={this.handleContractFile} />
 
-          <i style={{ color: "yellow", fontSize: "x-large", flexDirection: "row-reverse", marginTop: "7px", marginLeft: "3px" }}
-            className="fa fa-smile-o" onClick={this.toggleEmojiPicker}></i>
-          <i style={{ color: "grey", fontSize: "x-large", flexDirection: "row-reverse", marginTop: "7px", marginLeft: "3px" }}
-            onClick={this.triggerInputFileContract} className="fa fa-paperclip"></i>
-          <i style={{ color: "#44c372", fontSize: "x-large", flexDirection: "row-reverse", margin: "7px 15px 0px", width: "3%" }}
-            onClick={()=>{this.submitMessage()}} className="fa fa-paper-plane"></i>
+            <i style={{ color: "yellow", fontSize: "x-large", flexDirection: "row-reverse", margin: "0 8px" }}
+              className="fa fa-smile-o" onClick={this.toggleEmojiPicker}></i>
+            <i style={{ color: "grey", fontSize: "x-large", flexDirection: "row-reverse", margin: "0 8px" }}
+              onClick={this.triggerInputFileContract} className="fa fa-paperclip"></i>
+            <i style={{ color: "#44c372", fontSize: "x-large", flexDirection: "row-reverse", margin: "0 8px" }}
+              onClick={() => { this.submitMessage() }} className="fa fa-paper-plane"></i>
+          </div>
         </div>
         {this.state.showEmojiPicker ? (
           <div className="toggle-emoji"><Picker set="emojione" onSelect={this.addEmoji} /> </div>
         ) : null}
-      </div>
+
+        {
+          this.state.selectedFile ?
+            this.state.selectedFile.type === "image" ?
+              <img src={this.state.selectedFile.data} className="selected-img" />
+              :
+              <span className="selected-file">{this.state.selectedFile.name}</span>
+            :
+            null
+        }
+      </Aux>
     );
   }
 }
