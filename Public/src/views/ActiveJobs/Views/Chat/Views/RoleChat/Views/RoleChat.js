@@ -66,9 +66,9 @@ class RoleChat extends Component {
             
             // window.clientSocket.emit('subscribe to role chat', subscription);
 
-            // this.setState({
-            //     messages: []
-            // })
+            this.setState({
+                messages: []
+            })
         }
 
         if (this.props.chatHistory.length > 0 && prevProps.chatHistory != this.props.chatHistory) {

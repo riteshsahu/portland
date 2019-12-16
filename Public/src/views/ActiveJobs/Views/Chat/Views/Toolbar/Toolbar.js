@@ -26,15 +26,19 @@ class Toolbar extends Component {
   }
 
   componentDidMount = () => {
-    // var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
+    var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
     // this.props.getPrivateChatData(this.props.params.id, USER_DETAILS[0].userId)
     // check if user can see role tab specified by roleKey
     if (this.props.params.roleKey) {
     //   let USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
     //   if (USER_DETAILS[0].role <= this.props.params.roleKey) {
-        this.setState({
-          activeTab: this.props.params.roleKey
-        });
+        if (USER_DETAILS[0].role != this.props.params.roleKey && this.props.params.roleKey != 6) {
+          this.setState({
+            activeTab: this.props.params.roleKey
+          });
+      } else {
+        this.props.history.push("/activeJobs/" + this.props.params.id);
+      }
     //   } else {
     //     this.props.history.push("/activeJobs/" + this.props.params.id);
     //   }
@@ -155,18 +159,20 @@ class Toolbar extends Component {
   }
 
   chatTabsHandler = () => {
-    // var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
+    var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
 
     let tabs = [];
-    tabs.push(
-      <Badge onClick={() => this.routeMainChat()} className={"Badge " + (this.state.activeTab === 0 ? 'Active' : "")}><Label className="BadgeLabel">Main</Label></Badge>
-    )
+    // tabs.push(
+    //   <Badge onClick={() => this.routeMainChat()} className={"Badge " + (this.state.activeTab === 0 ? 'Active' : "")}><Label className="BadgeLabel">Main</Label></Badge>
+    // )
 
     Object.keys(this.state.KeyRole).forEach(roleKey => {
       // if (USER_DETAILS[0].role <= roleKey) {
-        tabs.push(
-          <Badge onClick={() => this.routeRoleChat(roleKey)} className={"Badge " + (this.state.activeTab === roleKey ? 'Active' : "")}><Label className="BadgeLabel">{this.state.KeyRole[roleKey]}</Label></Badge>
-        )
+        if (USER_DETAILS[0].role != roleKey && USER_DETAILS[0].role != 6) {
+          tabs.push(
+            <Badge onClick={() => this.routeRoleChat(roleKey)} className={"Badge " + (this.state.activeTab === roleKey ? 'Active' : "")}><Label className="BadgeLabel">{this.state.KeyRole[roleKey]}</Label></Badge>
+          )
+        }
       // }
     })
 
@@ -180,7 +186,7 @@ class Toolbar extends Component {
       <>
         <div className="toolbar">
           <div style={{ paddingLeft: "5px" }}>
-            <h3 className="jobtitle" >{this.props.JobTitle ? this.props.JobTitle : leftItems}</h3>
+            <h3 onClick={() => this.routeMainChat()} className="jobtitle" >{this.props.JobTitle ? this.props.JobTitle : leftItems}</h3>
           </div>
           <div className="toolbar-tabs">
             <div className="left-tabs">{this.chatTabsHandler()}</div>

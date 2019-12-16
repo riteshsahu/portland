@@ -277,7 +277,7 @@ const mapStateToProps = state => {
 function mapDispatchToProps(dispatch) {
   return {
     // getJobParticipants: (id) => dispatch(getJobParticipants(id)),
-    createNewPrivateChatRoom: (data) => dispatch(createNewPrivateChatRoom(data)),
+    // createNewPrivateChatRoom: (data) => dispatch(createNewPrivateChatRoom(data)),
     // getPrivateChatData: (jobId, userId) => dispatch(getPrivateChatData(jobId, userId))
   };
 }

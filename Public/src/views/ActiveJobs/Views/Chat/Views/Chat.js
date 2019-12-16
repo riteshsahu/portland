@@ -43,7 +43,7 @@ class Chat extends Component {
 
     componentDidUpdate(prevProps) {
         var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
-        if (this.props.JobId != prevProps.JobId) {
+        if (this.props.params.id != prevProps.params.id) {
             if (USER_DETAILS) {
                 let subscription = {
                     userId: USER_DETAILS[0].userId,
@@ -54,6 +54,10 @@ class Chat extends Component {
             console.log('subscribe to main chat', subscription);
             window.clientSocket.emit('subscribe to main chat', subscription);
             }
+
+            this.setState({
+                messages: []
+            })
         }
 
         if (this.props.chatHistory.length > 0 && prevProps.chatHistory != this.props.chatHistory) {
@@ -76,8 +80,15 @@ class Chat extends Component {
                     })
                 } else if (!fromMe) {
                     // messages sent by others
+                    let currentUserIsClient = USER_DETAILS[0].role == 6;
+                    let author = "";
+                    if (currentUserIsClient) {
+                        author = "Portland Representative";
+                    } else {
+                        author = this.props.KeyRole[data.senderRole] + "-" + data.senderFirstName;
+                    }
                     messages.push({
-                        author: this.props.KeyRole[data.senderRole] + "-" + data.senderFirstName,
+                        author: author,
                         fromMe: fromMe,
                         message: data.message,
                         fileName: data.fileName,
