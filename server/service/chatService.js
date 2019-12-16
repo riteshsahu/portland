@@ -308,10 +308,10 @@ class ChatService {
                 .then(() => {
                     let records = [];
                     isSubscribedArray.map(value => {
-                        records.push([value.userId, data.JobId, messageId, value.isSubscribed, new Date(), data.userId])
+                        records.push([value.userId, data.JobId, messageId, value.isSubscribed, new Date(), data.userId, 0])
                     })
                     return new Promise((resMessageRecipient, rejMessageRescipient) => {
-                        connection.query('INSERT INTO MessageRecipient ( recipientId, recipientGroupId, messageId, isRead, createAt, createBy) VALUES ? ',
+                        connection.query('INSERT INTO MessageRecipient ( recipientId, recipientGroupId, messageId, isRead, createAt, createBy, isMainChat) VALUES ? ',
                             [records],
                             (err, result) => {
                                 if (err) {
@@ -515,7 +515,7 @@ class ChatService {
                     RU.firstName recipientFirstName, RU.lastName recipientLastName, RU.role recipientRole, 
                     M.createBy,M.createAt FROM MessageRecipient MR JOIN Message M ON MR.messageId = M.id 
                     JOIN User SU ON SU.userId = M.creatorId JOIN User RU on RU.userId = MR.recipientId 
-                    WHERE MR.recipientGroupId = ? AND SU.isActive = 1 AND RU.isActive = 1 AND 
+                    WHERE MR.recipientGroupId = ? AND SU.isActive = 1 AND RU.isActive = 1 AND MR.isMainChat = 0 AND
                     ((SU.userId = ? AND RU.role = ?) OR (SU.userId != ? AND RU.role = ?)) GROUP BY M.id ORDER BY M.createAt ASC`, 
                     [id, userId, role, userId, role],(err, results) => {
                             db.releaseConnection(connection);
