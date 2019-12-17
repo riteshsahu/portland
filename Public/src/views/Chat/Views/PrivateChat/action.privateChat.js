@@ -1,16 +1,44 @@
-import { ArchiveJobDetail } from './constants.archivedJobs';
-import { API_ROOT, URI, StringFormat } from '../../config/config';
-import {ProfileDetail} from '../Profile/profile.constants';
+import { PrivateChatDetail } from './constants.privateChat';
+import { API_ROOT, URI, StringFormat } from '../../../../config/config';
+import {ProfileDetail} from '../../../Profile/profile.constants';
 
 export const selectedJob = (id,value) => {
   return (dispatch) => {
      dispatch({
-        type: ArchiveJobDetail.GET_JOB_ID,
+        type: PrivateChatDetail.GET_JOB_ID,
         payload: id,
         title: value
     })
 }
 }
+
+export const createNewPrivateChatRoom = (data) => {
+    return (dispatch) => {
+        fetch(API_ROOT + URI.CREATE_NEW_PRIVATE_CHAT, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(res => res.json())
+            .then(data => {
+               if (data == "CREATED") {
+                    dispatch({ 
+                        type: PrivateChatDetail.CREATE_PRIVATE_CHAT, 
+                        payload: true 
+                    })
+                }
+            })
+            .catch(err => {
+                dispatch({
+                    type: ProfileDetail.ERROR_HANDLER,
+                    errorFrom: PrivateChatDetail.ERROR_FROM,
+                    errorName: ProfileDetail.ERROR_NAME
+                })
+            })
+        }
+  }
 
 
 
@@ -25,14 +53,14 @@ export const getJobParticipants = (id) => {
             .then(res => res.json())
             .then(data => {
                 dispatch({
-                    type: ArchiveJobDetail.GET_JOB_PARTICIPANTS,
+                    type: PrivateChatDetail.GET_JOB_PARTICIPANTS,
                     payload: data
                 })
             })
             .catch(err => {
                 dispatch({
                     type: ProfileDetail.ERROR_HANDLER,
-                    errorFrom: ArchiveJobDetail.ERROR_FROM,
+                    errorFrom: PrivateChatDetail.ERROR_FROM,
                     errorName: ProfileDetail.ERROR_NAME
                 })
             })
@@ -42,11 +70,11 @@ export const getJobParticipants = (id) => {
 export const getChatHistory = (id) => {
     return (dispatch) => {
         dispatch({
-            type: ArchiveJobDetail.UPDATE_JOB_ID,
+            type: PrivateChatDetail.UPDATE_JOB_ID,
             payload: id
         })
         dispatch({
-            type: ArchiveJobDetail.GET_CHAT_HISTORY,
+            type: PrivateChatDetail.GET_CHAT_HISTORY,
             payload: [],
             isChatUpdated: false
         })
@@ -59,13 +87,13 @@ export const getChatHistory = (id) => {
             .then(res => res.json())
             .then(data => {
                 dispatch({
-                    type: ArchiveJobDetail.GET_CHAT_HISTORY,
+                    type: PrivateChatDetail.GET_CHAT_HISTORY,
                     payload: data,
                     isChatUpdated: true
                 });
                 setTimeout(()=>{
                     dispatch({
-                        type: ArchiveJobDetail.GET_CHAT_HISTORY_UPDATE,
+                        type: PrivateChatDetail.GET_CHAT_HISTORY_UPDATE,
                         isChatUpdated: false
                     });
                 },1000)
@@ -73,39 +101,43 @@ export const getChatHistory = (id) => {
             .catch(err => {
                 dispatch({
                     type: ProfileDetail.ERROR_HANDLER,
-                    errorFrom: ArchiveJobDetail.ERROR_FROM,
+                    errorFrom: PrivateChatDetail.ERROR_FROM,
                     errorName: ProfileDetail.ERROR_NAME
                 })
             })
     }
 }
 
-export const getJobDetails = (id) => {
+export const getPrivateChatDetails = (id) => {
     return (dispatch) => {
-        fetch(StringFormat(API_ROOT + URI.GET_JOB_DETAILS, id), {
+        fetch ( StringFormat(API_ROOT + URI.GET_PRIVATE_CHAT_DETAILS, id), {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
             }
         })
-            .then(res => res.json())
+            .then(res => {
+                return res.json()})
+            
             .then(data => {
                 if (data && data[0]) {
                     dispatch({
-                        type: ArchiveJobDetail.GET_JOB_DETAILS,
+                        type: PrivateChatDetail.GET_PRIVATE_CHAT_DETAILS,
                         payload: data[0]
-                    })      
+                    })
                 }
             })
             .catch(err => {
                 dispatch({
                     type: ProfileDetail.ERROR_HANDLER,
-                    errorFrom: ArchiveJobDetail.ERROR_FROM,
+                    errorFrom: PrivateChatDetail.ERROR_FROM,
                     errorName: ProfileDetail.ERROR_NAME
                 })
             })
     }
 }
+
+
 
 
 

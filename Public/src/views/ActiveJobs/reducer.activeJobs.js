@@ -7,14 +7,6 @@ const initialState = {
     isChatUpdated: false,
     isPrivateChatCreated: false,
     privateChatData: [],
-    KeyRole: {
-        1: "Admin",
-        2: "Management",
-        3: "Internal Employee",
-        4: "External Employee",
-        5: "Designer",
-        6: "Client"
-    }
 }
 
 

@@ -26,6 +26,13 @@ function ActiveJobReducer(state = initialState, action) {
                 JobTitle: action.title
             }
 
+        case ActiveJobDetail.GET_JOB_DETAILS:
+            return {
+                ...state,
+                JobId: action.payload.jobId,
+                JobTitle: action.payload.jobTitle
+            }
+
         case ActiveJobDetail.GET_JOB_PARTICIPANTS:
             return {
                 ...state,

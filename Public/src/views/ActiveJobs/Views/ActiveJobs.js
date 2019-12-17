@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import {Row, Alert} from 'reactstrap';
 import { getJobDetails, getJobParticipants } from '../action.activeJobs';
-import Toolbar from './Chat/Views/Toolbar/Toolbar';
-import Chat from './Chat/Views/Chat';
+import Toolbar from '../../Chat/Views/Toolbar/Toolbar';
+import Chat from '../../Chat/Views/Chat';
 
 class ActiveJobs extends Component {
     constructor(props) {
@@ -35,8 +35,9 @@ class ActiveJobs extends Component {
                             userRole={USER_DETAILS[0].role}
                             history={this.props.history}
                             params={this.props.match.params}
+                            jobType="active"
                         />
-                        <Chat params={this.props.match.params}/>
+                        <Chat jobType="active" params={this.props.match.params}/>
                     </div>
                 </div>
             </div>
@@ -48,8 +49,6 @@ const mapStateToProps = state => {
     return {
         errorName: state.ProfileDetail.errorMessage.errorName,
         errorFrom: state.ProfileDetail.errorMessage.errorFrom,
-        JobId: state.ActiveJobDetail.JobId,
-        JobTitle: state.ActiveJobDetail.JobTitle,
     };
 }
 
