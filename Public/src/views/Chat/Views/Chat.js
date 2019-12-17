@@ -2,127 +2,23 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import RoleChat from './RoleChat/Views/RoleChat';
 // import PrivateChat from './PrivateChat/Views/PrivateChat';
-import { getChatHistory, updateChatDetails } from '../action.chat';
+import { updateChatDetails } from '../action.chat';
 import Aux from '../../Aux/Aux'
-import Messenger from './Messenger/Messenger';
+import MainChat from './MainChat/Views/MainChat';
 
 class Chat extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            messages: []
-        }
     }
 
     componentDidMount() {
-        var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
-        var JobId = this.props.params.id;
-
-        this.props.updateChatDetails(JobId, this.props.jobType);
-        this.props.getChatHistory(JobId, USER_DETAILS[0].userId);
-
-        // window.clientSocket.on('main chat messages updated', (result) => {
-        //     console.log("main chat messages updated" , result);
-        //     this.props.getChatHistory(JobId, USER_DETAILS[0].userId);
-        // });
-
-        window.clientSocket.on('chat messages updated', (result) => {
-            this.props.getChatHistory(JobId, USER_DETAILS[0].userId);
-        });
-
-        if (USER_DETAILS) {
-            let subscription = {
-                userId: USER_DETAILS[0].userId,
-                JobId: JobId
-            }
-
-            // subscirbe user to this main chat
-            console.log('subscribe to chat room', subscription);
-            window.clientSocket.emit('subscribe to chat room', subscription);
-        }
+        this.props.updateChatDetails(this.props.params.id, this.props.jobType);
     }
 
     componentDidUpdate(prevProps) {
-        var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
         if (this.props.params.id != prevProps.params.id) {
-            if (USER_DETAILS) {
-                let subscription = {
-                    userId: USER_DETAILS[0].userId,
-                    JobId: this.props.JobId
-                }
-    
-                // subscirbe user to this main chat
-            console.log('subscribe to main chat', subscription);
-            window.clientSocket.emit('subscribe to main chat', subscription);
-            }
-            this.props.updateChatDetails(this.props.JobId, this.props.jobType);
-            this.setState({
-                messages: []
-            })
+            this.props.updateChatDetails(this.props.params.id, this.props.jobType);
         }
-
-        if (this.props.chatHistory.length > 0 && prevProps.chatHistory != this.props.chatHistory) {
-            let messages = [];
-
-            this.props.chatHistory.forEach((data, index) => {
-                let fromMe = (data.createBy == USER_DETAILS[0].userId) ? true : false;
-
-                if (fromMe) {
-                    // messages sent by me
-                    messages.push({
-                        author: this.props.KeyRole[data.senderRole] + "-" + data.senderFirstName,
-                        fromMe: fromMe,
-                        message: data.message,
-                        fileName: data.fileName,
-                        filePath: data.filePath,
-                        fileType: data.fileType,
-                        timestamp: new Date().getTime(),
-                        createBy: data.createBy
-                    })
-                } else if (!fromMe) {
-                    // messages sent by others
-                    let currentUserIsClient = USER_DETAILS[0].role == 6;
-                    let author = "";
-                    if (currentUserIsClient) {
-                        author = "Portland Representative";
-                    } else {
-                        author = this.props.KeyRole[data.senderRole] + "-" + data.senderFirstName;
-                    }
-                    messages.push({
-                        author: author,
-                        fromMe: fromMe,
-                        message: data.message,
-                        fileName: data.fileName,
-                        filePath: data.filePath,
-                        fileType: data.fileType,
-                        timestamp: new Date().getTime(),
-                        createBy: data.createBy
-                    })
-                }
-            })
-
-            this.setState({
-                messages: messages,
-            })
-        }
-    }
-
-    submitMessage = (messageData) => {
-        var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
-
-        const additionalMessageData = {
-            // isVisibleToClient: this.state.isVisibleToClient,
-            userId: USER_DETAILS[0].userId,
-            JobId: this.props.JobId,
-            author: USER_DETAILS[0].firstName,
-            // recipientRole: this.props.roleKey
-        }
-
-        for (let key in additionalMessageData) {
-            messageData[key] = additionalMessageData[key];
-        }
-
-        window.clientSocket.emit('main chat send message', messageData);
     }
     
     render() {
@@ -133,7 +29,8 @@ class Chat extends Component {
                     // : this.props.params.privateChatId ?
                         // <PrivateChat params={this.props.params} />
                         :
-                        <Messenger messages={this.state.messages} onSubmitMessage={this.submitMessage}/>
+                        <MainChat params={this.props.params} />
+                        // <Messenger messages={this.state.messages} onSubmitMessage={this.submitMessage}/>
                 }
             </Aux>
         )
@@ -142,15 +39,11 @@ class Chat extends Component {
 
 const mapStateToProps = state => {
     return {
-        chatHistory: state.ChatDetail.chatHistory,
-        JobId: state.ChatDetail.JobId,
-        KeyRole: state.ChatDetail.KeyRole
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        getChatHistory: (id, userId) => dispatch(getChatHistory(id, userId)),
         updateChatDetails: (JobId, jobType) => dispatch(updateChatDetails(JobId, jobType)),
     };
 }

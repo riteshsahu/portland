@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import Messenger from '../../Messenger/Messenger';
 import { Row, Alert } from 'reactstrap';
-import { getRoleChatHistory } from '../action.roleChat';
+import { updateRole, getRoleChatHistory } from '../action.roleChat';
 import Aux from '../../../../Aux/Aux';
 
 class RoleChat extends Component {
@@ -17,6 +17,8 @@ class RoleChat extends Component {
         var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
         var JobId = this.props.params.id;
         var roleKey = this.props.params.roleKey;
+        
+        this.props.updateRole(roleKey);
         this.props.getRoleChatHistory(JobId, USER_DETAILS[0].userId, roleKey);
 
         // window.clientSocket.on('role chat messages updated', (result) => {
@@ -25,20 +27,19 @@ class RoleChat extends Component {
         //     this.props.getRoleChatHistory(JobId, USER_DETAILS[0].userId, roleKey);
         // });
 
-        window.clientSocket.on('chat messages updated', (result) => {
-            this.props.getRoleChatHistory(JobId, USER_DETAILS[0].userId, roleKey);
+        window.clientSocket.on('role chat messages updated', (result) => {
+            this.props.getRoleChatHistory(JobId, USER_DETAILS[0].userId, this.props.params.roleKey);
         });
 
-        // if (USER_DETAILS) {
-        //     let subscription = {
-        //         roleKey: roleKey,
-        //         userId: USER_DETAILS[0].userId,
-        //         jobId: JobId
-        //     }
+        if (USER_DETAILS) {
+            let subscribe = {
+                roleKey: roleKey,
+                userId: USER_DETAILS[0].userId,
+                JobId: JobId
+            }
 
-        //     // subscirbe user to this role chat
-        //     console.log('subscribe to role chat', subscription);
-        //     window.clientSocket.emit('subscribe to role chat', subscription);
+            // subscirbe user to this role chat
+            window.clientSocket.emit('subscribe to role chat', subscribe);
 
         //     window.clientSocket.on("response", evt => {
         //         if ((USER_DETAILS[0].role !== 6) || (USER_DETAILS[0].role === 6 && evt.isVisibleToClient)) {
@@ -46,90 +47,96 @@ class RoleChat extends Component {
         //             this.addMessage(message)
         //         }
         //     });
-        // }
+        }
     }
 
     componentDidUpdate(prevProps, prevState) {
         var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
 
         if (prevProps.params.roleKey != this.props.params.roleKey) {
-            this.props.getRoleChatHistory(this.props.JobId, USER_DETAILS[0].userId, this.props.params.roleKey);
-
-            // let subscription = {
-            //     roleKey: this.props.params.roleKey,
-            //     userId: USER_DETAILS[0].userId,
-            //     jobId: this.props.JobId
-            // }
-
-            // // subscirbe user to this role chat
-            // console.log('subscribe to role chat', subscription);
-            
-            // window.clientSocket.emit('subscribe to role chat', subscription);
-
             this.setState({
-                messages: []
+                messages: [],
             })
-        }
+            this.props.updateRole(this.props.params.roleKey);
+            this.props.getRoleChatHistory(this.props.params.id, USER_DETAILS[0].userId, this.props.params.roleKey);
 
-        if (this.props.chatHistory.length > 0 && prevProps.chatHistory != this.props.chatHistory) {
-            let messages = [];
-            // console.log(this.props.chatHistory);
+            // unsubscribe user from previous role chat
+            let unsubscribe = {
+                roleKey: prevProps.params.roleKey,
+                userId: USER_DETAILS[0].userId,
+                JobId: this.props.params.id
+            }
+            window.clientSocket.emit('unsubscribe from role chat', unsubscribe);
 
-            this.props.chatHistory.forEach((data, index) => {
-                let fromMe = (data.createBy == USER_DETAILS[0].userId) ? true : false;
-
-                if (fromMe) {
-                    // messages sent by me
-                    if (data.recipientRole == this.props.roleKey) {
-                        // to current role tab
-                        messages.push({
-                            author: this.props.KeyRole[data.senderRole] + "-" + data.senderFirstName,
-                            fromMe: fromMe,
-                            message: data.message,
-                            fileName: data.fileName,
-                            filePath: data.filePath,
-                            fileType: data.fileType,
-                            timestamp: new Date().getTime(),
-                            createBy: this.props.roleKey
-                        })
+            // subscirbe user to this role chat
+            let subscription = {
+                roleKey: this.props.params.roleKey,
+                userId: USER_DETAILS[0].userId,
+                JobId: this.props.params.id
+            }
+            window.clientSocket.emit('subscribe to role chat', subscription);
+        } else {
+            if (this.props.chatHistory.length > 0 && prevProps.chatHistory != this.props.chatHistory) {
+                let messages = [];
+                // console.log(this.props.chatHistory);
+    
+                this.props.chatHistory.forEach((data, index) => {
+                    let fromMe = (data.createBy == USER_DETAILS[0].userId) ? true : false;
+    
+                    if (fromMe) {
+                        // messages sent by me
+                        if (data.recipientRole == this.props.roleKey) {
+                            // to current role tab
+                            messages.push({
+                                author: this.props.KeyRole[data.senderRole] + "-" + data.senderFirstName,
+                                fromMe: fromMe,
+                                message: data.message,
+                                fileName: data.fileName,
+                                filePath: data.filePath,
+                                fileType: data.fileType,
+                                timestamp: new Date().getTime(),
+                                createBy: this.props.roleKey
+                            })
+                        }
+                    } else if (!fromMe) {
+                        // messages sent by others
+                        if (data.recipientRole == this.props.roleKey) {
+                            // to current role tab
+                            messages.push({
+                                author: this.props.KeyRole[data.senderRole] + "-" + data.senderFirstName,
+                                fromMe: fromMe,
+                                message: data.message,
+                                fileName: data.fileName,
+                                filePath: data.filePath,
+                                fileType: data.fileType,
+                                timestamp: new Date().getTime(),
+                                createBy: this.props.roleKey
+                            })
+                        }
                     }
-                } else if (!fromMe) {
-                    // messages sent by others
-                    if (data.recipientRole == this.props.roleKey) {
-                        // to current role tab
-                        messages.push({
-                            author: this.props.KeyRole[data.senderRole] + "-" + data.senderFirstName,
-                            fromMe: fromMe,
-                            message: data.message,
-                            fileName: data.fileName,
-                            filePath: data.filePath,
-                            fileType: data.fileType,
-                            timestamp: new Date().getTime(),
-                            createBy: this.props.roleKey
-                        })
-                    }
-                }
-            })
-
-            this.setState({
-                messages: messages,
-                // message: ""
-            })
+                })
+    
+                this.setState({
+                    messages: messages,
+                    // message: ""
+                })
+            }
         }
     }
 
     componentWillUnmount() {
-        // var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
+        var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
 
-        // if (USER_DETAILS) {
-        //     let unsubscribe = {
-        //         room: window.location.href.split('/').pop(),
-        //         userId: USER_DETAILS[0].userId
-        //     }
+        if (USER_DETAILS) {
+            let unsubscribe = {
+                roleKey: this.props.params.roleKey,
+                userId: USER_DETAILS[0].userId,
+                JobId: this.props.params.id
+            }
 
-        //     // unsubscirbe user from from this chat
-        //     window.clientSocket.emit('unsubscribe', unsubscribe);
-        // }
+            // unsubscirbe user from from this chat
+            window.clientSocket.emit('unsubscribe from role chat', unsubscribe);
+        }
     }
 
     submitMessage = (messageData) => {
@@ -140,7 +147,7 @@ class RoleChat extends Component {
             userId: USER_DETAILS[0].userId,
             JobId: this.props.JobId,
             author: USER_DETAILS[0].firstName,
-            recipientRole: this.props.roleKey
+            recipientRole: this.props.params.roleKey
         }
 
         for (let key in additionalMessageData) {
@@ -177,6 +184,7 @@ function mapDispatchToProps(dispatch) {
     return {
         // getRoleChatDetails: (id) => dispatch(getRoleChatDetails(id)),
         getRoleChatHistory: (id, userId, role) => dispatch(getRoleChatHistory(id, userId, role)),
+        updateRole: (role) => dispatch(updateRole(role)),
     };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(RoleChat);

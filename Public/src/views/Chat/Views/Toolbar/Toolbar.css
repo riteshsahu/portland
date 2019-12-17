@@ -24,11 +24,6 @@
     align-items: center;
     justify-content: space-between;
     flex-grow: 1;
-  }
-  
-  .left-tabs {
-    padding: 5px;
-    display: flex;
     flex-wrap: wrap;
   }
 

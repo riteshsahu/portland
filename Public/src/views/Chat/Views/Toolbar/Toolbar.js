@@ -32,7 +32,7 @@ class Toolbar extends Component {
     if (this.props.params.roleKey) {
     //   let USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
     //   if (USER_DETAILS[0].role <= this.props.params.roleKey) {
-        if (USER_DETAILS[0].role != this.props.params.roleKey && this.props.params.roleKey != 6) {
+        if (USER_DETAILS[0].role != this.props.params.roleKey && USER_DETAILS[0].role != 6) {
           this.setState({
             activeTab: this.props.params.roleKey
           });
@@ -185,11 +185,11 @@ class Toolbar extends Component {
     return (
       <>
         <div className="toolbar">
-          <div style={{ paddingLeft: "5px" }}>
+          <div style={{ padding: "0 10px" }}>
             <h3 onClick={() => this.routeMainChat()} className="jobtitle" >{this.props.JobTitle ? this.props.JobTitle : leftItems}</h3>
           </div>
           <div className="toolbar-tabs">
-            <div className="left-tabs">{this.chatTabsHandler()}</div>
+            {this.chatTabsHandler()}
             {/* <Badge style={{borderRadius: "20px",margin: "10px"}} color="warning"><Label style={{marginTop: "8px"}}>{this.props.privateChatData.length>0 ? this.props.privateChatData[0].chatName: ""}</Label></Badge> */}
 
             {/* <h1 className="toolbar-title">{title}</h1> */}

@@ -10,16 +10,16 @@ const users = {};
 
 function socketConnection (io) {
     io.on('connection', client => {
-        console.log("%s user connected", client.id);
+        console.log("%s client connected", client.id);
         client.on('user logged in', (user) => {
             users[client.id] = user;
             // console.log(users);
         });
         
         // subscribe to chat room
-        client.on('subscribe to chat room', function(data) {
+        client.on('subscribe to main chat', function(data) {
             client.join(data.JobId);
-                console.log("%s joining main chat %s", client.id, data.JobId);
+            console.log("%s joining main chat %s", users[client.id].userId, data.JobId);
 
             // chatService.subscribeUser(data)
             // .then(results => {
@@ -29,6 +29,21 @@ function socketConnection (io) {
             // .catch(err => {
             //     console.log('error', err)
             // })
+        });
+
+        client.on('subscribe to role chat', function(data) {
+            client.join(`${data.JobId}_${data.roleKey}`);
+            console.log("%s joining role chat %s", users[client.id].userId, `${data.JobId}_${data.roleKey}`);
+        });
+
+        client.on('unsubscribe from main chat', function(data) {
+            client.leave(data.JobId);
+            console.log("%s leaving main chat %s", users[client.id].userId, data.JobId);
+        });
+
+        client.on('unsubscribe from role chat', function(data) {
+            client.leave(`${data.JobId}_${data.roleKey}`);
+            console.log("%s leaving role chat %s", users[client.id].userId, `${data.JobId}_${data.roleKey}`);
         });
 
         // subscribe to private chat
@@ -54,30 +69,29 @@ function socketConnection (io) {
                 })
         });
 
-        client.on('main chat send message', function(messageData) {
-            chatService.messageUpdate(messageData)
+        client.on('main chat send message', function(data) {
+            chatService.messageUpdate(data)
             .then(result => {
                 // broadcast message to everyone in main chat room
-                console.log("broadcasting msg to ", messageData.JobId);
-                // io.in(messageData.JobId).emit('main chat messages updated', result);
-                io.in(messageData.JobId).emit('chat messages updated', result);
+                console.log("broadcasting msg to main chat %s", data.JobId);
+                io.in(data.JobId).emit('main chat messages updated', result);
             })
         });
 
-        client.on('role chat send message', function(messageData) {
-            chatService.roleMessageUpdate(messageData)
+        client.on('role chat send message', function(data) {
+            chatService.roleMessageUpdate(data)
             .then(result => {
                 // broadcast message to everyone in role chat room
-                io.in(messageData.JobId).emit('chat messages updated', result);
-                // io.in(messageData.JobId).emit('role chat messages updated', result);
+                console.log("broadcasting msg to role chat %s", `${data.JobId}_${data.recipientRole}`);
+                io.in(`${data.JobId}_${data.recipientRole}`).emit('role chat messages updated', result);
             })
         });
 
-        // client.on('private chat send message', function(messageData) {
-        //     chatService.privateMessageUpdate(messageData)
+        // client.on('private chat send message', function(data) {
+        //     chatService.privateMessageUpdate(data)
         //     .then(result => {
         //         // broadcast message to everyone in private chat room
-        //         io.in(messageData.JobId).emit('private chat messages update', result);
+        //         io.in(data.JobId).emit('private chat messages update', result);
         //     })
         // });
 
@@ -87,7 +101,7 @@ function socketConnection (io) {
                 chatService.unsubscribeUserFromAllJobs(users[client.id])
                 delete users[client.id];            
             }
-            console.log("%s user disconnected", client.id); 
+            console.log("%s client disconnected", client.id); 
         });
         
         client.on('error', error => {

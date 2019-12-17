@@ -8,6 +8,7 @@ import ProfileReducer from './views/Profile/profile.reducer';
 import LayoutReducer from './containers/DefaultLayout/reducer.defaultLayout';
 import ActiveJobsReducer from './views/ActiveJobs/reducer.activeJobs';
 import ChatReducer from './views/Chat/reducer.chat';
+import MainChatReducer from './views/Chat/Views/MainChat/reducer.mainChat';
 import RoleChatReducer from './views/Chat/Views/RoleChat/reducer.roleChat';
 import PrivateChatReducer from './views/Chat/Views/PrivateChat/reducer.privateChat';
 
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
     LayoutDetail: LayoutReducer,
     ChatDetail: ChatReducer,
     ActiveJobDetail: ActiveJobsReducer,
+    MainChatDetail: MainChatReducer,
     RoleChatDetail: RoleChatReducer,
     PrivateChatDetail: PrivateChatReducer
 })

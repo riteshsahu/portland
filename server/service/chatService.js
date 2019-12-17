@@ -484,7 +484,7 @@ class ChatService {
                     M.createBy,M.createAt 
                     FROM MessageRecipient MR JOIN Message M ON MR.messageId = M.id 
                     JOIN User SU ON SU.userId = M.creatorId
-                    WHERE MR.recipientGroupId = ? AND (MR.createBy = ? OR MR.recipientId = ?) 
+                    WHERE MR.recipientGroupId = ? AND MR.isMainChat = 1 AND (MR.createBy = ? OR MR.recipientId = ?) 
                     AND SU.isActive = 1 GROUP BY M.id ORDER BY M.createAt ASC`, [id, userId, userId],(err, results) => {
                             db.releaseConnection(connection);
                             if(err) {

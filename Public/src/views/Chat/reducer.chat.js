@@ -10,7 +10,6 @@ const initialState = {
         5: "Designer",
         6: "Client"
     },
-    chatHistory: '',
     jobType: 'active'
 }
 
@@ -23,13 +22,6 @@ function ChatReducer(state = initialState, action) {
                 ...state,
                 JobId: action.payload.JobId,
                 jobType: action.payload.jobType
-            }
-
-        case ChatDetail.GET_CHAT_HISTORY:
-            return {
-                ...state,
-                chatHistory: action.payload,
-                isChatUpdated: action.isChatUpdated
             }
             
         default:
