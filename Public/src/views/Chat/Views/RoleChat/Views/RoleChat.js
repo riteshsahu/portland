@@ -84,9 +84,9 @@ class RoleChat extends Component {
                     let fromMe = (data.createBy == USER_DETAILS[0].userId) ? true : false;
     
                     if (fromMe) {
-                        // messages sent by me
+                        // sender is me
                         if (data.recipientRole == this.props.roleKey) {
-                            // to current role tab
+                            // and recipient is current role
                             messages.push({
                                 author: this.props.KeyRole[data.senderRole] + "-" + data.senderFirstName,
                                 fromMe: fromMe,
@@ -98,10 +98,10 @@ class RoleChat extends Component {
                                 createBy: this.props.roleKey
                             })
                         }
-                    } else if (!fromMe) {
-                        // messages sent by others
-                        if (data.recipientRole == this.props.roleKey) {
-                            // to current role tab
+                    } else if (data.recipientId == USER_DETAILS[0].userId) {
+                        // recipient is me
+                        if (data.senderRole == this.props.roleKey) {
+                            // and sender is current role
                             messages.push({
                                 author: this.props.KeyRole[data.senderRole] + "-" + data.senderFirstName,
                                 fromMe: fromMe,
@@ -147,7 +147,8 @@ class RoleChat extends Component {
             userId: USER_DETAILS[0].userId,
             JobId: this.props.JobId,
             author: USER_DETAILS[0].firstName,
-            recipientRole: this.props.params.roleKey
+            recipientRole: this.props.params.roleKey,
+            senderRole: USER_DETAILS[0].role,
         }
 
         for (let key in additionalMessageData) {

@@ -516,8 +516,8 @@ class ChatService {
                     M.createBy,M.createAt FROM MessageRecipient MR JOIN Message M ON MR.messageId = M.id 
                     JOIN User SU ON SU.userId = M.creatorId JOIN User RU on RU.userId = MR.recipientId 
                     WHERE MR.recipientGroupId = ? AND SU.isActive = 1 AND RU.isActive = 1 AND MR.isMainChat = 0 AND
-                    ((SU.userId = ? AND RU.role = ?) OR (SU.userId != ? AND RU.role = ?)) GROUP BY M.id ORDER BY M.createAt ASC`, 
-                    [id, userId, role, userId, role],(err, results) => {
+                    ((MR.createBy = ? AND RU.role = ?) OR (SU.role = ? AND MR.recipientId = ?)) GROUP BY M.id ORDER BY M.createAt ASC`, 
+                    [id, userId, role, role, userId],(err, results) => {
                             db.releaseConnection(connection);
                             if(err) {
                                 reject(err)

@@ -81,9 +81,11 @@ function socketConnection (io) {
         client.on('role chat send message', function(data) {
             chatService.roleMessageUpdate(data)
             .then(result => {
-                // broadcast message to everyone in role chat room
-                console.log("broadcasting msg to role chat %s", `${data.JobId}_${data.recipientRole}`);
-                io.in(`${data.JobId}_${data.recipientRole}`).emit('role chat messages updated', result);
+                // emit message update event to sender
+                client.emit('role chat messages updated', result);
+                // broadcast message update event to every participant currently on sender role
+                console.log("broadcasting msg to role chat %s", `${data.JobId}_${data.senderRole}`);
+                client.to(`${data.JobId}_${data.senderRole}`).emit('role chat messages updated', result);
             })
         });
 
