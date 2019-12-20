@@ -16,24 +16,24 @@ class RoleChat extends Component {
     componentDidMount() {
         var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
         var JobId = this.props.params.id;
-        var roleKey = this.props.params.roleKey;
+        var roleId = this.props.params.roleId;
         
-        this.props.updateRole(roleKey);
-        this.props.getRoleChatHistory(JobId, USER_DETAILS[0].userId, roleKey);
+        this.props.updateRole(roleId);
+        this.props.getRoleChatHistory(JobId, USER_DETAILS[0].userId, roleId);
 
         // window.clientSocket.on('role chat messages updated', (result) => {
         //     console.log("role chat messages updated" , result);
             
-        //     this.props.getRoleChatHistory(JobId, USER_DETAILS[0].userId, roleKey);
+        //     this.props.getRoleChatHistory(JobId, USER_DETAILS[0].userId, roleId);
         // });
 
         window.clientSocket.on('role chat messages updated', (result) => {
-            this.props.getRoleChatHistory(JobId, USER_DETAILS[0].userId, this.props.params.roleKey);
+            this.props.getRoleChatHistory(JobId, USER_DETAILS[0].userId, this.props.params.roleId);
         });
 
         if (USER_DETAILS) {
             let subscribe = {
-                roleKey: roleKey,
+                roleId: roleId,
                 userId: USER_DETAILS[0].userId,
                 JobId: JobId
             }
@@ -53,16 +53,16 @@ class RoleChat extends Component {
     componentDidUpdate(prevProps, prevState) {
         var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
 
-        if (prevProps.params.roleKey != this.props.params.roleKey) {
+        if (prevProps.params.roleId != this.props.params.roleId) {
             this.setState({
                 messages: [],
             })
-            this.props.updateRole(this.props.params.roleKey);
-            this.props.getRoleChatHistory(this.props.params.id, USER_DETAILS[0].userId, this.props.params.roleKey);
+            this.props.updateRole(this.props.params.roleId);
+            this.props.getRoleChatHistory(this.props.params.id, USER_DETAILS[0].userId, this.props.params.roleId);
 
             // unsubscribe user from previous role chat
             let unsubscribe = {
-                roleKey: prevProps.params.roleKey,
+                roleId: prevProps.params.roleId,
                 userId: USER_DETAILS[0].userId,
                 JobId: this.props.params.id
             }
@@ -70,7 +70,7 @@ class RoleChat extends Component {
 
             // subscirbe user to this role chat
             let subscription = {
-                roleKey: this.props.params.roleKey,
+                roleId: this.props.params.roleId,
                 userId: USER_DETAILS[0].userId,
                 JobId: this.props.params.id
             }
@@ -85,7 +85,7 @@ class RoleChat extends Component {
     
                     if (fromMe) {
                         // sender is me
-                        if (data.recipientRole == this.props.roleKey) {
+                        if (data.recipientRole == this.props.roleId) {
                             // and recipient is current role
                             messages.push({
                                 author: this.props.KeyRole[data.senderRole] + "-" + data.senderFirstName,
@@ -95,12 +95,12 @@ class RoleChat extends Component {
                                 filePath: data.filePath,
                                 fileType: data.fileType,
                                 timestamp: new Date().getTime(),
-                                createBy: this.props.roleKey
+                                createBy: this.props.roleId
                             })
                         }
                     } else if (data.recipientId == USER_DETAILS[0].userId) {
                         // recipient is me
-                        if (data.senderRole == this.props.roleKey) {
+                        if (data.senderRole == this.props.roleId) {
                             // and sender is current role
                             messages.push({
                                 author: this.props.KeyRole[data.senderRole] + "-" + data.senderFirstName,
@@ -110,7 +110,7 @@ class RoleChat extends Component {
                                 filePath: data.filePath,
                                 fileType: data.fileType,
                                 timestamp: new Date().getTime(),
-                                createBy: this.props.roleKey
+                                createBy: this.props.roleId
                             })
                         }
                     }
@@ -129,7 +129,7 @@ class RoleChat extends Component {
 
         if (USER_DETAILS) {
             let unsubscribe = {
-                roleKey: this.props.params.roleKey,
+                roleId: this.props.params.roleId,
                 userId: USER_DETAILS[0].userId,
                 JobId: this.props.params.id
             }
@@ -147,8 +147,9 @@ class RoleChat extends Component {
             userId: USER_DETAILS[0].userId,
             JobId: this.props.JobId,
             author: USER_DETAILS[0].firstName,
-            recipientRole: this.props.params.roleKey,
+            recipientRole: this.props.params.roleId,
             senderRole: USER_DETAILS[0].role,
+            jobParticipants: this.props.ParticipantsDetails
         }
 
         for (let key in additionalMessageData) {
@@ -176,8 +177,9 @@ const mapStateToProps = state => {
     return {
         JobId: state.ChatDetail.JobId,
         KeyRole: state.ChatDetail.KeyRole,
-        roleKey: state.RoleChatDetail.roleKey,
+        roleId: state.RoleChatDetail.roleId,
         chatHistory: state.RoleChatDetail.chatHistory,
+        ParticipantsDetails: state.ActiveJobDetail.ParticipantsDetails,
     };
 }
 

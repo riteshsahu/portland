@@ -1,8 +1,7 @@
 import { RoleChatDetail } from './constants.roleChat';
 
 const initialState = {
-    roleChatId: '',
-    roleKey: '',
+    roleId: '',
     chatHistory: '',
 }
 
@@ -13,7 +12,7 @@ function RoleChatReducer(state = initialState, action) {
         case RoleChatDetail.UPDATE_ROLE:
             return {
                 ...state,
-                roleKey: action.payload,
+                roleId: action.payload,
             }
 
         case RoleChatDetail.GET_ROLE_CHAT_HISTORY:

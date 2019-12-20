@@ -76,11 +76,11 @@ const routes = [
   { path: '/roles', name: 'Roles', component: Roles },
   { path: '/userProfile', exact: true, name: 'UserProfile', component: UserProfile },
   { path: '/activeJobs/:id', exact: true, name: 'Active Jobs', component: ActiveJobs },
-  { path: '/activeJobs/:id/roleChat/:roleKey', exact: true, name: 'Active Role Chat', component: ActiveJobs },
+  { path: '/activeJobs/:id/roleChat/:roleId', exact: true, name: 'Active Role Chat', component: ActiveJobs },
   { path: '/activeJobs/:id/privateChat/:privateChatId', exact: true, name: 'Active Private Chat', component: ActiveJobs },
 
   { path: '/archivedJobs/:id', exact: true, name: 'Archived Jobs', component: ArchivedJobs },
-  { path: '/archivedJobs/:id/roleChat/:roleKey', exact: true, name: 'Archived Role Chat', component: ArchivedJobs },
+  { path: '/archivedJobs/:id/roleChat/:roleId', exact: true, name: 'Archived Role Chat', component: ArchivedJobs },
   { path: '/archivedJobs/:id/privateChat/:privateChatId', exact: true, name: 'Archived Private Chat', component: ArchivedJobs },
 
   

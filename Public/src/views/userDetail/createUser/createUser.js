@@ -18,14 +18,6 @@ class CreateUser extends Component {
                 date: new Date().toJSON().slice(0, 10).replace(/-/g, '/')
             },
             isSubmitted: false,
-            roleKey:{
-                1 : "Admin",
-                2 : "Management",
-                3 : "Internal Employee",
-                4 : "External Employee",
-                5 : "Designer",
-                6 : "Client"
-            },
             errors: []
         }
     }

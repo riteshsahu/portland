@@ -24,9 +24,9 @@ class ChatController {
     static getRoleChatHistory(req, res) {
         let id = req.params.id
         let userId = req.params.userId;
-        let role = req.params.role
+        let roleId = req.params.roleId
         
-        ChatService.getRoleChatHistory(id, userId, role).then(result => {
+        ChatService.getRoleChatHistory(id, userId, roleId).then(result => {
             res.json(result);
         }).catch(err => {
             res.status(500).json(err)
@@ -37,19 +37,32 @@ class ChatController {
         let userId = req.body.userId;
         const subscription = req.body.subscription;
         ChatService.getUserNotifications(userId).then(notifications => {
-            notifications = notifications.map((dt, i) => {
-                return {
-                    id: dt.id,
-                    msg: "You have " + dt.count + " Unread messages in " + dt.Title
+            
+            notifications = notifications.map((notification, i) => {
+                if (notification.isMainChat) {
+                    // main chat notification
+                    return {
+                        id: notification.jobId,
+                        msg: `You have ${notification.count} unread messages in job "${notification.jobTitle}" on main chat.`,
+                        link: `/activeJobs/${notification.jobId}`
+                    }     
+                } else {
+                    // role chat notification
+                    return {
+                        id: `${notification.jobId}_${notification.roleId}`,
+                        msg: `You have ${notification.count} unread messages in job "${notification.jobTitle}" on role tab ${notification.roleName}.`,
+                        link: `/activeJobs/${notification.jobId}/roleChat/${notification.roleId}`
+                    }
                 }
             });
             const payload = JSON.stringify({ title: "Portland Floor" , notifications: notifications });
-            res.status(201).json(notifications);
             if (subscription && notifications.length > 0) {
-                webpush.sendNotification(subscription, payload).catch(err => {
-                    res.status(500).json(err);
-                });
+                webpush.sendNotification(subscription, payload)
+                // .catch(err => {
+                //     res.status(500).json(err);
+                // });
             }
+            res.status(201).json(notifications);
         }).catch(err => {
             res.status(500).json(err);
         })

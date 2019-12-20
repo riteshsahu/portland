@@ -6,8 +6,7 @@ import user from '../../assets/img/brand/user.png';
 import './header.css';
 import { connect } from "react-redux";
 import { selectedJob, getPrivateChatData } from '../../views/ActiveJobs/action.activeJobs';
-import { API_ROOT, URI } from "../../../src/config/config";
-
+import { updateUserNotifcations } from '../../views/User/User/UserHelpers'
 const propTypes = {
   children: PropTypes.node,
 };
@@ -32,22 +31,7 @@ class DefaultHeader extends Component {
     const user = JSON.parse(localStorage.getItem('userDetails'));
 
     if (user) {
-      const payload = {
-        userId: user[0].userId
-      }
-      
-      fetch(API_ROOT + URI.GET_NOTIFICATIONS, {
-        method: 'POST',
-        body: JSON.stringify(payload),
-        headers: {
-          'content-type': 'application/json',
-        }
-      })
-        .then(res => res.json())
-        .then(data => {
-          localStorage.setItem('notifications', JSON.stringify(data));
-          window.dispatchEvent(new Event('storage'));
-        });
+      updateUserNotifcations(user[0].userId);
     }
   }
 
@@ -100,13 +84,13 @@ class DefaultHeader extends Component {
     this.props.history.push("/archivedJobs/" + id)
   }
 
-  handleNotificationClick = (id) => {
+  handleNotificationClick = (notification) => {
     // remove notification from local storage
-    let notifications = this.state.notifications.filter(data => data.id !== id);
+    let notifications = this.state.notifications.filter(data => data.id !== notification.id);
     
     localStorage.setItem('notifications', JSON.stringify(notifications));
     this.updateNotifications();
-    this.props.history.push("/activeJobs/" + id);
+    this.props.history.push(notification.link);
   }
 
   deletedJobList = () => {
@@ -133,10 +117,10 @@ class DefaultHeader extends Component {
   notificationList = () => {
     let Result = [];
     if (this.state.notifications && this.state.notifications.length > 0) {
-      this.state.notifications.map(data => {
+      this.state.notifications.map(notification => {
         Result.push(
-          <DropdownItem className= "item" onClick={() => this.handleNotificationClick(data.id)}>
-            {data.msg}
+          <DropdownItem className= "item" onClick={() => this.handleNotificationClick(notification)}>
+            {notification.msg}
           </DropdownItem>
         );
       })
@@ -239,13 +223,25 @@ class DefaultHeader extends Component {
 
           <AppHeaderDropdown direction="down" style={{ display: 'contents' }}>
             <DropdownToggle nav>
-              <div><i className="fa fa-bell fa-lg notification"></i>  </div>
+              <div style={{ position: "relative", margin: "0 15px" }}>
+                <i className="fa fa-bell fa-lg notification"></i>  
+                {this.state.notifications && this.state.notifications.length > 0 ?
+                  <div className="circle">
+                    {this.state.notifications.length < 9 ?
+                      <span>{this.state.notifications.length}</span>
+                      :
+                      <span>9+</span>
+                    }
+                  </div>
+                  :
+                  ""
+                }
+              </div>
             </DropdownToggle>
             <DropdownMenu right className="notificationList">
             {this.notificationList()}
             </DropdownMenu>
           </AppHeaderDropdown>
-          {this.state.notifications && this.state.notifications.length > 0 ? <div className="circle">{this.state.notifications.length}</div> : ""}
           <AppHeaderDropdown direction="down" style={{ display: 'contents' }}>
             <div style={{ marginBottom: "15px", color: "cornflowerblue", fontWeight: "bold" }}> {userDetails[0].firstName}</div>
             <DropdownToggle nav style={{ marginRight: 20 }}>

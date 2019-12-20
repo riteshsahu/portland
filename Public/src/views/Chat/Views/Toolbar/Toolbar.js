@@ -28,13 +28,13 @@ class Toolbar extends Component {
   componentDidMount = () => {
     var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
     // this.props.getPrivateChatData(this.props.params.id, USER_DETAILS[0].userId)
-    // check if user can see role tab specified by roleKey
-    if (this.props.params.roleKey) {
+    // check if user can see role tab specified by roleId
+    if (this.props.params.roleId) {
     //   let USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
-    //   if (USER_DETAILS[0].role <= this.props.params.roleKey) {
-        if (USER_DETAILS[0].role != this.props.params.roleKey && USER_DETAILS[0].role != 6) {
+    //   if (USER_DETAILS[0].role <= this.props.params.roleId) {
+        if (USER_DETAILS[0].role != this.props.params.roleId && USER_DETAILS[0].role != 6) {
           this.setState({
-            activeTab: this.props.params.roleKey
+            activeTab: this.props.params.roleId
           });
       } else {
         this.props.history.push(`/${this.props.jobType}Jobs/${this.props.params.id}`);
@@ -45,14 +45,18 @@ class Toolbar extends Component {
     }
   }
 
-  componentWillReceiveProps = (nextProps) => {
-    if (this.state.selectedJobId !== nextProps.JobId) {
-      // this.props.getJobParticipants(nextProps.JobId);
-      this.setState({
-        isJobIdUpdated: false,
-        selectedJobId: nextProps.JobId,
-        jobTitle: nextProps.JobTitle
-      })
+  componentDidUpdate(prevProps) {
+    if (prevProps.params.roleId != this.props.params.roleId) {
+      var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
+      if (this.props.params.roleId) {
+        if (USER_DETAILS[0].role != this.props.params.roleId && USER_DETAILS[0].role != 6) {
+          this.setState({
+            activeTab: this.props.params.roleId
+          });
+        } else {
+          this.props.history.push(`/${this.props.jobType}Jobs/${this.props.params.id}`);
+        }
+      }
     }
   }
 
@@ -134,12 +138,12 @@ class Toolbar extends Component {
     this.props.history.push(`/${this.props.jobType}Jobs/${this.props.params.id}`);
   }
 
-  routeRoleChat = (roleKey) => {
+  routeRoleChat = (roleId) => {
     this.setState({
-      activeTab: roleKey
+      activeTab: roleId
     });
 
-    this.props.history.push(`/${this.props.jobType}Jobs/${this.props.params.id}/roleChat/${roleKey}`);
+    this.props.history.push(`/${this.props.jobType}Jobs/${this.props.params.id}/roleChat/${roleId}`);
   }
 
   isChatCreated = (id) => {
@@ -166,11 +170,11 @@ class Toolbar extends Component {
     //   <Badge onClick={() => this.routeMainChat()} className={"Badge " + (this.state.activeTab === 0 ? 'Active' : "")}><Label className="BadgeLabel">Main</Label></Badge>
     // )
 
-    Object.keys(this.state.KeyRole).forEach(roleKey => {
-      // if (USER_DETAILS[0].role <= roleKey) {
-        if (USER_DETAILS[0].role != roleKey && USER_DETAILS[0].role != 6) {
+    Object.keys(this.state.KeyRole).forEach(roleId => {
+      // if (USER_DETAILS[0].role <= roleId) {
+        if (USER_DETAILS[0].role != roleId && USER_DETAILS[0].role != 6) {
           tabs.push(
-            <Badge onClick={() => this.routeRoleChat(roleKey)} className={"Badge " + (this.state.activeTab === roleKey ? 'Active' : "")}><Label className="BadgeLabel">{this.state.KeyRole[roleKey]}</Label></Badge>
+            <Badge onClick={() => this.routeRoleChat(roleId)} className={"Badge " + (this.state.activeTab === roleId ? 'Active' : "")}><Label className="BadgeLabel">{this.state.KeyRole[roleId]}</Label></Badge>
           )
         }
       // }
@@ -192,28 +196,31 @@ class Toolbar extends Component {
             {this.chatTabsHandler()}
             {/* <Badge style={{borderRadius: "20px",margin: "10px"}} color="warning"><Label style={{marginTop: "8px"}}>{this.props.privateChatData.length>0 ? this.props.privateChatData[0].chatName: ""}</Label></Badge> */}
 
-            {/* <h1 className="toolbar-title">{title}</h1> */}
-            <div className="right-tabs" >
-              <Label style={{ cursor: "pointer", marginTop: 4 }} onClick={this.handleParticipants}>
-                {<i
-                  style={{ marginTop: 5, marginRight: 5, marginLeft: 5 }}
-                  className="fa fa-users">
-                </i>
+            { USER_DETAILS[0].role != 6 ?
+              <div className="right-tabs" >
+                <Label style={{ cursor: "pointer", marginTop: 4 }} onClick={this.handleParticipants}>
+                  {<i
+                    style={{ marginTop: 5, marginRight: 5, marginLeft: 5 }}
+                    className="fa fa-users">
+                  </i>
+                  }
+                  {rightItems}
+                </Label>
+                {this.props.userRole != 6
+                  ?
+                  <Button style={{ background: "#ff8f00", color: "white" }}
+                    onClick={this.handleAnswer}
+
+                  >
+                    Answer
+           </Button>
+                  : null
                 }
-                {rightItems}
-              </Label>
-              {this.props.userRole != 6
-                ?
-                <Button style={{ background: "#ff8f00", color: "white" }}
-                  onClick={this.handleAnswer}
 
-                >
-                  Answer
-            </Button>
-                : null
-              }
-
-            </div>
+              </div>
+              :
+              null
+            }
           </div>
         </div>
         {/*  */}
@@ -276,6 +283,7 @@ const mapStateToProps = state => {
   return {
     JobId: state.ActiveJobDetail.JobId,
     JobTitle: state.ActiveJobDetail.JobTitle,
+    roleId: state.RoleChatDetail.roleId,
     ParticipantsDetails: state.ActiveJobDetail.ParticipantsDetails,
     privateChatData: state.ActiveJobDetail.privateChatData
   };

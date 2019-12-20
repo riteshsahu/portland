@@ -9,7 +9,7 @@ class UserList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            roleKey: {
+            roles: {
                 1: "Admin",
                 2: "Management",
                 3: "Internal Employee",
@@ -80,7 +80,7 @@ class UserList extends Component {
                     <td>{data.lastName}</td>
                     <td>{data.email}</td>
                     <td>{data.createAt}</td>
-                    <td>{this.state.roleKey[data.role]}</td>
+                    <td>{this.state.roles[data.role]}</td>
                     <td>
                         <Badge color="success">Active</Badge>
                     </td>
@@ -169,7 +169,7 @@ class UserList extends Component {
                                         <Label> Role:-</Label>
                                         </Col>
                                         <Col xs="12" md="4" lg="4">
-                                        <Label> {this.state.roleKey[data.role]}</Label>
+                                        <Label> {this.state.roles[data.role]}</Label>
                                         </Col>
                                     </Row>
                                 </div>

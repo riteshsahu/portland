@@ -22,7 +22,7 @@ self.addEventListener('push', e =>{
 });
 
 self.addEventListener('notificationclick', function(event) {
-    let url = `/activeJobs/${event.notification.data.id}`;
+    let url = event.notification.data.link;
     
     event.notification.close();
     event.waitUntil(clients.openWindow(url));

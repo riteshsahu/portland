@@ -2,6 +2,7 @@
 import { Login } from './constants.login';
 import socketIOClient from "socket.io-client";
 import { APP_ROOT } from "../../../config/config";
+import { updateUserNotifcations } from '../../User/User/UserHelpers';
 
 const initialState = {
     userDetail: "",
@@ -21,6 +22,10 @@ function rootReducer(state = initialState, action) {
             localStorage.setItem('userDetails', JSON.stringify(userDetails));
             window.clientSocket = window.clientSocket ? window.clientSocket : socketIOClient(APP_ROOT);
             window.clientSocket.emit('user logged in', userDetails[0]);
+            window.clientSocket.on('update notifications', (result) => {
+                console.log("updating notificaions...");
+                updateUserNotifcations(userDetails[0].userId);
+            });
             return {
                 ...state,
                 userDetail: action.payload,

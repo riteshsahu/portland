@@ -24,7 +24,7 @@ class Chat extends Component {
     render() {
         return (
             <Aux>
-                {this.props.params.roleKey ?
+                {this.props.params.roleId ?
                     <RoleChat params={this.props.params} />
                     // : this.props.params.privateChatId ?
                         // <PrivateChat params={this.props.params} />

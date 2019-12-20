@@ -73,6 +73,74 @@ class ChatService {
         });
     }
 
+    static readUsersMessagesInMainChat(jobId, usersIds) {
+        var connection;
+        return new Promise((resolve, reject) => {
+            db.getConnection()
+                .then(conn => {
+                    connection = conn;
+                    return db.beginTransaction(conn);
+                })
+                .then(() => {
+                    return new Promise((resS, rejS) => {
+                        connection.query('Update MessageRecipient SET isRead = 1 WHERE recipientGroupId = ? AND recipientId IN (?)',
+                            [jobId, usersIds],
+                            (err, results) => {
+                                if (err) {
+                                    db.rollbackTransaction(connection);
+                                    db.releaseConnection(connection);
+                                    rejS(err)
+                                    reject(err)
+                                } else {
+                                    db.commitTransaction(connection);
+                                    db.releaseConnection(connection);
+                                    resS(results);
+                                    resolve(results);
+                                }
+                            })
+                    })
+                })
+                .catch(err => {
+                    db.releaseConnection(connection);
+                    reject(err);
+                })
+        });
+    }
+
+    static readUsersMessagesInRoleChat(jobId, roleId, usersIds) {
+        var connection;
+        return new Promise((resolve, reject) => {
+            db.getConnection()
+                .then(conn => {
+                    connection = conn;
+                    return db.beginTransaction(conn);
+                })
+                .then(() => {
+                    return new Promise((resS, rejS) => {
+                        connection.query(`Update MessageRecipient MR JOIN User U ON U.userId = MR.createBy SET isRead = 1 
+                        WHERE U.isActive = 1 AND isMainChat = 0 AND recipientGroupId = ? AND U.role = ? AND recipientId IN (?)`,
+                            [jobId, roleId, usersIds],
+                            (err, results) => {
+                                if (err) {
+                                    db.rollbackTransaction(connection);
+                                    db.releaseConnection(connection);
+                                    rejS(err)
+                                    reject(err)
+                                } else {
+                                    db.commitTransaction(connection);
+                                    db.releaseConnection(connection);
+                                    resS(results);
+                                    resolve(results);
+                                }
+                            })
+                    })
+                })
+                .catch(err => {
+                    db.releaseConnection(connection);
+                    reject(err);
+                })
+        });
+    }
 
     static subscribePrivateUser(data) {
         var connection;
@@ -504,7 +572,7 @@ class ChatService {
 
 // get all messages of current job where messages
 // sent by current user to current role tab selected or sent by others to current role tab
-    static getRoleChatHistory(id, userId, role) {
+    static getRoleChatHistory(id, userId, roleId) {
         var connection;
         return new Promise((resolve, reject) => {
             db.getConnection().
@@ -517,7 +585,7 @@ class ChatService {
                     JOIN User SU ON SU.userId = M.creatorId JOIN User RU on RU.userId = MR.recipientId 
                     WHERE MR.recipientGroupId = ? AND SU.isActive = 1 AND RU.isActive = 1 AND MR.isMainChat = 0 AND
                     ((MR.createBy = ? AND RU.role = ?) OR (SU.role = ? AND MR.recipientId = ?)) GROUP BY M.id ORDER BY M.createAt ASC`, 
-                    [id, userId, role, role, userId],(err, results) => {
+                    [id, userId, roleId, roleId, userId],(err, results) => {
                             db.releaseConnection(connection);
                             if(err) {
                                 reject(err)
@@ -534,56 +602,49 @@ class ChatService {
 
     }
 
-    static countUnreadMsg(data){
-        function isExist(repId, countResult){
-            if(countResult.length > 0){
-                let innerCount = 0;
-                countResult.map(dt=>{
-                    if(dt.id === repId){
-                        dt.count = dt.count + 1;
-                        innerCount  = innerCount + 1;
-                    }
-                })
-                if(innerCount){
-                    return countResult;
-                }else{
-                    return "NOT_EXIST"                
-                }
-            }else{
-                return "NOT_EXIST"
-            }
-        }
-
-        if(data.length > 0){
-            let countResult = [];
-            data.map(dt=>{
-                if(isExist(dt.recipientGroupId, countResult) === "NOT_EXIST"){
-                    countResult.push({
-                        id: dt.recipientGroupId,
-                        Title: dt.jobTitle,
-                        count : 1
-                    });
-                }
-            });
-            return countResult;
-        }else{
-            return data;
-        }
-    }
-
     static getUserNotifications(id) {
         var connection;
         return new Promise((resolve, reject) => {
-            db.getConnection().
-                then(conn => {
+            db.getConnection()
+                .then(conn => {
                     connection = conn;
-                    connection.query(`SELECT mr.recipientGroupId, j.jobTitle FROM MessageRecipient as mr LEFT JOIN
-                    Job as j ON mr.recipientGroupId = j.jobId WHERE recipientId = ? AND isRead = 0 AND isMainChat = 1`, [id],(err, results) => {
+                })
+                .then(() => {
+                    // get main chat notifications
+                    return new Promise((resJob, rejJob) => {
+                        connection.query(`SELECT MR.recipientGroupId jobId, j.jobTitle, COUNT(MR.recipientGroupId) count, MR.isMainChat 
+                        FROM MessageRecipient as MR JOIN
+                        Job as j ON MR.recipientGroupId = j.jobId Join User SU ON SU.userId = MR.createBy 
+                        WHERE j.isActive = 1 AND SU.isActive = 1 AND MR.isRead = 0 AND MR.recipientId = ? AND MR.isMainChat = 1 
+                        GROUP BY recipientGroupId`,
+                            [id], (err, mainChatNotifications) => {
+                                db.releaseConnection(connection);
+                                if(err) {
+                                    rejJob(err);
+                                    reject(err);
+                                } else {
+                                    // resolve(ChatService.countUnreadMsg(results));
+                                    resJob(mainChatNotifications);
+                                }
+                            })
+                    })
+                })
+                .then((mainChatNotifications) => {
+                    // get role chat notifications
+                    connection.query(`SELECT MR.recipientGroupId jobId, j.jobTitle, MR.isMainChat, 
+                    R.roleId, R.roleName, COUNT(SU.role) as count FROM MessageRecipient as MR JOIN
+                    Job as j ON MR.recipientGroupId = j.jobId Join User SU ON SU.userId = MR.createBy JOIN Role R ON SU.role = R.roleId
+                    WHERE j.isActive = 1 AND SU.isActive = 1 AND MR.isRead = 0 AND MR.recipientId = ? AND isMainChat = 0 
+                    GROUP BY MR.recipientGroupId, SU.role`,
+                        [id], (err, roleChatNotifications) => {
                             db.releaseConnection(connection);
-                            if(err) {
-                                reject(err)
+                            if (err) {
+                                reject(err);
                             } else {
-                                resolve(ChatService.countUnreadMsg(results));
+                                let allChatNotifications = mainChatNotifications
+                                    .concat(roleChatNotifications);
+
+                                resolve(allChatNotifications);
                             }
                         })
                 })

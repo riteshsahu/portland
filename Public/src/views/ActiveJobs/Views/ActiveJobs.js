@@ -11,7 +11,7 @@ class ActiveJobs extends Component {
     }
 
     componentDidMount() {
-        // var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
+        var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
         this.props.getJobDetails(this.props.match.params.id);
         this.props.getJobParticipants(this.props.match.params.id);
         // this.props.getPrivateChatData(this.props.match.params.id, USER_DETAILS[0].userId)

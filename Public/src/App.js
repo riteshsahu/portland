@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import './App.scss';
 import socketIOClient from "socket.io-client";
 import { APP_ROOT } from "../src/config/config";
+import { updateUserNotifcations } from './views/User/User/UserHelpers';
 
 // create socket connection
 window.clientSocket = socketIOClient(APP_ROOT);
@@ -12,6 +13,10 @@ window.clientSocket = socketIOClient(APP_ROOT);
 let USER_DETAILS = JSON.parse(localStorage.getItem('userDetails'));
 if (USER_DETAILS && USER_DETAILS[0]) {
   window.clientSocket.emit('user logged in', USER_DETAILS[0]);
+  window.clientSocket.on('update notifications', (result) => {
+    console.log("updating notificaions...");
+    updateUserNotifcations(USER_DETAILS[0].userId);
+  });
 }
 
 const loading = () => <div className="animated fadeIn pt-3 text-center">Loading...</div>;

@@ -126,6 +126,7 @@ class MainChat extends Component {
             userId: USER_DETAILS[0].userId,
             JobId: this.props.JobId,
             author: USER_DETAILS[0].firstName,
+            jobParticipants: this.props.ParticipantsDetails
         }
 
         for (let key in additionalMessageData) {
@@ -134,7 +135,7 @@ class MainChat extends Component {
 
         window.clientSocket.emit('main chat send message', messageData);
     }
-    
+
     render() {
         return (
             <Aux>
@@ -143,7 +144,7 @@ class MainChat extends Component {
                         <Alert color="danger">{this.props.errorName}</Alert>
                     </Row>
                     : null}
-                <Messenger  messages={this.state.messages} onSubmitMessage={this.submitMessage}/>
+                <Messenger messages={this.state.messages} onSubmitMessage={this.submitMessage} />
             </Aux>
         )
     }
@@ -152,6 +153,7 @@ class MainChat extends Component {
 const mapStateToProps = state => {
     return {
         chatHistory: state.MainChatDetail.chatHistory,
+        ParticipantsDetails: state.ActiveJobDetail.ParticipantsDetails,
         JobId: state.ChatDetail.JobId,
         KeyRole: state.ChatDetail.KeyRole
     };
