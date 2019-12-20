@@ -20,11 +20,6 @@ class MainChat extends Component {
 
         this.props.getChatHistory(JobId, USER_DETAILS[0].userId);
 
-        // window.clientSocket.on('main chat messages updated', (result) => {
-        //     console.log("main chat messages updated" , result);
-        //     this.props.getChatHistory(JobId, USER_DETAILS[0].userId);
-        // });
-
         window.clientSocket.on('main chat messages updated', (result) => {
             this.props.getChatHistory(JobId, USER_DETAILS[0].userId);
         });
@@ -43,19 +38,9 @@ class MainChat extends Component {
     componentDidUpdate(prevProps) {
         var USER_DETAILS = localStorage.getItem('userDetails') ? JSON.parse(localStorage.getItem('userDetails')) : '';
         if (this.props.params.id != prevProps.params.id) {
-            // if (USER_DETAILS) {
-            //     let subscribe = {
-            //         userId: USER_DETAILS[0].userId,
-            //         JobId: this.props.JobId
-            //     }
-
-            // // subscirbe user to this main chat
-            // console.log('subscribe to main chat', subscribe);
-            // window.clientSocket.emit('subscribe to main chat', subscribe);
             this.setState({
                 messages: [],
             })
-            // }
         } else {
             if (this.props.chatHistory.length > 0 && prevProps.chatHistory != this.props.chatHistory) {
                 let messages = [];

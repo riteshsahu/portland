@@ -6,20 +6,15 @@ const publicVapidKey = "BJSb4Xhcs8_ZPa0Qu4epmDeU9GBj4E8BrDjFZebMZBMHBqP4HyAW-bGl
 (async function () {
 	await new Promise(resolve => setTimeout(resolve, 5000));
 
-	// if (window.Notification && 'serviceWorker' in navigator && 'PushManager' in window) {
-		if ('serviceWorker' in navigator && 'PushManager' in window) {
-		// Notification.requestPermission(() => {
-			// if (Notification.permission === 'granted') {
-				setInterval(function () {
-					send().catch(err => {
-						console.log(err);
-					});
-				}, 6000)
-				send().catch(err => {
-					console.log(err);
-				});
-			// }
-		// });
+	if ('serviceWorker' in navigator && 'PushManager' in window) {
+		setInterval(function () {
+			send().catch(err => {
+				console.log(err);
+			});
+		}, 6000)
+		send().catch(err => {
+			console.log(err);
+		});
 	}
 })();
 

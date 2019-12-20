@@ -22,7 +22,11 @@ function socketConnection (io) {
             client.join(data.JobId + "_main");
             // read all messages of subscribed user in main chat room
             if (users[client.id]) {
-                chatService.readUsersMessagesInMainChat(data.JobId, users[client.id].userId);
+                console.log("reading main chat notifications of %s", users[client.id].firstName);
+                chatService.readUsersMessagesInMainChat(data.JobId, users[client.id].userId)
+                .then(() => {
+                    client.emit('update notifications');      
+                });
                 console.log("%s joined main chat %s", users[client.id].firstName, data.JobId);
             }
 
@@ -42,6 +46,9 @@ function socketConnection (io) {
             if (users[client.id]) {
                 console.log("reading role chat notifications of %s", users[client.id].firstName);
                 chatService.readUsersMessagesInRoleChat(data.JobId, data.roleId, users[client.id].userId)
+                .then(() => {
+                    client.emit('update notifications');      
+                });
                 console.log("%s joining role chat %s", users[client.id].firstName, `${data.JobId}_${data.roleId}`);
             }
         });

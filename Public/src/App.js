@@ -14,7 +14,6 @@ let USER_DETAILS = JSON.parse(localStorage.getItem('userDetails'));
 if (USER_DETAILS && USER_DETAILS[0]) {
   window.clientSocket.emit('user logged in', USER_DETAILS[0]);
   window.clientSocket.on('update notifications', (result) => {
-    console.log("updating notificaions...");
     updateUserNotifcations(USER_DETAILS[0].userId);
   });
 }
