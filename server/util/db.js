@@ -1,5 +1,5 @@
 const path = require('path');
-const mysql = require('mysql');
+const mysql = require('mysql2');
 const config = require('../config/env');
 const pool = mysql.createPool(`${config.db_url}?connectionLimit=${config.db_connection_limit}
 &dateStrings=true&multipleStatements=true
@@ -27,7 +27,7 @@ class DB {
   }
 
   static isReleased(connection) {
-    return pool._freeConnections.indexOf(connection) !== -1;
+    return !connection || connection.state === 'disconnected';
   }
 
   static commitTransaction(connection) {

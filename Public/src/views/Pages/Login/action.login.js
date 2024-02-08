@@ -11,7 +11,11 @@ export const login = (values) => {
             body: JSON.stringify(values)
         })
             .then(res => {
-                return res.json()
+                if (res.status === 200 || res.status === 201) {
+                    return res.json()
+                } else {
+                    throw new Error("Something Went Wrong")
+                }
             })
             .then(data => {
                 if (data === "INVALID_PASSWORD") {
@@ -25,7 +29,7 @@ export const login = (values) => {
                         type: Login.AUTH_ERROR,
                         payload: "Invalid Email"
                     })
-                } else {
+                } else if(data && data.length > 0) {
                     dispatch({
                         type: Login.SAVE_LOGIN_DATA,
                         payload: data

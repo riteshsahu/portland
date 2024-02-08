@@ -553,7 +553,9 @@ class ChatService {
                     FROM MessageRecipient MR JOIN Message M ON MR.messageId = M.id 
                     JOIN User SU ON SU.userId = M.creatorId
                     WHERE MR.recipientGroupId = ? AND MR.isMainChat = 1 AND (MR.createBy = ? OR MR.recipientId = ?) 
-                    AND SU.isActive = 1 GROUP BY M.id ORDER BY M.createAt ASC`, [id, userId, userId],(err, results) => {
+                    AND SU.isActive = 1 
+                    GROUP BY MR.recipientId, MR.recipientGroupId, M.message, MR.isRead, SU.firstName, SU.lastName, SU.role, M.createBy, M.createAt 
+                    ORDER BY M.createAt ASC`, [id, userId, userId],(err, results) => {
                             db.releaseConnection(connection);
                             if(err) {
                                 reject(err)
@@ -584,7 +586,10 @@ class ChatService {
                     M.createBy,M.createAt FROM MessageRecipient MR JOIN Message M ON MR.messageId = M.id 
                     JOIN User SU ON SU.userId = M.creatorId JOIN User RU on RU.userId = MR.recipientId 
                     WHERE MR.recipientGroupId = ? AND SU.isActive = 1 AND RU.isActive = 1 AND MR.isMainChat = 0 AND
-                    ((MR.createBy = ? AND RU.role = ?) OR (SU.role = ? AND MR.recipientId = ?)) GROUP BY M.id ORDER BY M.createAt ASC`, 
+                    ((MR.createBy = ? AND RU.role = ?) OR (SU.role = ? AND MR.recipientId = ?)) 
+                    GROUP BY MR.recipientId, MR.recipientGroupId, M.message, MR.isRead, 
+                    SU.firstName, SU.lastName, SU.role, RU.firstName, RU.lastName, RU.role, M.createBy, M.createAt 
+                    ORDER BY M.createAt ASC`, 
                     [id, userId, roleId, roleId, userId],(err, results) => {
                             db.releaseConnection(connection);
                             if(err) {
@@ -616,7 +621,7 @@ class ChatService {
                         FROM MessageRecipient as MR JOIN
                         Job as j ON MR.recipientGroupId = j.jobId Join User SU ON SU.userId = MR.createBy 
                         WHERE j.isActive = 1 AND SU.isActive = 1 AND MR.isRead = 0 AND MR.recipientId = ? AND MR.isMainChat = 1 
-                        GROUP BY recipientGroupId`,
+                        GROUP BY MR.recipientGroupId, j.jobTitle, MR.isMainChat`,
                             [id], (err, mainChatNotifications) => {
                                 db.releaseConnection(connection);
                                 if(err) {
@@ -635,7 +640,7 @@ class ChatService {
                     R.roleId, R.roleName, COUNT(SU.role) as count FROM MessageRecipient as MR JOIN
                     Job as j ON MR.recipientGroupId = j.jobId Join User SU ON SU.userId = MR.createBy JOIN Role R ON SU.role = R.roleId
                     WHERE j.isActive = 1 AND SU.isActive = 1 AND MR.isRead = 0 AND MR.recipientId = ? AND isMainChat = 0 
-                    GROUP BY MR.recipientGroupId, SU.role`,
+                    GROUP BY MR.recipientGroupId, j.jobTitle, MR.isMainChat, R.roleId, R.roleName, SU.role`,
                         [id], (err, roleChatNotifications) => {
                             db.releaseConnection(connection);
                             if (err) {
