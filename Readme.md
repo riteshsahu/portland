@@ -26,7 +26,7 @@ Job Status ---
  5. Dump database using `server/db/portland.gz`
  6. Should be running at `localhost:3000` and `localhost:5000`
 
-Note: `development` is stable branch
+Note: `main` is stable branch
 
 ## Test Credentials
 
